@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>7v7 Ultimate MVP</title>
+
+<style>
+:root{--field:#2f8b45;--line:rgba(255,255,255,.78);--blue:#7fd0ff;--blue-border:#e7f7ff;--yellow:#ffe45e;--red:#ff9b9b;--purple:#d8b4ff;--orange:#ffbe7a}
+*{box-sizing:border-box} html,body{margin:0;padding:0} body{font-family:Inter,Arial,sans-serif;background:#101010;color:#f4f4f4;overflow-x:hidden}
+button,select,input{font:inherit}
+.app{max-width:1120px;margin:0 auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.hero{display:flex;flex-direction:column;gap:10px;position:relative}
+h1{margin:0;font-size:clamp(22px,3vw,34px);letter-spacing:-.03em}
+.subtitle{margin:0;color:#d7d7d7;font-size:13px;line-height:1.45;max-width:900px}
+.panel{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px 14px}
+.controls-wrap{display:flex;flex-direction:column;gap:10px;position:relative;padding-top:34px}
+.row-controls,.nav-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row-label{font-size:12px;font-weight:900;color:#d8d8d8;text-transform:uppercase;letter-spacing:.05em}
+button{border:0;border-radius:999px;padding:9px 13px;background:#f4efe5;color:#111;font-size:12px;font-weight:900;cursor:pointer}
+button.secondary{background:#303030;color:#fff} button.selected,button.active{background:var(--yellow);color:#111}
+
+#modeRow{position:absolute;top:0;right:0;z-index:30;display:flex;gap:6px;align-items:center}
+#modeRow .row-label{display:none}
+#viewPlaybook{display:none}
+.builder-active #viewPlaybook{display:inline-flex}
+#viewBuilder{width:34px;height:34px;padding:0;border-radius:999px;display:grid;place-items:center;font-size:15px;font-weight:900;opacity:.68}
+#viewBuilder:hover{opacity:1}
+.builder-active #viewBuilder{opacity:1}
+
+.coach-card{display:flex;flex-direction:column;gap:10px}
+.mini-title{font-size:15px;font-weight:900;color:#fff}.mini-copy{font-size:12px;line-height:1.38;color:#d6d6d6}
+.selector-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.selector{display:flex;flex-direction:column;gap:6px;font-size:11px;font-weight:800;color:#d8d8d8;text-transform:uppercase;letter-spacing:.05em}
+.selector select,.selector input{width:100%;background:#222;border:1px solid #4e8d5d;color:#fff;border-radius:10px;padding:10px 12px;font-size:14px;font-weight:700;outline:none}
+.player-focus,.builder-help{font-size:12px;line-height:1.35;color:#a6e8b0}
+.content-panel{display:flex;flex-direction:column;gap:10px}
+.stage{width:100%}
+.board{position:relative;width:100%;aspect-ratio:100/62;min-height:360px;border-radius:18px;overflow:hidden;background:linear-gradient(90deg,rgba(255,255,255,.03) 0 1px,transparent 1px 10%),linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 10%),var(--field);border:3px solid rgba(255,255,255,.35);box-shadow:0 20px 70px rgba(0,0,0,.38)}
+.endzone{position:absolute;left:0;right:0;height:11%;background:rgba(0,0,0,.13);border-bottom:2px solid var(--line)} .endzone.bottom{top:auto;bottom:0;border-bottom:0;border-top:2px solid var(--line)}
+.sideline{position:absolute;top:2.5%;bottom:2.5%;width:2px;background:rgba(255,255,255,.62)} .sideline.left{left:6%}.sideline.right{right:6%}.yardline{position:absolute;left:6%;right:6%;height:1px;background:rgba(255,255,255,.33)}
+.label{position:absolute;z-index:2;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.82);pointer-events:none}.label.top{top:2.8%;left:50%;transform:translateX(-50%)} .label.bottom{bottom:2.8%;left:50%;transform:translateX(-50%)} .label.context{left:8%;top:13%;color:#fff1a0} .label.sequence{left:8%;top:18%;color:#ffdcdc} .label.force{right:8%;top:49%;color:#bce8ff;text-align:right;display:none}.label.force.show{display:block}.label.builder-hint{left:50%;top:49%;transform:translate(-50%,-50%);font-size:11px;color:rgba(255,255,255,.7)}
+.puck{--x:50;--y:50;position:absolute;left:calc(var(--x)*1%);top:calc(var(--y)*1%);width:clamp(20px,2.7vw,30px);height:clamp(20px,2.7vw,30px);border-radius:50%;transform:translate(-50%,-50%);display:grid;place-items:center;font-size:clamp(8px,1vw,11px);font-weight:950;transition:left 1200ms cubic-bezier(.2,.8,.2,1),top 1200ms cubic-bezier(.2,.8,.2,1),box-shadow 250ms ease;z-index:5}
+.offense{background:var(--blue);border:3px solid var(--blue-border);color:#072033}.defense{background:#111;border:2px solid #808080;color:#fff;width:clamp(18px,2.3vw,26px);height:clamp(18px,2.3vw,26px);opacity:.97}
+.handler{box-shadow:0 0 0 6px rgba(255,228,94,.32)} .cutter{box-shadow:0 0 0 6px rgba(127,208,255,.26)} .watch{box-shadow:0 0 0 6px rgba(255,255,255,.18)} .primary{box-shadow:0 0 0 7px rgba(216,180,255,.34)} .focus-player{box-shadow:0 0 0 7px rgba(255,228,94,.76),0 0 0 13px rgba(255,228,94,.22)!important}
+.disc{--x:50;--y:8;position:absolute;left:calc(var(--x)*1%);top:calc(var(--y)*1%);width:clamp(16px,2.2vw,24px);height:clamp(10px,1.5vw,15px);border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff 0 38%,#e6e6e6 60%,#aaa 100%);border:2px solid #eee;transform:translate(-50%,-50%) rotate(-12deg);transition:left 1400ms cubic-bezier(.25,.8,.25,1),top 1400ms cubic-bezier(.25,.8,.25,1),transform 1400ms ease,box-shadow 300ms ease;z-index:8;box-shadow:0 10px 24px rgba(0,0,0,.35)} .disc.floating{transform:translate(-50%,-50%) rotate(16deg) scale(1.22);box-shadow:0 14px 30px rgba(255,255,255,.18),0 10px 24px rgba(0,0,0,.38)}
+.paths{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}.route{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:.62;opacity:0;transition:opacity 250ms ease}.route.show{opacity:1}.blue{stroke:#bce8ff}.yellow{stroke:#ffe45e;stroke-width:.7}.red{stroke:#ff9b9b}.purple{stroke:#d8b4ff}.orange{stroke:#ffbe7a}.dashed{stroke-dasharray:3.3 2.3}
+.info{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:start}
+.step-title{font-size:16px;font-weight:900;color:#fff;margin-bottom:6px}.step-body,.roster-note{font-size:12px;line-height:1.42;color:#e2e2e2}.roster-note{margin-top:8px;color:#c6c6c6}
+.legend{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:flex-start}.key{font-size:12px;color:#d4d4d4;display:flex;align-items:center;gap:6px}.dot{width:12px;height:12px;border-radius:50%;display:inline-block}.dot.blue{background:var(--blue);border:2px solid var(--blue-border)}.dot.black{background:#111;border:2px solid #808080}.dot.white{background:#eee;border:1px solid #aaa}
+.nav-controls{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:10px 12px}
+.hidden{display:none!important}
+.coach-spotlight{position:absolute;right:5%;top:12%;width:min(320px,38%);z-index:12;background:rgba(10,10,10,.9);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:12px;box-shadow:0 18px 40px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
+.coach-spotlight.hidden{display:none}
+.coach-tag{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#ffe45e;margin-bottom:8px}
+.coach-quote{font-size:13px;line-height:1.35;font-weight:800;color:#fff;margin-bottom:10px}
+.coach-zoom-wrap{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:start}
+.coach-mini{position:relative;height:132px;border-radius:14px;background:linear-gradient(0deg,rgba(255,255,255,.05),rgba(255,255,255,.05)),#206e38;border:1px solid rgba(255,255,255,.15);overflow:hidden}
+.coach-mini::before,.coach-mini::after{content:'';position:absolute;left:8%;right:8%;height:1px;background:rgba(255,255,255,.28)}
+.coach-mini::before{top:34%}.coach-mini::after{top:66%}
+.coach-mini svg{position:absolute;inset:0;width:100%;height:100%}
+.coach-mini-puck{position:absolute;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:9px;font-weight:900;transform:translate(-50%,-50%)}
+.coach-mini-puck.off{background:var(--blue);border:2px solid var(--blue-border);color:#072033;left:33%;top:60%}
+.coach-mini-puck.def{background:#111;border:2px solid #808080;color:#fff;left:44%;top:58%}
+.coach-points{display:flex;flex-direction:column;gap:8px}
+.coach-point{opacity:0;transform:translateY(6px) scale(.98);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:8px 9px;animation:coachPop .38s ease forwards}
+.coach-point b{display:block;font-size:11px;color:#fff;margin-bottom:2px}.coach-point span{font-size:11px;line-height:1.35;color:#d9d9d9;display:block}
+.coach-point.delay-1{animation-delay:.08s}.coach-point.delay-2{animation-delay:.24s}.coach-point.delay-3{animation-delay:.4s}.coach-point.delay-4{animation-delay:.56s}
+@keyframes coachPop{to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:760px){
+  .coach-spotlight{left:4%;right:4%;top:auto;bottom:4%;width:auto;padding:10px}
+  .controls-wrap{padding-top:30px}
+  #viewBuilder{width:30px;height:30px;font-size:13px}
+  .builder-active #viewPlaybook{padding:7px 10px;font-size:11px}
+  .coach-zoom-wrap{grid-template-columns:92px 1fr;gap:10px}
+  .coach-mini{height:116px}
+  .coach-quote{font-size:12px}
+}
+
+.builder-panel{display:flex;flex-direction:column;gap:10px}
+.builder-toolbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.builder-toolbar .full{grid-column:1/-1}
+.builder-board{touch-action:none}
+.builder-svg{position:absolute;inset:0;width:100%;height:100%;z-index:4;overflow:visible}
+.builder-route{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-width:.9;vector-effect:non-scaling-stroke;pointer-events:stroke}
+.builder-route.red-route{stroke:#ff7373}
+.builder-route.white-route{stroke:#ffffff}
+.builder-layer{position:absolute;inset:0;z-index:6}
+.builder-piece{position:absolute;left:calc(var(--x)*1%);top:calc(var(--y)*1%);transform:translate(-50%,-50%);display:grid;place-items:center;user-select:none;touch-action:none;cursor:grab;font-weight:900}
+.builder-piece.offense{width:30px;height:30px;border-radius:50%;background:var(--blue);border:3px solid var(--blue-border);color:#072033;font-size:10px}
+.builder-piece.defense{width:26px;height:26px;border-radius:50%;background:#111;border:2px solid #808080;color:#fff;font-size:10px}
+.builder-piece.disc-piece{width:22px;height:14px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fff 0 38%,#e6e6e6 60%,#aaa 100%);border:2px solid #eee;font-size:0}
+.builder-piece.selected-builder-piece{box-shadow:0 0 0 4px rgba(255,228,94,.9),0 0 0 8px rgba(255,228,94,.22)}
+.nudge-pad{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.nudge-pad .nudge-btn{min-width:46px;padding:9px 10px}
+.nudge-copy{font-size:12px;line-height:1.35;color:#cfe9d4}
+@media(max-width:760px){
+  .app{padding:10px;gap:10px}
+  h1{font-size:18px}
+  .subtitle{font-size:12px}
+  .selector-grid,.builder-toolbar{grid-template-columns:1fr}
+  .board{aspect-ratio:100/88;min-height:420px}
+  .info{grid-template-columns:1fr}
+  .row-controls,.nav-controls{gap:6px}
+  button{padding:10px 12px;font-size:13px}
+  .label.force{font-size:9px;top:51%}
+  .builder-piece.offense{width:28px;height:28px}
+  .builder-piece.defense{width:24px;height:24px}
+}
+
+/* Beginner coach UX pass */
+.app{gap:10px}
+.hero{gap:8px}
+.controls-wrap{gap:8px}
+#sequenceRow button{min-width:112px}
+.coach-card{padding:10px 12px}
+.content-panel{gap:8px}
+.builder-active #sequenceRow,.builder-active #playerCard,.builder-active #pullRow{display:none}
+.builder-active #builderSection .stage{order:1}
+.builder-active #builderSection .builder-panel{order:2}
+.builder-active #builderSection{gap:8px}
+.builder-active .subtitle{display:none}
+@media(max-width:760px){
+  .app{padding:8px;gap:8px}
+  .hero{gap:7px}
+  .panel{padding:10px}
+  h1{font-size:17px}
+  .row-label{width:100%;margin-bottom:0}
+  .row-controls button{flex:1 1 auto}
+  #sequenceRow button{min-width:0}
+  .board{min-height:390px;border-radius:14px}
+  .info{padding:10px}
+  .legend{display:none}
+  .nav-controls{position:sticky;bottom:0;z-index:20;background:rgba(16,16,16,.96);box-shadow:0 -8px 28px rgba(0,0,0,.35)}
+}
+</style>
+
+</head>
+<body>
+<div class="app" id="appRoot">
+  <div class="hero">
+    <div>
+      <h1>7v7 Ultimate MVP</h1>
+      <p class="subtitle">One idea at a time. Tap Next to watch the play, or pick one player to see only their job.</p>
+    </div>
+    <div class="panel controls-wrap">
+      <div class="row-controls" id="modeRow">
+        <span class="row-label">Mode</span>
+        <button id="viewPlaybook" class="selected">Plays</button>
+        <button id="viewBuilder" class="secondary" title="Coach board" aria-label="Coach board">W</button>
+      </div>
+      <div class="row-controls" id="sequenceRow">
+        <span class="row-label">Learn</span>
+        <button id="seqPull" class="selected">Pull to stack</button>
+        <button id="seqEndzone" class="secondary">Endzone cut</button>
+        <button id="seqHandler" class="secondary">Handler reset</button>
+        <button id="seqPoint" class="secondary">Full point</button>
+      </div>
+      <div class="coach-card" id="playerCard">
+        <div class="mini-title">Player view</div>
+        <div class="mini-copy">Team view teaches the shape. Pick one player when you want to see only their job.</div>
+        <div class="selector-grid">
+          <label class="selector">
+            <span>Team</span>
+            <select id="teamSelect">
+              <option value="line1">Line 1</option>
+              <option value="line2">Line 2</option>
+            </select>
+          </label>
+          <label class="selector">
+            <span>Player</span>
+            <select id="playerSelect">
+              <option value="">Team view</option>
+            </select>
+          </label>
+        </div>
+        <div class="player-focus" id="playerFocusText">Team view shows the whole pattern.</div>
+      </div>
+      <div class="row-controls" id="pullRow">
+        <span class="row-label">Pull</span>
+        <button id="pullMiddle" class="selected">Middle</button>
+        <button id="pullLeft" class="secondary">Left</button>
+        <button id="pullRight" class="secondary">Right</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="playbookSection" class="content-panel">
+    <div class="stage">
+      <div class="board">
+      <div class="endzone top"></div><div class="endzone bottom"></div>
+      <div class="sideline left"></div><div class="sideline right"></div>
+      <div class="yardline" style="top:18%"></div><div class="yardline" style="top:28%"></div><div class="yardline" style="top:38%"></div><div class="yardline" style="top:48%"></div><div class="yardline" style="top:58%"></div><div class="yardline" style="top:68%"></div><div class="yardline" style="top:78%"></div>
+      <div class="label top">Pulling team</div><div class="label bottom">Receiving team</div>
+      <div class="label force" id="forceLabel">Force flick / away<br>open side is right</div>
+      <svg class="paths" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrowBlue" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,3 L0,6 Z" fill="#bce8ff"></path></marker>
+          <marker id="arrowYellow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7,3.5 L0,7 Z" fill="#ffe45e"></path></marker>
+          <marker id="arrowRed" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,3 L0,6 Z" fill="#ff9b9b"></path></marker>
+          <marker id="arrowPurple" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7,3.5 L0,7 Z" fill="#d8b4ff"></path></marker>
+          <marker id="arrowOrange" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7,3.5 L0,7 Z" fill="#ffbe7a"></path></marker>
+        </defs>
+        <path id="pullPath" class="route yellow solid" marker-end="url(#arrowYellow)"></path>
+        <path id="hhRunPath" class="route blue solid" marker-end="url(#arrowBlue)"></path>
+        <path id="h2Path" class="route blue" marker-end="url(#arrowBlue)"></path>
+        <path id="flowPath" class="route blue" marker-end="url(#arrowBlue)"></path>
+        <path id="swingPath" class="route yellow" marker-end="url(#arrowYellow)"></path>
+        <path id="o1CutPath" class="route blue solid" marker-end="url(#arrowBlue)"></path>
+        <path id="h2ToO1Path" class="route yellow" marker-end="url(#arrowYellow)"></path>
+        <path id="o2ContPath" class="route blue" marker-end="url(#arrowBlue)"></path>
+        <path id="o2ClearChoicePath" class="route red solid" marker-end="url(#arrowRed)"></path>
+        <path id="o1ToO2Path" class="route yellow" marker-end="url(#arrowYellow)"></path>
+        <path id="h2DropPath" class="route blue" marker-end="url(#arrowBlue)"></path>
+        <path id="hhResetPath" class="route blue solid" marker-end="url(#arrowBlue)"></path>
+        <path id="o3FreePath" class="route blue solid" marker-end="url(#arrowBlue)"></path>
+        <path id="o1ClearPath" class="route red" marker-end="url(#arrowRed)"></path>
+        <path id="o4HoldPath" class="route blue solid" marker-end="url(#arrowBlue)"></path>
+        <path id="o2DumpPassPath" class="route yellow" marker-end="url(#arrowYellow)"></path>
+        <path id="o2UplinePath" class="route blue solid" marker-end="url(#arrowBlue)"></path>
+        <path id="ezSwingPath" class="route yellow" marker-end="url(#arrowYellow)"></path>
+        <path id="ezDecoyPath" class="route red solid" marker-end="url(#arrowRed)"></path>
+        <path id="ezJukePath" class="route purple solid" marker-end="url(#arrowPurple)"></path>
+        <path id="ezRealCutPath" class="route red solid" marker-end="url(#arrowRed)"></path>
+        <path id="ezCatchPath" class="route yellow" marker-end="url(#arrowYellow)"></path>
+        <path id="ezRiPath" class="route red solid" marker-end="url(#arrowRed)"></path>
+        <path id="ezDumpPath" class="route blue" marker-end="url(#arrowBlue)"></path>
+        <path id="hrAttackPath" class="route blue solid" marker-end="url(#arrowBlue)"></path>
+        <path id="hrUplinePath" class="route blue solid" marker-end="url(#arrowBlue)"></path>
+        <path id="hrUplinePass" class="route yellow" marker-end="url(#arrowYellow)"></path>
+        <path id="hrFakePath" class="route orange" marker-end="url(#arrowOrange)"></path>
+        <path id="hrComebackPath" class="route purple solid" marker-end="url(#arrowPurple)"></path>
+        <path id="hrResetPass" class="route yellow" marker-end="url(#arrowYellow)"></path>
+        <path id="hrH2ShapePath" class="route blue" marker-end="url(#arrowBlue)"></path>
+        <path id="hrSwingPath" class="route yellow" marker-end="url(#arrowYellow)"></path>
+        <path id="hrStackFlowPath" class="route red solid" marker-end="url(#arrowRed)"></path>
+      </svg>
+      <div class="disc" id="disc"></div>
+      <div class="puck offense" id="o1">HH</div><div class="puck offense" id="o2">H2</div><div class="puck offense" id="o3">O1</div><div class="puck offense" id="o4">O2</div><div class="puck offense" id="o5">O3</div><div class="puck offense" id="o6">O4</div><div class="puck offense" id="o7">O5</div>
+      <div class="puck defense" id="d1">D</div><div class="puck defense" id="d2">D</div><div class="puck defense" id="d3">D</div><div class="puck defense" id="d4">D</div><div class="puck defense" id="d5">D</div><div class="puck defense" id="d6">D</div><div class="puck defense" id="d7">D</div>
+      <div class="coach-spotlight hidden" id="coachSpotlight"></div>
+    
+      </div>
+    </div>
+    <div class="info">
+      <div>
+        <div class="step-title" id="stepTitle"></div>
+        <div class="step-body" id="stepBody"></div>
+        <div class="roster-note" id="rosterNote"></div>
+      </div>
+      <div class="legend">
+        <span class="key"><span class="dot blue"></span> Offense</span>
+        <span class="key"><span class="dot black"></span> Defense</span>
+        <span class="key"><span class="dot white"></span> Disc</span>
+        <span class="key">Yellow = disc</span>
+        <span class="key">Blue = movement</span>
+        <span class="key">Red = clear / continuation</span>
+        <span class="key">Purple = featured reset line</span>
+        <span class="key">Orange = fake</span>
+      </div>
+    </div>
+    <div class="nav-controls">
+      <span class="row-label">Controls</span>
+      <button id="prev" class="secondary">Back</button>
+      <button id="next">Next</button>
+      <button id="auto" class="secondary">Play 0.25x</button>
+      <button id="reset" class="secondary">Reset</button>
+    </div>
+  </div>
+
+  <div id="builderSection" class="content-panel hidden">
+    <div class="panel builder-panel">
+      <div class="mini-title">Coach Board</div>
+      <div class="mini-copy">Use this during a game. Place pucks, draw the force or cut, then fine-tune positions with the arrows.</div>
+      <div class="builder-toolbar">
+        <label class="selector">
+          <span>Tool</span>
+          <select id="builderTool">
+            <option value="offense">Blue offense puck</option>
+            <option value="defense">Black defense puck</option>
+            <option value="disc">Disc</option>
+            <option value="routeRed">Draw red route</option>
+            <option value="routeWhite">Draw white route</option>
+            <option value="erase">Erase piece or line</option>
+          </select>
+        </label>
+        <label class="selector">
+          <span>Custom label</span>
+          <input id="builderLabel" type="text" maxlength="4" placeholder="Optional, like RI" />
+        </label>
+        <div class="selector">
+          <span>Fine adjust</span>
+          <div class="nudge-pad">
+            <button id="nudgeUp" class="secondary nudge-btn">↑</button>
+            <button id="nudgeLeft" class="secondary nudge-btn">←</button>
+            <button id="nudgeRight" class="secondary nudge-btn">→</button>
+            <button id="nudgeDown" class="secondary nudge-btn">↓</button>
+          </div>
+        </div>
+        <div class="row-controls full">
+          <button id="builderUndo" class="secondary">Undo</button>
+          <button id="builderClear" class="secondary">Clear board</button>
+        </div>
+      </div>
+      <div class="builder-help" id="builderHelp"></div>
+      <div class="nudge-copy">Tap a puck to select it, then use the arrows for tiny adjustments around another player. Pick a route tool, then press and drag to draw a line or V-cut.</div>
+    </div>
+    <div class="stage">
+      <div class="board builder-board" id="builderBoard">
+      <div class="endzone top"></div><div class="endzone bottom"></div>
+      <div class="sideline left"></div><div class="sideline right"></div>
+      <div class="yardline" style="top:18%"></div><div class="yardline" style="top:28%"></div><div class="yardline" style="top:38%"></div><div class="yardline" style="top:48%"></div><div class="yardline" style="top:58%"></div><div class="yardline" style="top:68%"></div><div class="yardline" style="top:78%"></div>
+      <div class="label top">Pulling team</div><div class="label bottom">Receiving team</div>
+      <div class="label builder-hint">Tap to place, drag, or draw</div>
+      <svg class="builder-svg" id="builderSvg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <marker id="builderArrowRed" markerWidth="5" markerHeight="5" refX="4.5" refY="2.5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L5,2.5 L0,5 Z" fill="#ff7373"></path></marker>
+          <marker id="builderArrowWhite" markerWidth="5" markerHeight="5" refX="4.5" refY="2.5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L5,2.5 L0,5 Z" fill="#ffffff"></path></marker>
+        </defs>
+      </svg>
+      <div class="builder-layer" id="builderLayer"></div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+const $ = id => document.getElementById(id);
+const offenseIds = ['o1','o2','o3','o4','o5','o6','o7'];
+const playerIds = [...offenseIds,'d1','d2','d3','d4','d5','d6','d7'];
+const routeIds = ['pullPath','hhRunPath','h2Path','flowPath','swingPath','o1CutPath','h2ToO1Path','o2ContPath','o2ClearChoicePath','o1ToO2Path','h2DropPath','hhResetPath','o3FreePath','o1ClearPath','o4HoldPath','o2DumpPassPath','o2UplinePath','ezSwingPath','ezDecoyPath','ezJukePath','ezRealCutPath','ezCatchPath','ezRiPath','ezDumpPath','hrAttackPath','hrUplinePath','hrUplinePass','hrFakePath','hrComebackPath','hrResetPass','hrH2ShapePath','hrSwingPath','hrStackFlowPath','fpSwingPath','fpUnderPath','fpContinuePath','fpContinuePass','fpResetRun','fpResetPass','fpClearPath','fpScoreCutPath','fpScorePass','fpBackLCut'];
+let step = 0, timer = null, pullSide = 'middle', sequence = 'pull', states = [];
+const genericLabels = { pull:['H1','H2','C1','C2','C3','C4','C5'], endzone:['H1','H2','C1','C2','C3','C4','C5'], handler:['H1','H2','C1','C2','C3','C4','C5'], point:['H1','H2','C1','C2','C3','C4','C5'] };
+const lineRosters = {
+  line1: {
+    name: 'Line 1',
+    labels: { pull:['KI','CO','CH','AN','RI','AP','KR'], endzone:['KI','CO','CH','AN','RI','AP','KR'], handler:['KI','CO','CH','AN','RI','AP','KR'], point:['KI','CO','CH','AN','RI','AP','KR'] },
+    players: [
+      {abbr:'KI', name:'Kira', role:'handler'},
+      {abbr:'CO', name:'Cole', role:'handler'},
+      {abbr:'CH', name:'Charlie', role:'cutter'},
+      {abbr:'AN', name:'Antonio', role:'cutter'},
+      {abbr:'RI', name:'Richard', role:'cutter'},
+      {abbr:'AP', name:'April', role:'cutter'},
+      {abbr:'KR', name:'Kristen', role:'cutter'}
+    ],
+    summary: 'Handlers: Kira, Cole. Cutters: Charlie, Antonio, Richard, April, Kristen. Bash can rotate in.'
+  },
+  line2: {
+    name: 'Line 2',
+    labels: { pull:['MI','HA','AM','JE','ME','NE','JO'], endzone:['MI','HA','AM','JE','ME','NE','JO'], handler:['MI','HA','AM','JE','ME','NE','JO'], point:['MI','HA','AM','JE','ME','NE','JO'] },
+    players: [
+      {abbr:'MI', name:'Michelle', role:'handler'},
+      {abbr:'HA', name:'Harry', role:'handler'},
+      {abbr:'AM', name:'Amelia', role:'cutter'},
+      {abbr:'JE', name:'Jevin', role:'cutter'},
+      {abbr:'ME', name:'Melissa', role:'cutter'},
+      {abbr:'NE', name:'Nero', role:'cutter'},
+      {abbr:'JO', name:'Jon', role:'cutter'}
+    ],
+    summary: 'Handlers: Michelle, Harry. Cutters: Amelia, Jevin, Melissa, Nero, Jon. Louis can rotate in.'
+  }
+};
+let activeLine = 'line1';
+let selectedPlayer = '';
+const pulls = {
+  middle:{label:'middle',landing:[50,76],hhStart:[48,92],h2Start:[56,92],outlet:[58,68],c1:[62,26],c2:[58,54]},
+  left:{label:'left',landing:[31,76],hhStart:[34,92],h2Start:[52,92],outlet:[47,68],c1:[42,26],c2:[35,54]},
+  right:{label:'right',landing:[69,76],hhStart:[66,92],h2Start:[48,92],outlet:[53,68],c1:[58,26],c2:[65,54]}
+};
+function setPos(id,p){$(id).style.setProperty('--x',p[0]);$(id).style.setProperty('--y',p[1]);}
+function setPath(id,d){$(id).setAttribute('d',d);}
+function lerp(a,b,t){return[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t]}
+function mark(p,dx=-4,dy=0){return[p[0]+dx,p[1]+dy]}
+function applyLabels(){
+  const roster = getRoster();
+  const labels = (roster && roster.labels && roster.labels[sequence]) ? roster.labels[sequence] : (genericLabels[sequence] || genericLabels.pull);
+  offenseIds.forEach((id,i)=>{$(id).textContent=labels[i]||'';});
+}
+function getRoster(){ return lineRosters[activeLine] || lineRosters.line1; }
+function getRoleMap(){
+  const roster = getRoster();
+  const labels = (roster && roster.labels && roster.labels[sequence]) ? roster.labels[sequence] : genericLabels[sequence] || genericLabels.pull;
+  const lookup = {};
+  labels.forEach((abbr, i) => {
+    const meta = (roster.players || []).find(p => p.abbr === abbr);
+    const key = i < 2 ? `H${i+1}` : `C${i-1}`;
+    lookup[key] = {abbr, name: meta ? meta.name : abbr, role: meta ? meta.role : (i < 2 ? 'handler' : 'cutter')};
+  });
+  return lookup;
+}
+function formatText(str){
+  const map = getRoleMap();
+  return String(str || '').replace(/\{(H1|H2|C1|C2|C3|C4|C5)(?:\.(name|abbr))?\}/g, (_, key, prop) => {
+    const item = map[key] || {abbr:key,name:key};
+    return prop === 'abbr' ? item.abbr : item.name;
+  });
+}
+function getPlayerMeta(){ return getRoster().players.find(p=>p.abbr===selectedPlayer) || null; }
+function getSelectedPlayerId(){
+  if(!selectedPlayer) return null;
+  const labels = (getRoster().labels && getRoster().labels[sequence]) ? getRoster().labels[sequence] : (genericLabels[sequence] || []);
+  const idx = labels.indexOf(selectedPlayer);
+  return idx > -1 ? offenseIds[idx] : null;
+}
+function updatePlayerFocusText(){
+  const meta = getPlayerMeta();
+  $('playerFocusText').textContent = meta
+    ? `${meta.name} (${meta.abbr}) is a ${meta.role}. Their puck is highlighted on the field.`
+    : 'Team view shows the whole pattern.';
+}
+function populatePlayerSelect(){
+  const roster = getRoster();
+  const select = $('playerSelect');
+  const current = selectedPlayer;
+  select.innerHTML = '<option value="">Team view</option>' + roster.players.map(p=>`<option value="${p.abbr}">${p.name} (${p.abbr}) · ${p.role}</option>`).join('');
+  if (roster.players.some(p=>p.abbr===current)) {
+    select.value = current;
+  } else {
+    selectedPlayer = '';
+    select.value = '';
+  }
+  $('teamSelect').value = activeLine;
+  updatePlayerFocusText();
+}
+function buildRosterNote(){
+  const roster = getRoster();
+  const meta = getPlayerMeta();
+  return meta
+    ? `${roster.name}. Focus: ${meta.name} (${meta.abbr}), ${meta.role}. ${roster.summary}`
+    : `${roster.name}. ${roster.summary}`;
+}
+
+function makePullStates(){
+  const s = pulls[pullSide], land=s.landing, out=s.outlet, discMid=lerp([50,8],land,.52), hhHalf=lerp(s.hhStart,land,.55), h2Half=lerp(s.h2Start,out,.48);
+  const st={o1:[50,58],o2:[50,52],o3:[50,46],o4:[50,40],o5:[50,34]};
+  const hhTrail=[out[0]-8,73], o1Catch=[66,60], o2Catch=[79,56], o2Clear=[73,45], h2Dump=[66,66], hhReset=[59,66], o3Help=[73,45], o1Back=[56,34], o2Upline=[87,44];
+  setPath('pullPath',`M50,8 C${s.c1[0]},${s.c1[1]} ${s.c2[0]},${s.c2[1]} ${land[0]},${land[1]}`);
+  setPath('hhRunPath',`M${s.hhStart[0]},${s.hhStart[1]} C${s.hhStart[0]},86 ${land[0]-1},81 ${land[0]},${land[1]}`);
+  setPath('h2Path',`M${s.h2Start[0]},${s.h2Start[1]} C${h2Half[0]},83 ${out[0]},76 ${out[0]},${out[1]}`);
+  setPath('flowPath','M48,90 C48,80 49,70 50,60');
+  setPath('swingPath',`M${land[0]},${land[1]} C${(land[0]+out[0])/2},73 ${(land[0]+out[0])/2},70 ${out[0]},${out[1]}`);
+  setPath('o1CutPath',`M${st.o1[0]},${st.o1[1]} C47,61 44,62 43,61 C51,60 59,60 ${o1Catch[0]},${o1Catch[1]}`);
+  setPath('h2ToO1Path',`M${out[0]},${out[1]} C${(out[0]+o1Catch[0])/2},64 ${o1Catch[0]-2},62 ${o1Catch[0]},${o1Catch[1]}`);
+  setPath('o2ContPath',`M${st.o2[0]},${st.o2[1]} C58,53 67,53 ${o2Catch[0]},${o2Catch[1]}`);
+  setPath('o2ClearChoicePath',`M${st.o2[0]},${st.o2[1]} C57,51 64,48 ${o2Clear[0]},${o2Clear[1]}`);
+  setPath('o1ToO2Path',`M${o1Catch[0]},${o1Catch[1]} C72,59 76,57 ${o2Catch[0]},${o2Catch[1]}`);
+  setPath('h2DropPath',`M${out[0]},${out[1]} C61,69 63,68 ${h2Dump[0]},${h2Dump[1]}`);
+  setPath('hhResetPath',`M${hhTrail[0]},${hhTrail[1]} C43,69 37,66 38,63 C46,62 54,64 ${hhReset[0]},${hhReset[1]}`);
+  setPath('o3FreePath',`M${st.o3[0]},${st.o3[1]} C56,46 61,47 64,48 C67,46 70,45 ${o3Help[0]},${o3Help[1]}`);
+  setPath('o1ClearPath',`M${o1Catch[0]},${o1Catch[1]} C72,57 77,49 78,42 C71,37 64,34 ${o1Back[0]},${o1Back[1]}`);
+  setPath('o4HoldPath',`M${o2Catch[0]},${o2Catch[1]} C82,54 84,50 ${o2Upline[0]},${o2Upline[1]}`);
+  setPath('o2DumpPassPath',`M${o2Catch[0]},${o2Catch[1]} C74,60 70,63 ${h2Dump[0]},${h2Dump[1]}`);
+  setPath('o2UplinePath',`M${h2Dump[0]},${h2Dump[1]} C71,64 77,58 ${o2Upline[0]},${o2Upline[1]}`);
+  return [
+    {title:'1. Pull first',body:`The pull starts the sequence. Pull location is ${s.label}. Handlers read the flight first.`,disc:[50,8,true],show:['pullPath'],force:false,focus:[],primary:null,p:{o1:s.hhStart,o2:s.h2Start,o3:[44,89],o4:[56,87],o5:[47,84],o6:[53,81],o7:[50,78],d1:[20,14],d2:[32,14],d3:[43,14],d4:[50,14],d5:[57,14],d6:[68,14],d7:[80,14]}},
+    {title:'2. {H1.name} and {H2.name} attack the pull',body:'{H1.name} goes to the landing spot. {H2.name} gets into a clean outlet lane. The cutters flow up behind them.',disc:[discMid[0],discMid[1],true],show:['pullPath','hhRunPath','h2Path','flowPath'],force:false,focus:['o1','o2'],primary:null,p:{o1:hhHalf,o2:h2Half,o3:[43,77],o4:[57,73],o5:[46,69],o6:[55,65],o7:[50,61],d1:[23,24],d2:[35,27],d3:[45,29],d4:[53,30],d5:[61,29],d6:[72,27],d7:[82,24]}},
+    {title:'3. {H1.name} gets it, {H2.name} is the easy pass',body:'{H1.name} reaches the disc and {H2.name} is set as the simple free-yards outlet.',disc:[land[0],land[1],false],show:['hhRunPath','h2Path'],force:false,focus:['o1','o2'],primary:null,p:{o1:land,o2:out,o3:[48,61],o4:[52,56],o5:[49,51],o6:[51,46],o7:[50,41],d1:[34,36],d2:[44,38],d3:[53,40],d4:[61,41],d5:[69,40],d6:[76,38],d7:[83,36]}},
+    {title:'4. Swing to {H2.name}, stack snaps vertical',body:'{H1.name} moves it to {H2.name}. The five cutters tighten into a compact vertical stack.',disc:[out[0],out[1],true],show:['swingPath'],force:false,focus:['o1','o2'],primary:null,p:{o1:hhTrail,o2:out,o3:st.o1,o4:st.o2,o5:st.o3,o6:st.o4,o7:st.o5,d1:mark(hhTrail,2,0),d2:mark(out,-5,1),d3:mark(st.o1,4,0),d4:mark(st.o2,4,0),d5:mark(st.o3,4,0),d6:mark(st.o4,4,0),d7:mark(st.o5,4,0)}} ,
+    {title:'5. Force is set to the flick side',body:'The mark sits on {H2.name}’s backhand side to take away the easy backhand, so the downfield defenders can shade the open flick lane on the right.',disc:[out[0],out[1],false],show:[],force:true,focus:['o2','d2'],primary:null,p:{o1:hhTrail,o2:out,o3:st.o1,o4:st.o2,o5:st.o3,o6:st.o4,o7:st.o5,d1:mark(hhTrail,2,0),d2:mark(out,-5,1),d3:mark(st.o1,4,0),d4:mark(st.o2,4,0),d5:mark(st.o3,4,0),d6:mark(st.o4,4,0),d7:mark(st.o5,4,0)}} ,
+    {title:'6. {C1.name} sells the break-side fake first',body:'Coaching cue: “Make the defender believe one thing, then cut hard to the other.” {C1.name} first fakes down-left toward the break/under space, gets the defender to turn, then plants and attacks hard up-right into the real lane. {C2.name} waits and reads the continuation.',disc:[out[0],out[1],false],show:['o1CutPath'],force:true,focus:['o3','o4'],primary:null,spotlight:'vcut',p:{o1:hhTrail,o2:out,o3:[44,61],o4:st.o2,o5:st.o3,o6:st.o4,o7:st.o5,d1:mark(hhTrail,2,0),d2:mark(out,-5,1),d3:[53,61],d4:mark(st.o2,4,0),d5:mark(st.o3,4,0),d6:mark(st.o4,4,0),d7:mark(st.o5,4,0)}} ,
+    {title:'7. {H2.name} throws, {C2.name} has two next-lane choices',body:'After {C1.name} wins the V-cut, {H2.name} throws. Now {C2.name} reads two options. Blue: continue into the outside lane if the defender is late. Red: if the defender is tight, clear out and up line so the next cutter has clean space.',disc:[o1Catch[0],o1Catch[1],true],show:['o1CutPath','h2ToO1Path','o2ContPath','o2ClearChoicePath'],force:true,focus:['o3','o4'],primary:null,p:{o1:hhTrail,o2:out,o3:o1Catch,o4:[64,51],o5:st.o3,o6:st.o4,o7:st.o5,d1:mark(hhTrail,2,0),d2:mark(out,-5,1),d3:[65,60],d4:[68,52],d5:mark(st.o3,4,0),d6:mark(st.o4,4,0),d7:mark(st.o5,4,0)}} ,
+    {title:'8. {C1.name} hits {C2.name} outside',body:'{C1.name} catches and quickly flicks again. {C2.name} catches outside. Right after the throw, {C1.name} keeps moving, first up line, then back left behind the stack so the lane does not clog.',disc:[o2Catch[0],o2Catch[1],true],show:['o1ToO2Path','o1ClearPath'],force:true,focus:['o3','o4'],primary:null,p:{o1:hhTrail,o2:[out[0]+1,out[1]-2],o3:o1Catch,o4:o2Catch,o5:st.o3,o6:st.o4,o7:st.o5,d1:mark(hhTrail,2,0),d2:mark([out[0]+1,out[1]-2],4,0),d3:[70,52],d4:[76,56],d5:mark(st.o3,4,0),d6:mark(st.o4,4,0),d7:mark(st.o5,4,0)}} ,
+    {title:'9. Clear back, show help, keep the dump alive',body:'After the outside give-go, {C1.name} clears up line first, then folds back left to the back of the stack. At the same time, {C3.name} shows as a help cut toward the open side and {H2.name} comes back under as the dump.',disc:[o2Catch[0],o2Catch[1],false],show:['o1ClearPath','o3FreePath','h2DropPath'],force:true,focus:['o2','o3','o5'],primary:null,p:{o1:hhTrail,o2:h2Dump,o3:o1Back,o4:o2Catch,o5:o3Help,o6:st.o4,o7:st.o5,d1:mark(hhTrail,2,0),d2:[62,66],d3:[60,35],d4:[75,56],d5:[78,45],d6:mark(st.o4,4,0),d7:mark(st.o5,4,0)}} ,
+    {title:'10. If the help cut is covered, dump and go up line',body:'If {C3.name} is not free, dump it to {H2.name}. As soon as {H2.name} gets that reset, {C2.name} should turn and attack up line for the next easy continuation.',disc:[h2Dump[0],h2Dump[1],true],show:['o3FreePath','h2DropPath','o2DumpPassPath','o2UplinePath'],force:true,focus:['o2','o4','o5'],primary:null,p:{o1:hhTrail,o2:h2Dump,o3:o1Back,o4:o2Upline,o5:o3Help,o6:st.o4,o7:st.o5,d1:mark(hhTrail,2,0),d2:[62,66],d3:[60,35],d4:[84,48],d5:[78,45],d6:mark(st.o4,4,0),d7:mark(st.o5,4,0)}}
+  ];
+}
+function makeEndzoneStates(){
+  const leftHandler=[43,60], rightHandler=[68,55], dump=[59,67], jukeStart=[50,47], fakeLeft=[45,47], attackRight=[71,43], riStart=[82,55], riUp=[86,43], riBack=[74,52], decoyStart=[39,50], decoyAway=[32,43], decoyExit=[26,36], supportBack=[30,64], supportMid=[62,35];
+  setPath('ezSwingPath',`M${leftHandler[0]},${leftHandler[1]} C54,57 60,56 ${rightHandler[0]},${rightHandler[1]}`);
+  setPath('ezDecoyPath',`M${decoyStart[0]},${decoyStart[1]} C36,48 33,45 ${decoyAway[0]},${decoyAway[1]} C30,41 28,39 ${decoyExit[0]},${decoyExit[1]}`);
+  setPath('ezJukePath',`M${jukeStart[0]},${jukeStart[1]} C48,46 46,46 ${fakeLeft[0]},${fakeLeft[1]}`);
+  setPath('ezRealCutPath',`M${fakeLeft[0]},${fakeLeft[1]} C54,46 62,45 ${attackRight[0]},${attackRight[1]}`);
+  setPath('ezCatchPath',`M${rightHandler[0]},${rightHandler[1]} C69,51 71,47 ${attackRight[0]},${attackRight[1]}`);
+  setPath('ezRiPath',`M${riStart[0]},${riStart[1]} C84,51 86,47 ${riUp[0]},${riUp[1]} C83,45 78,48 ${riBack[0]},${riBack[1]}`);
+  setPath('ezDumpPath',`M${attackRight[0]},${attackRight[1]} C68,49 63,57 ${dump[0]},${dump[1]}`);
+  return [
+    {title:'1. Endzone possession starts on the right side',body:'This sequence starts later in the point, with the disc already on the right-side attacking lane.',disc:[rightHandler[0],rightHandler[1],false],show:['ezSwingPath'],force:true,focus:['o2','o4'],primary:null,p:{o1:leftHandler,o2:rightHandler,o3:decoyStart,o4:jukeStart,o5:riStart,o6:supportBack,o7:supportMid,d1:[38,58],d2:[63,55],d3:[36,50],d4:[52,47],d5:[78,55],d6:[26,64],d7:[58,35]}},
+    {title:'2. The first cutter goes and clears away',body:'The first cutter is not the target. They cut, do not get it, and clear hard away to open the real receiving lane.',disc:[rightHandler[0],rightHandler[1],false],show:['ezDecoyPath'],force:true,focus:['o3','o4'],primary:null,p:{o1:leftHandler,o2:rightHandler,o3:decoyAway,o4:jukeStart,o5:riStart,o6:supportBack,o7:supportMid,d1:[38,58],d2:[63,55],d3:[34,45],d4:[52,47],d5:[78,55],d6:[26,64],d7:[58,35]}},
+    {title:'3. {C2.name} sells the fake left first',body:'The featured cutter does not keep drifting right. First {C2.name} fakes left, toward the purple line, to get the defender trailing and off-balance.',disc:[rightHandler[0],rightHandler[1],false],show:['ezJukePath'],force:true,focus:['o4'],primary:'o4',p:{o1:leftHandler,o2:rightHandler,o3:decoyExit,o4:fakeLeft,o5:riStart,o6:supportBack,o7:supportMid,d1:[38,58],d2:[63,55],d3:[28,38],d4:[49,47],d5:[78,55],d6:[26,64],d7:[58,35]}},
+    {title:'4. Then {C2.name} explodes to the real lane',body:'Once the defender is trailing, {C2.name} plants and takes the real cut out to the right-side lane.',disc:[rightHandler[0],rightHandler[1],false],show:['ezJukePath','ezRealCutPath'],force:true,focus:['o4'],primary:'o4',p:{o1:leftHandler,o2:rightHandler,o3:decoyExit,o4:attackRight,o5:riStart,o6:supportBack,o7:supportMid,d1:[38,58],d2:[63,55],d3:[28,38],d4:[61,46],d5:[78,55],d6:[26,64],d7:[58,35]}},
+    {title:'5. The disc follows that same red lane',body:'The throw follows the same lane. {C2.name} catches on the outside right, where the defender is now trailing.',disc:[attackRight[0],attackRight[1],true],show:['ezRealCutPath','ezCatchPath'],force:true,focus:['o4'],primary:'o4',p:{o1:leftHandler,o2:rightHandler,o3:decoyExit,o4:attackRight,o5:riStart,o6:supportBack,o7:supportMid,d1:[38,58],d2:[63,55],d3:[28,38],d4:[66,45],d5:[78,55],d6:[26,64],d7:[58,35]}},
+    {title:'6. {C3.name} pushes upfield as the continuation',body:'With {C2.name} now holding on the right, {C3.name} can threaten upfield first and make the defender turn.',disc:[attackRight[0],attackRight[1],false],show:['ezRiPath'],force:true,focus:['o4','o5'],primary:null,p:{o1:leftHandler,o2:rightHandler,o3:decoyExit,o4:attackRight,o5:riUp,o6:supportBack,o7:supportMid,d1:[38,58],d2:[63,55],d3:[28,38],d4:[66,45],d5:[83,47],d6:[26,64],d7:[58,35]}},
+    {title:'7. Then {C3.name} cuts hard back',body:'After the upfield push, {C3.name} chops back hard toward {C2.name} for the next option. If that is not there, the offense can still fall back to the dump behind the catch.',disc:[attackRight[0],attackRight[1],false],show:['ezRiPath','ezDumpPath'],force:true,focus:['o4','o5'],primary:null,p:{o1:[54,60],o2:dump,o3:decoyExit,o4:attackRight,o5:riBack,o6:supportBack,o7:supportMid,d1:[49,60],d2:[61,66],d3:[28,38],d4:[66,45],d5:[76,51],d6:[26,64],d7:[58,35]}}
+  ];
+}
+
+function makeHandlerStates(){
+  const H2=[57,61], Hstart=[37,66], attack=[47,62], upline=[63,50], dump=[52,59], stack1=[61,42], stack2=[61,35], stack3=[61,28], stack4=[61,21], stack5=[61,14], cont=[73,41];
+  setPath('hrAttackPath',`M${Hstart[0]},${Hstart[1]} C40,66 44,64 ${attack[0]},${attack[1]}`);
+  setPath('hrUplinePath',`M${attack[0]},${attack[1]} C51,59 56,55 ${upline[0]},${upline[1]}`);
+  setPath('hrUplinePass',`M${H2[0]},${H2[1]} C60,58 62,54 ${upline[0]},${upline[1]}`);
+  setPath('hrFakePath',`M${upline[0]},${upline[1]} C67,47 69,44 70,41`);
+  setPath('hrComebackPath','M0,0');
+  setPath('hrResetPass',`M${upline[0]},${upline[1]} C59,53 56,56 ${dump[0]},${dump[1]}`);
+  setPath('hrH2ShapePath',`M${H2[0]},${H2[1]} C56,61 54,60 ${dump[0]},${dump[1]}`);
+  setPath('hrSwingPath',`M${dump[0]},${dump[1]} C58,55 65,49 ${cont[0]},${cont[1]}`);
+  setPath('hrStackFlowPath',`M${stack1[0]},${stack1[1]} C65,41 69,41 ${cont[0]},${cont[1]}`);
+  return [
+    {title:'1. {H2.name} starts with the disc',body:'This reset starts with {H2.name} on the disc on the force side. The stack sits higher upfield so the handler lane stays clean.',disc:[H2[0],H2[1],false],show:[],force:true,focus:['o1','o2'],primary:null,p:{o1:Hstart,o2:H2,o3:stack1,o4:stack2,o5:stack3,o6:stack4,o7:stack5,d1:[54,60],d2:[34,66],d3:[57,42],d4:[57,35],d5:[57,28],d6:[57,21],d7:[57,14]}},
+    {title:'2. {H1.name} attacks the defender first',body:'{H1.name} cuts toward {H2.name} and into the defender first. That attack step sets up the real up-line move.',disc:[H2[0],H2[1],false],show:['hrAttackPath'],force:true,focus:['o1'],primary:'o1',p:{o1:attack,o2:H2,o3:stack1,o4:stack2,o5:stack3,o6:stack4,o7:stack5,d1:[54,60],d2:[44,63],d3:[57,42],d4:[57,35],d5:[57,28],d6:[57,21],d7:[57,14]}},
+    {title:'3. {H1.name} curves hard up line',body:'After closing space, {H1.name} plants and curves up line into the force-side lane.',disc:[H2[0],H2[1],false],show:['hrAttackPath','hrUplinePath'],force:true,focus:['o1','o2'],primary:'o1',p:{o1:upline,o2:H2,o3:stack1,o4:stack2,o5:stack3,o6:stack4,o7:stack5,d1:[54,60],d2:[56,54],d3:[57,42],d4:[57,35],d5:[57,28],d6:[57,21],d7:[57,14]}},
+    {title:'4. {H2.name} floats the up-line pass',body:'{H2.name} can now lead {H1.name} with a soft, slightly arcing pass into that up-line space.',disc:[upline[0],upline[1],true],show:['hrUplinePass'],force:true,focus:['o1','o2'],primary:'o1',p:{o1:upline,o2:H2,o3:stack1,o4:stack2,o5:stack3,o6:stack4,o7:stack5,d1:[54,60],d2:[56,54],d3:[57,42],d4:[57,35],d5:[57,28],d6:[57,21],d7:[57,14]}},
+    {title:'5. {H1.name} can fake up line',body:'Once {H1.name} catches, they keep the disc and can show an up-line fake. The thrower does not instantly cut away while still holding the disc.',disc:[upline[0],upline[1],false],show:['hrFakePath'],force:true,focus:['o1'],primary:'o1',p:{o1:upline,o2:[58,60],o3:stack1,o4:stack2,o5:stack3,o6:stack4,o7:stack5,d1:[64,49],d2:[56,54],d3:[57,42],d4:[57,35],d5:[57,28],d6:[57,21],d7:[57,14]}},
+    {title:'6. If shut down, {H2.name} fills under',body:'If that first look stalls, {H2.name} becomes the underneath dump so {H1.name} still has a safe reset.',disc:[upline[0],upline[1],false],show:['hrH2ShapePath'],force:true,focus:['o1','o2'],primary:'o2',p:{o1:upline,o2:dump,o3:stack1,o4:stack2,o5:stack3,o6:stack4,o7:stack5,d1:[64,49],d2:[50,58],d3:[57,42],d4:[57,35],d5:[57,28],d6:[57,21],d7:[57,14]}},
+    {title:'7. Hit the dump, then swing to the next lane',body:'{H1.name} can hit {H2.name} underneath, and the next pass can swing to a cutter already flowing into the next open lane.',disc:[cont[0],cont[1],true],show:['hrResetPass','hrSwingPath','hrStackFlowPath'],force:true,focus:['o2','o3'],primary:'o3',p:{o1:[60,49],o2:dump,o3:cont,o4:stack2,o5:stack3,o6:stack4,o7:stack5,d1:[64,49],d2:[50,58],d3:[67,41],d4:[57,35],d5:[57,28],d6:[57,21],d7:[57,14]}}
+  ];
+}
+
+function makePointStates(){
+  const startDisc=[54,72], swingCatch=[62,69], amUnder=[57,56], joOver=[79,48], haHardDump=[70,71], miReset=[56,68], vCutFinish=[53,48], backLTarget=[82,26];
+  const stackFront=[53,52], stackSecond=[61,47], stackThird=[61,41], stackFourth=[61,35], stackBack=[61,29];
+
+  setPath('fpSwingPath',`M${startDisc[0]},${startDisc[1]} C57,71 60,70 ${swingCatch[0]},${swingCatch[1]}`);
+  setPath('fpUnderPath',`M${stackFront[0]},${stackFront[1]} C54,53 55,54 ${amUnder[0]},${amUnder[1]}`);
+  setPath('fpContinuePath',`M${stackBack[0]},${stackBack[1]} C66,32 73,39 ${joOver[0]},${joOver[1]}`);
+  setPath('fpContinuePass',`M${amUnder[0]},${amUnder[1]} C65,54 72,52 ${joOver[0]},${joOver[1]}`);
+  setPath('fpBackLCut',`M${stackFourth[0]},${stackFourth[1]} C61,29 61,24 ${backLTarget[0]},${backLTarget[1]}`);
+  setPath('fpResetRun',`M${swingCatch[0]},${swingCatch[1]} C65,70 67,71 ${haHardDump[0]},${haHardDump[1]}`);
+  setPath('fpResetPass',`M${amUnder[0]},${amUnder[1]} C63,61 67,67 ${haHardDump[0]},${haHardDump[1]}`);
+  setPath('fpClearPath',`M${haHardDump[0]},${haHardDump[1]} C66,70 61,69 ${miReset[0]},${miReset[1]}`);
+  setPath('fpScoreCutPath',`M${stackSecond[0]},${stackSecond[1]} C68,46 69,45 71,44 C66,44 61,45 ${vCutFinish[0]},${vCutFinish[1]}`);
+  setPath('fpScorePass',`M${miReset[0]},${miReset[1]} C55,62 54,55 ${vCutFinish[0]},${vCutFinish[1]}`);
+
+  return [
+    {title:'1. Start the point in a simple vert look',body:'{H1.name} secures the pull near the middle. {H2.name} stays to the force side as the easy first outlet, and the cutters stack upfield.',disc:[startDisc[0],startDisc[1],false],show:['pullPath','hhRunPath','h2Path'],force:true,focus:['o1','o2'],primary:'o1',p:{o1:startDisc,o2:[60,73],o3:stackFront,o4:stackSecond,o5:stackThird,o6:stackFourth,o7:stackBack,d1:[51,72],d2:[58,73],d3:[49,52],d4:[58,47],d5:[58,41],d6:[58,35],d7:[58,29]}},
+    {title:'2. Swing to the force-side handler',body:'Move the mark first. {H1.name} swings to {H2.name}, which opens the front of the stack and makes the next cut easier to read.',disc:[swingCatch[0],swingCatch[1],true],show:['fpSwingPath'],force:true,focus:['o1','o2'],primary:'o2',p:{o1:startDisc,o2:swingCatch,o3:stackFront,o4:stackSecond,o5:stackThird,o6:stackFourth,o7:stackBack,d1:[51,72],d2:[60,69],d3:[49,52],d4:[58,47],d5:[58,41],d6:[58,35],d7:[58,29]}},
+    {title:'3. {C1.name} comes under',body:'The front cutter, {C1.name}, attacks under for the easy gain. This is the safe beginner continuation after the first swing.',disc:[amUnder[0],amUnder[1],true],show:['fpUnderPath'],force:true,focus:['o3'],primary:'o3',p:{o1:startDisc,o2:swingCatch,o3:amUnder,o4:stackSecond,o5:stackThird,o6:stackFourth,o7:stackBack,d1:[51,72],d2:[60,69],d3:[55,56],d4:[58,47],d5:[58,41],d6:[58,35],d7:[58,29]}},
+    {title:'4. {C5.name} cuts over to the right-side space',body:'Instead of drifting left, {C5.name} attacks across to the right-side weak space. That keeps the cut in front of the thrower and away from traffic.',disc:[amUnder[0],amUnder[1],false],show:['fpContinuePath'],force:true,focus:['o7'],primary:'o7',p:{o1:startDisc,o2:[63,69],o3:amUnder,o4:stackSecond,o5:stackThird,o6:stackFourth,o7:joOver,d1:[51,72],d2:[61,69],d3:[55,56],d4:[58,47],d5:[58,41],d6:[58,35],d7:[73,46]}},
+    {title:'5. First look, hit {C5.name} if it is there',body:'If {C1.name} can make the throw, hit {C5.name} on that over cut. At the same time, the back of the stack can attack the right endzone with a simple L-cut.',disc:[joOver[0],joOver[1],true],show:['fpContinuePass','fpBackLCut'],force:true,focus:['o7','o6'],primary:'o7',p:{o1:startDisc,o2:[63,69],o3:amUnder,o4:stackSecond,o5:stackThird,o6:[70,24],o7:joOver,d1:[51,72],d2:[61,69],d3:[55,56],d4:[58,47],d5:[58,41],d6:[62,31],d7:[73,46]}},
+    {title:'6. If that look is not there, {H2.name} dumps harder',body:'If the over cut is shut down, {H2.name} should not drift flat. {H2.name} cuts harder back and down to the right so the defender cannot just wrap around.',disc:[amUnder[0],amUnder[1],false],show:['fpResetRun'],force:true,focus:['o2'],primary:'o2',p:{o1:startDisc,o2:haHardDump,o3:amUnder,o4:stackSecond,o5:stackThird,o6:stackFourth,o7:joOver,d1:[51,72],d2:[64,71],d3:[55,56],d4:[58,47],d5:[58,41],d6:[58,35],d7:[73,46]}},
+    {title:'7. Reset to {H2.name}',body:'Now {C1.name} can take the safe reset and hit {H2.name} on that harder dump line.',disc:[haHardDump[0],haHardDump[1],true],show:['fpResetPass'],force:true,focus:['o2','o3'],primary:'o2',p:{o1:startDisc,o2:haHardDump,o3:amUnder,o4:stackSecond,o5:stackThird,o6:stackFourth,o7:joOver,d1:[51,72],d2:[64,71],d3:[55,56],d4:[58,47],d5:[58,41],d6:[58,35],d7:[73,46]}},
+    {title:'8. Swing back to {H1.name}',body:'After the reset, {H2.name} can swing the disc back to {H1.name}. That changes the angle again and lets the stack rotate into the next lane.',disc:[miReset[0],miReset[1],true],show:['fpClearPath'],force:true,focus:['o1','o2'],primary:'o1',p:{o1:miReset,o2:haHardDump,o3:[48,58],o4:stackSecond,o5:stackThird,o6:stackFourth,o7:joOver,d1:[53,68],d2:[64,71],d3:[45,58],d4:[58,47],d5:[58,41],d6:[58,35],d7:[73,46]}},
+    {title:'9. The front of the stack rotates with a V-cut',body:'If {H1.name} still needs help, the next front cutter attacks right first, then plants and comes back left. That V-cut gives a clear second reset window.',disc:[miReset[0],miReset[1],false],show:['fpScoreCutPath'],force:true,focus:['o4'],primary:'o4',p:{o1:miReset,o2:[66,70],o3:[48,58],o4:vCutFinish,o5:stackThird,o6:stackFourth,o7:joOver,d1:[53,68],d2:[64,70],d3:[45,58],d4:[57,46],d5:[58,41],d6:[58,35],d7:[73,46]}},
+    {title:'10. Keep the point moving',body:'{H1.name} can hit that V-cut, and the point keeps flowing. So the beginner picture is simple: swing, under, over if open, dump if not, swing again, and hit the next cut.',disc:[vCutFinish[0],vCutFinish[1],true],show:['fpScorePass'],force:true,focus:['o1','o4'],primary:'o4',p:{o1:miReset,o2:[66,70],o3:[48,58],o4:vCutFinish,o5:stackThird,o6:stackFourth,o7:joOver,d1:[53,68],d2:[64,70],d3:[45,58],d4:[55,48],d5:[58,41],d6:[58,35],d7:[73,46]}}
+  ];
+}
+
+function getStates(){if(sequence==='pull')return makePullStates(); if(sequence==='endzone')return makeEndzoneStates(); if(sequence==='handler') return makeHandlerStates(); return makePointStates();}
+function render(){
+  const s=states[step];
+  $('stepTitle').textContent=formatText(s.title); $('stepBody').textContent=formatText(s.body); $('rosterNote').textContent = buildRosterNote();
+  $('disc').style.setProperty('--x',s.disc[0]); $('disc').style.setProperty('--y',s.disc[1]); $('disc').classList.toggle('floating',s.disc[2]);
+  playerIds.forEach(id=>setPos(id,s.p[id])); routeIds.forEach(id=>$(id).classList.toggle('show',s.show.includes(id)));
+  $('forceLabel').classList.toggle('show',s.force);
+  renderCoachSpotlight(s);
+  document.querySelectorAll('.puck').forEach(el=>el.classList.remove('handler','cutter','watch','primary','focus-player'));
+  if(sequence==='handler'){ $('o1').classList.add('handler'); $('o2').classList.add('handler'); $('o3').classList.add('handler'); }
+  else { $('o1').classList.add('handler'); $('o2').classList.add('handler'); }
+  s.focus.forEach((id,idx)=>{ if($(id)) $(id).classList.add(idx===s.focus.length-1?'watch':'cutter'); });
+  if(s.primary && $(s.primary)) $(s.primary).classList.add('primary');
+  const selectedId = getSelectedPlayerId();
+  if(selectedId && $(selectedId)) $(selectedId).classList.add('focus-player');
+  $('next').classList.toggle('active', step < states.length-1); $('prev').classList.toggle('active', step > 0); $('auto').classList.toggle('active', !!timer);
+}
+function buildCoachSpotlightHTML(){
+  return formatText(`
+    <div class="coach-tag">Zoom in · {C1.abbr} vs defender</div>
+    <div class="coach-quote">“Make the defender believe one thing, then cut hard to the other.”</div>
+    <div class="coach-zoom-wrap">
+      <div class="coach-mini">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M 31 64 C 25 64, 21 65, 18 63" stroke="#ffbe7a" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="5 4"></path>
+          <path d="M 18 63 C 34 63, 50 58, 78 36" stroke="#bce8ff" stroke-width="4.5" fill="none" stroke-linecap="round"></path>
+        </svg>
+        <div class="coach-mini-puck off">{C1.abbr}</div>
+        <div class="coach-mini-puck def">D</div>
+      </div>
+      <div class="coach-points">
+        <div class="coach-point delay-1"><b>1. Sell the fake</b><span>Take a few steps down-left into the break-side or under space.</span></div>
+        <div class="coach-point delay-2"><b>2. Turn the hips</b><span>Make the defender open up and believe that first move.</span></div>
+        <div class="coach-point delay-3"><b>3. Plant hard</b><span>Stop on balance so you can change direction fast.</span></div>
+        <div class="coach-point delay-4"><b>4. Win the real lane</b><span>Explode up-right into the open-side lane and look back for the disc.</span></div>
+      </div>
+    </div>
+  `);
+}
+function renderCoachSpotlight(s){
+  const box = $('coachSpotlight');
+  if(s.spotlight === 'vcut'){
+    box.innerHTML = buildCoachSpotlightHTML();
+    box.classList.remove('hidden');
+  } else {
+    box.classList.add('hidden');
+    box.innerHTML = '';
+  }
+}
+
+function syncButtons(){
+  const map={middle:'pullMiddle',left:'pullLeft',right:'pullRight'};
+  Object.values(map).forEach(id=>{$(id).classList.remove('selected');$(id).classList.add('secondary');});
+  $(map[pullSide]).classList.add('selected');
+  $(map[pullSide]).classList.remove('secondary');
+  [['seqPull','pull'],['seqEndzone','endzone'],['seqHandler','handler'],['seqPoint','point']].forEach(([id,val])=>{ $(id).classList.toggle('selected',sequence===val); $(id).classList.toggle('secondary',sequence!==val); });
+  $('teamSelect').value = activeLine;
+  ['pullMiddle','pullLeft','pullRight'].forEach(id=>{$(id).disabled=sequence!=='pull'; $(id).style.opacity=sequence==='pull'?'1':'.55';});
+  $('pullRow').style.display = sequence==='pull' ? 'flex' : 'none';
+}
+function stopAuto(){ if(timer) clearInterval(timer); timer=null; $('auto').textContent='Play 0.25x'; }
+function rebuild(){ applyLabels(); populatePlayerSelect(); states=getStates(); step=0; stopAuto(); syncButtons(); render(); }
+$('next').onclick=()=>{step=Math.min(states.length-1,step+1); render();}; $('prev').onclick=()=>{step=Math.max(0,step-1); render();}; $('reset').onclick=()=>{step=0; stopAuto(); render();};
+$('auto').onclick=()=>{ if(timer){ stopAuto(); render(); return; } $('auto').textContent='Pause'; timer=setInterval(()=>{ if(step>=states.length-1){ stopAuto(); render(); return; } step++; render(); },2600); render(); };
+$('pullMiddle').onclick=()=>{if(sequence!=='pull')return; pullSide='middle'; rebuild();}; $('pullLeft').onclick=()=>{if(sequence!=='pull')return; pullSide='left'; rebuild();}; $('pullRight').onclick=()=>{if(sequence!=='pull')return; pullSide='right'; rebuild();};
+$('seqPull').onclick=()=>{sequence='pull'; rebuild();}; $('seqEndzone').onclick=()=>{sequence='endzone'; rebuild();}; $('seqHandler').onclick=()=>{sequence='handler'; rebuild();}; $('seqPoint').onclick=()=>{sequence='point'; rebuild();};
+$('teamSelect').onchange=(e)=>{activeLine=e.target.value; populatePlayerSelect(); rebuild();};
+$('playerSelect').onchange=(e)=>{selectedPlayer=e.target.value; updatePlayerFocusText(); render();};
+populatePlayerSelect();
+rebuild();
+
+
+let boardMode = 'playbook';
+function setBoardMode(mode){
+  boardMode = mode;
+  $('appRoot').classList.toggle('builder-active', mode === 'builder');
+  $('playbookSection').classList.toggle('hidden', mode !== 'playbook');
+  $('builderSection').classList.toggle('hidden', mode !== 'builder');
+  $('viewPlaybook').classList.toggle('selected', mode === 'playbook');
+  $('viewPlaybook').classList.toggle('secondary', mode !== 'playbook');
+  $('viewBuilder').classList.toggle('selected', mode === 'builder');
+  $('viewBuilder').classList.toggle('secondary', mode !== 'builder');
+}
+
+const builderCounts = { offense:0, defense:0, disc:0 };
+const builderHistory = [];
+let dragPiece = null;
+let selectedBuilderPiece = null;
+let drawState = null;
+function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+function builderAutoLabel(type){
+  if(type === 'disc') return '';
+  builderCounts[type] += 1;
+  return type === 'offense' ? `O${builderCounts[type]}` : `D${builderCounts[type]}`;
+}
+function builderToolLabel(){ return $('builderTool').selectedOptions[0].textContent.toLowerCase(); }
+function updateBuilderHelp(){
+  const tool = $('builderTool').value;
+  let text = 'Tap a puck to select it, drag it to move it, or use the arrows for tiny adjustments.';
+  if(tool === 'erase') text = 'Tap any puck or drawn line to remove it.';
+  if(tool === 'routeRed' || tool === 'routeWhite') text = `Press and drag on the field to ${tool === 'routeRed' ? 'draw a red route' : 'draw a white route'}. Great for V-cuts, force arrows, and continuation lines.`;
+  if(tool === 'offense' || tool === 'defense' || tool === 'disc') text = `Tap on the field to place ${builderToolLabel()}. Existing pucks can still be dragged.`;
+  $('builderHelp').textContent = text;
+}
+function setSelectedBuilderPiece(piece){
+  if(selectedBuilderPiece) selectedBuilderPiece.classList.remove('selected-builder-piece');
+  selectedBuilderPiece = piece || null;
+  if(selectedBuilderPiece) selectedBuilderPiece.classList.add('selected-builder-piece');
+}
+function makeBuilderPiece(type, x, y, label){
+  const el = document.createElement('div');
+  el.className = `builder-piece ${type === 'disc' ? 'disc-piece' : type}`;
+  el.dataset.type = type;
+  el.textContent = type === 'disc' ? '' : label;
+  el.style.setProperty('--x', x);
+  el.style.setProperty('--y', y);
+  $('builderLayer').appendChild(el);
+  builderHistory.push(el);
+  return el;
+}
+function makeRoutePath(points){
+  if(points.length < 2) return '';
+  return points.map((p,i)=>`${i===0?'M':'L'} ${p[0].toFixed(2)} ${p[1].toFixed(2)}`).join(' ');
+}
+function makeBuilderRoute(routeType, points){
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('class', `builder-route ${routeType === 'routeRed' ? 'red-route' : 'white-route'}`);
+  path.dataset.type = routeType;
+  path.setAttribute('d', makeRoutePath(points));
+  path.setAttribute('marker-end', routeType === 'routeRed' ? 'url(#builderArrowRed)' : 'url(#builderArrowWhite)');
+  $('builderSvg').appendChild(path);
+  builderHistory.push(path);
+  return path;
+}
+function boardPoint(evt, board){
+  const rect = board.getBoundingClientRect();
+  const x = clamp(((evt.clientX - rect.left) / rect.width) * 100, 4, 96);
+  const y = clamp(((evt.clientY - rect.top) / rect.height) * 100, 4, 96);
+  return [x, y];
+}
+function startDrag(piece, evt){
+  dragPiece = piece;
+  setSelectedBuilderPiece(piece);
+  piece.setPointerCapture?.(evt.pointerId);
+}
+function moveDragged(evt){
+  if(!dragPiece) return;
+  const [x,y] = boardPoint(evt, $('builderBoard'));
+  dragPiece.style.setProperty('--x', x);
+  dragPiece.style.setProperty('--y', y);
+}
+function startRoute(tool, evt){
+  const first = boardPoint(evt, $('builderBoard'));
+  const el = makeBuilderRoute(tool, [first, first]);
+  drawState = { el, points:[first] };
+}
+function moveRoute(evt){
+  if(!drawState) return;
+  const pt = boardPoint(evt, $('builderBoard'));
+  const prev = drawState.points[drawState.points.length - 1];
+  const dist = Math.hypot(pt[0]-prev[0], pt[1]-prev[1]);
+  if(dist > 0.35) drawState.points.push(pt);
+  drawState.el.setAttribute('d', makeRoutePath([...drawState.points, pt]));
+}
+function finishRoute(){
+  if(!drawState) return;
+  if(drawState.points.length < 2){ drawState.el.remove(); builderHistory.pop(); }
+  else drawState.el.setAttribute('d', makeRoutePath(drawState.points));
+  drawState = null;
+}
+function endDrag(){ dragPiece = null; }
+function removeBuilderThing(el){
+  if(!el) return;
+  if(selectedBuilderPiece === el) setSelectedBuilderPiece(null);
+  el.remove();
+}
+function nudgeSelected(dx,dy){
+  if(!selectedBuilderPiece) return;
+  const x = clamp(parseFloat(selectedBuilderPiece.style.getPropertyValue('--x') || 50) + dx, 4, 96);
+  const y = clamp(parseFloat(selectedBuilderPiece.style.getPropertyValue('--y') || 50) + dy, 4, 96);
+  selectedBuilderPiece.style.setProperty('--x', x);
+  selectedBuilderPiece.style.setProperty('--y', y);
+}
+$('viewPlaybook').onclick = () => setBoardMode('playbook');
+$('viewBuilder').onclick = () => setBoardMode('builder');
+$('builderTool').onchange = updateBuilderHelp;
+$('builderClear').onclick = () => {
+  $('builderLayer').innerHTML = '';
+  $('builderSvg').querySelectorAll('.builder-route').forEach(route => route.remove());
+  builderHistory.length = 0;
+  builderCounts.offense = 0; builderCounts.defense = 0; builderCounts.disc = 0;
+  setSelectedBuilderPiece(null);
+};
+$('builderUndo').onclick = () => {
+  const last = builderHistory.pop();
+  if(last && last.parentNode){ if(selectedBuilderPiece === last) setSelectedBuilderPiece(null); last.remove(); }
+};
+$('nudgeUp').onclick = () => nudgeSelected(0,-0.45);
+$('nudgeDown').onclick = () => nudgeSelected(0,0.45);
+$('nudgeLeft').onclick = () => nudgeSelected(-0.45,0);
+$('nudgeRight').onclick = () => nudgeSelected(0.45,0);
+$('builderBoard').addEventListener('pointerdown', (evt) => {
+  const piece = evt.target.closest('.builder-piece');
+  const route = evt.target.closest('.builder-route');
+  const tool = $('builderTool').value;
+  if(piece){
+    if(tool === 'erase'){ removeBuilderThing(piece); return; }
+    startDrag(piece, evt);
+    return;
+  }
+  if(route){
+    if(tool === 'erase'){ removeBuilderThing(route); return; }
+    return;
+  }
+  if(tool === 'erase') { setSelectedBuilderPiece(null); return; }
+  if(tool === 'routeRed' || tool === 'routeWhite'){ setSelectedBuilderPiece(null); startRoute(tool, evt); return; }
+  const [x, y] = boardPoint(evt, $('builderBoard'));
+  const typedLabel = $('builderLabel').value.trim();
+  const label = typedLabel || builderAutoLabel(tool);
+  const newPiece = makeBuilderPiece(tool, x, y, label);
+  startDrag(newPiece, evt);
+});
+$('builderBoard').addEventListener('pointermove', (evt) => { moveDragged(evt); moveRoute(evt); });
+document.addEventListener('pointerup', () => { endDrag(); finishRoute(); });
+document.addEventListener('pointercancel', () => { endDrag(); finishRoute(); });
+updateBuilderHelp();
+setBoardMode('playbook');
+$('viewBuilder').onclick = () => setBoardMode('builder');
+$('builderTool').onchange = updateBuilderHelp;
+$('builderClear').onclick = () => { $('builderLayer').innerHTML = ''; builderHistory.length = 0; builderCounts.offense = 0; builderCounts.defense = 0; builderCounts.disc = 0; };
+$('builderUndo').onclick = () => { const last = builderHistory.pop(); if(last && last.parentNode) last.remove(); };
+$('builderBoard').addEventListener('pointerdown', (evt) => {
+  const piece = evt.target.closest('.builder-piece');
+  const tool = $('builderTool').value;
+  if(piece){
+    if(tool === 'erase'){ piece.remove(); return; }
+    startDrag(piece, evt);
+    return;
+  }
+  if(tool === 'erase') return;
+  const [x, y] = boardPoint(evt, $('builderBoard'));
+  const typedLabel = $('builderLabel').value.trim();
+  const label = typedLabel || builderAutoLabel(tool);
+  const newPiece = makeBuilderPiece(tool, x, y, label);
+  startDrag(newPiece, evt);
+});
+$('builderBoard').addEventListener('pointermove', moveDragged);
+document.addEventListener('pointerup', endDrag);
+document.addEventListener('pointercancel', endDrag);
+updateBuilderHelp();
+setBoardMode('playbook');
+
+</script>
+</body>
+</html>
