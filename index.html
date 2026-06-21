@@ -62,7 +62,7 @@ label{display:block;font-size:11px;font-weight:720;color:#66706d;letter-spacing:
         <h2 id="stepTitle"></h2>
         <div class="body" id="stepBody"></div>
         <div class="callout"><i data-lucide="user-round"></i><div><b id="calloutTitle"></b><div id="calloutText"></div></div></div>
-        <div class="chips"><div class="chip"><b>Disc</b><span id="discChip"></span></div><div class="chip"><b>Reset</b><span id="resetChip"></span></div><div class="chip"><b>Next</b><span id="nextChip"></span></div></div>
+        <div class="chips"><div class="chip"><b id="discChipLabel">Disc</b><span id="discChip"></span></div><div class="chip"><b id="resetChipLabel">Reset</b><span id="resetChip"></span></div><div class="chip"><b id="nextChipLabel">Next</b><span id="nextChip"></span></div></div>
       </article>
       <section class="why" id="whyBox"><button id="whyToggle"><i data-lucide="circle-help"></i>Why this works<i class="chev" data-lucide="chevron-down"></i></button><div class="why-text" id="whyText"></div></section>
       <nav class="controls"><button class="ctrl" id="prev" title="Back"><i data-lucide="skip-back"></i></button><button class="ctrl primary" id="play" title="Play"><i data-lucide="play"></i></button><button class="ctrl" id="next" title="Next"><i data-lucide="skip-forward"></i></button><button class="ctrl" id="reset" title="Reset step"><i data-lucide="rotate-cw"></i></button></nav>
@@ -109,7 +109,7 @@ function makePullSteps(){
  const s=pulls[pullSide], land=s.landing, out=s.outlet, discMid=lerp([50,8],land,.52), hhHalf=lerp(s.hhStart,land,.55), h2Half=lerp(s.h2Start,out,.48);
  const discEarly=lerp([50,8],land,.28);
  const st={C:[50,56],D:[50,48],E:[50,40],F:[50,32],G:[50,24]};
- const startLine={A:[14,90],B:[26,91],C:[38,90],D:[50,91],E:[62,90],F:[74,91],G:[86,90]};
+ const startLine={A:[14,78],B:[26,79],C:[38,78],D:[50,79],E:[62,78],F:[74,79],G:[86,78]};
  const hhTrail=[out[0]-8,73], charlieFakeSpot=[44,57], charlieLane=[70,56], charlieCatch=[74,55], antonioCatch=[79,56], antonioClear=[73,45], coleDump=[66,66], kiraReset=[59,66], richardHelp=[73,45], charlieBack=[56,34], antonioUpline=[87,44], aprilAttack=[70,33], redZoneSpot=[73,25], endzoneDump=[62,34], endzoneClear=[45,22], scoreSpot=[78,17], resetAgain=[62,35];
  const pullPath=`M50,8 C${s.c1[0]},${s.c1[1]} ${s.c2[0]},${s.c2[1]} ${land[0]},${land[1]}`;
  const kiraRun=`M${s.hhStart[0]},${s.hhStart[1]} C${s.hhStart[0]},86 ${land[0]-1},81 ${land[0]},${land[1]}`;
@@ -429,7 +429,25 @@ function ensurePucks(){ids.forEach(id=>{if(!$(id)){const e=document.createElemen
 function pos(el,p){el.style.setProperty('--x',p[0]);el.style.setProperty('--y',p[1])}
 function renderSelectors(){pullSide='middle';practiceSelect.innerHTML=Object.entries(seqLabels).map(([k,v])=>`<option value="${k}" ${disabledSeqs.has(k)?'disabled':''}>${v}${disabledSeqs.has(k)?' - Coming soon':''}</option>`).join('');practiceSelect.value=sequence;teamSelect.innerHTML=Object.entries(rosters).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');teamSelect.value=team;playerSelect.innerHTML='<option value="">Whole team</option>'+players().map(p=>`<option value="${p.id}">${p.name}</option>`).join('');playerSelect.value=player;$('pullOptions').querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.pull==='middle'))}
 function setProgress(active){const bar=$('progressBar');if(!bar)return;bar.style.transition='none';bar.style.width=timer?'0%':((step+1)/active.length*100)+'%'}
-function render(){ensurePucks();renderSelectors();const active=activeSteps(), s=active[step];const hasPossession=s.possession!==false&&!!s.disc;lessonPanel.dataset.sheet=sheetState;players().forEach(p=>{const el=$(p.id);el.textContent=p.abbr;el.className='puck off'+(player===p.id?' selected-player':'')+(hasPossession&&s.disc===p.id?' has-disc':'');pos(el,s.p[p.id])});['D1','D2','D3','D4','D5','D6','D7'].forEach(id=>$(id).style.display='none');Object.entries(s.d).forEach(([id,p],i)=>{const el=$('D'+(i+1));el.style.display='grid';pos(el,p)});pos(disc,s.discPos);drawRoutes(s);stepCount.textContent=`Step ${step+1} of ${active.length}`;stepTitle.textContent=s.title;const bodyCopy=player?playerBody(s):(s.body ?? 'Watch the disc, the handlers, and where the stack forms.');stepBody.textContent=bodyCopy;if($('fieldStep'))$('fieldStep').textContent=`Step ${step+1} of ${active.length}`;if($('fieldTitle'))$('fieldTitle').textContent=s.title;if($('fieldBody'))$('fieldBody').textContent=bodyCopy;const c=callout(s), showCallout=!!(c&&c[1]);document.querySelector('.callout').style.display=showCallout?'grid':'none';calloutTitle.textContent=showCallout?c[0]:'';calloutText.textContent=showCallout?c[1]:'';discChip.textContent=hasPossession?name(s.disc):(s.discLabel||'In air');resetChip.textContent=name(s.reset);nextChip.textContent=name(s.next);const whyCopy=why(s);whyBox.style.display=whyCopy?'block':'none';whyText.textContent=whyCopy;setProgress(active);debugAfterRender();if(window.lucide)lucide.createIcons()}
+function render(){ensurePucks();renderSelectors();const active=activeSteps(), s=active[step];const hasPossession=s.possession!==false&&!!s.disc;lessonPanel.dataset.sheet=sheetState;players().forEach(p=>{const el=$(p.id);el.textContent=p.abbr;el.className='puck off'+(player===p.id?' selected-player':'')+(hasPossession&&s.disc===p.id?' has-disc':'');pos(el,s.p[p.id])});['D1','D2','D3','D4','D5','D6','D7'].forEach(id=>$(id).style.display='none');Object.entries(s.d).forEach(([id,p],i)=>{const el=$('D'+(i+1));el.style.display='grid';pos(el,p)});pos(disc,s.discPos);drawRoutes(s);stepCount.textContent=`Step ${step+1} of ${active.length}`;stepTitle.textContent=s.title;const bodyCopy=player?playerBody(s):(s.body ?? 'Watch the disc, the handlers, and where the stack forms.');stepBody.textContent=bodyCopy;if($('fieldStep'))$('fieldStep').textContent=`Step ${step+1} of ${active.length}`;if($('fieldTitle'))$('fieldTitle').textContent=s.title;if($('fieldBody'))$('fieldBody').textContent=bodyCopy;const c=callout(s), showCallout=!!(c&&c[1]);document.querySelector('.callout').style.display=showCallout?'grid':'none';calloutTitle.textContent=showCallout?c[0]:'';calloutText.textContent=showCallout?c[1]:'';const roleLabels={disc:'Disc',reset:'Reset',next:'Next'};
+let roleValues={disc:hasPossession?name(s.disc):(s.discLabel||'In air'),reset:name(s.reset),next:name(s.next)};
+if(sequence==='pull'){
+  if(step<2){
+    roleLabels.reset='Fielding'; roleValues.reset=name('A');
+    roleLabels.next='Outlet'; roleValues.next=name('B');
+  }else if(step===2){
+    roleLabels.reset='Outlet'; roleValues.reset=name('B');
+    roleLabels.next='First cutter'; roleValues.next=name('C');
+  }else if(step===3){
+    roleLabels.next='First cutter'; roleValues.next=name('C');
+  }
+}
+discChipLabel.textContent=roleLabels.disc;
+resetChipLabel.textContent=roleLabels.reset;
+nextChipLabel.textContent=roleLabels.next;
+discChip.textContent=roleValues.disc;
+resetChip.textContent=roleValues.reset;
+nextChip.textContent=roleValues.next;const whyCopy=why(s);whyBox.style.display=whyCopy?'block':'none';whyText.textContent=whyCopy;setProgress(active);debugAfterRender();if(window.lucide)lucide.createIcons()}
 function stepDuration(s){const t=(s?.title+' '+(s?.body||'')).toLowerCase(),r=s?.routes||[],routeCount=r.length;if(/if open|if covered|if not there|choice|two safe/.test(t))return 6200;if(/read|checks|check|decision|reset|swing|looks/.test(t))return 5600;if(/throw|throws|dump|dumps|catches|catch/.test(t))return 5000;if(routeCount>1)return 5400;if(routeCount===1)return 4600;return 3600}
 function scheduleAuto(){clearTimeout(timer);const active=activeSteps(), s=active[step], bar=$('progressBar'), dur=stepDuration(s);if(step>=active.length-1){stop();return}if(bar){bar.style.transition='none';bar.style.width='0%';requestAnimationFrame(()=>{bar.style.transition=`width ${dur}ms linear`;bar.style.width='100%'})}timer=setTimeout(()=>{timer=null;go(1,true)},dur)}
 function go(d,fromAuto=false){step=Math.max(0,Math.min(activeSteps().length-1,step+d));render();if(timer||fromAuto){play.innerHTML='<i data-lucide="pause"></i>';if(window.lucide)lucide.createIcons();scheduleAuto()}}
