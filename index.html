@@ -157,6 +157,11 @@ function makePullSteps(){
  const antonioContinuationCut=`M${antonioFakeSpot[0]},${antonioFakeSpot[1]} C62,46 67,44 ${antonioLane[0]},${antonioLane[1]}`;
  const antonioWinSeparation=`M${antonioLane[0]},${antonioLane[1]} C74,42 77,41 ${antonioRelease[0]},${antonioRelease[1]}`;
  const charlieToAntonioSafe=`M${charlieCatch[0]},${charlieCatch[1]} C${charlieCatch[0]+5},${charlieCatch[1]-7} ${antonioUpfield[0]+8},${antonioUpfield[1]+7} ${antonioUpfield[0]},${antonioUpfield[1]}`;
+ const charlieUpfieldOption=[78,33], charlieUpfieldDef=[73,38];
+ const charlieUpfieldContinue=`M${charlieCatch[0]},${charlieCatch[1]} C${charlieCatch[0]+4},48 ${charlieUpfieldOption[0]-1},39 ${charlieUpfieldOption[0]},${charlieUpfieldOption[1]}`;
+ const charlieReturnCoveredDef=`M${charlieOpenDef[0]},${charlieOpenDef[1]} C${charlieOpenDef[0]+7},50 ${charlieUpfieldDef[0]-1},43 ${charlieUpfieldDef[0]},${charlieUpfieldDef[1]}`;
+ const charlieLClearToBack=`M${charlieUpfieldOption[0]},${charlieUpfieldOption[1]} C${charlieUpfieldOption[0]+2},28 ${charlieBackDeep[0]+7},26 ${charlieBackDeep[0]},${charlieBackDeep[1]}`;
+ const charlieLClearDef=`M${charlieUpfieldDef[0]},${charlieUpfieldDef[1]} C${charlieUpfieldDef[0]+1},32 ${charlieBackDef[0]+4},29 ${charlieBackDef[0]},${charlieBackDef[1]}`;
  const richardUnderAfterAntonio=`M${richardWait[0]},${richardWait[1]} C61,41 64,37 ${richardUnder[0]},${richardUnder[1]}`;
  const antonioToColeReset=`M${antonioUpfield[0]},${antonioUpfield[1]} C76,56 69,64 ${out[0]},${out[1]}`;
  const antonioNextLaneCut=`M${antonioPrepSpot[0]},${antonioPrepSpot[1]} C61,51 71,53 ${antonioCatch[0]},${antonioCatch[1]}`;
@@ -209,9 +214,9 @@ function makePullSteps(){
   {title:'Antonio cuts into the next lane',disc:'C',reset:'B',next:'D',discPos:charlieCatch,p:{A:hhTrail,B:out,C:charlieCatch,D:antonioLane,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,C:charlieOpenDef,D:[66,47]}),routes:[route('move',antonioContinuationCut)],body:`${name('D')} plants and cuts wider upfield after ${name('C')} is ready.`,whole:'',why:`The timing keeps two cutters from bringing two defenders into the same lane.`},
   {title:'Antonio wins separation',disc:'C',reset:'B',next:'D',discPos:charlieCatch,p:{A:hhTrail,B:out,C:charlieCatch,D:antonioRelease,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,C:charlieOpenDef,D:antonioOpenDef,E:stackD.E}),routes:[route('move',antonioWinSeparation)],body:`${name('D')} is wide and ahead of the defender. ${name('C')} checks the window.`,whole:'',why:''},
   {title:'If open: Charlie throws to Antonio',disc:'D',reset:'B',next:'E',discPos:antonioUpfield,p:{A:hhTrail,B:out,C:charlieCatch,D:antonioUpfield,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,C:charlieOpenDef,D:antonioOpenDef,E:stackD.E}),routes:[route('disc',charlieToAntonioSafe)],body:`${name('D')} has separation. ${name('C')} can take the continuation throw.`,whole:'',why:''},
-  {title:'Antonio catches upfield',disc:'D',reset:'B',next:'E',discPos:antonioUpfield,p:{A:hhTrail,B:out,C:[70,62],D:antonioUpfield,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,C:[63,64],D:antonioOpenDef,E:stackD.E}),routes:[],body:`${name('D')} catches upfield and turns.`,whole:'',why:''},
-  {title:'Antonio checks upfield first',disc:'D',reset:'B',next:'E',discPos:antonioUpfield,p:{A:hhTrail,B:out,C:[70,62],D:antonioUpfield,E:richardWait,F:st.F,G:st.G},d:dmap({...stackD,C:[63,64],D:antonioOpenDef,E:[58,43]}),routes:[route('choice',richardUnderAfterAntonio)],body:`${name('D')} looks to ${name('E')} first. ${name('B')} and ${name('A')} stay ready as the reset shape.`,whole:'Look upfield first, then use the reset if the lane is covered.',why:'A good thrower checks the attacking lane before resetting, but never forces a covered throw.'},
-  {title:'Richard attacks the next lane',disc:'D',reset:'B',next:'E',discPos:antonioUpfield,p:{A:hhTrail,B:out,C:[70,62],D:antonioUpfield,E:richardUnder,F:st.F,G:st.G},d:dmap({...stackD,C:[63,64],D:antonioOpenDef,E:[62,39]}),routes:[route('move',richardUnderAfterAntonio)],body:`${name('E')} waits until ${name('D')} is balanced, then cuts under into the clean lane.`,whole:'One cutter goes only after the lane is open.',why:''},
+  {title:'Antonio catches and checks Charlie',disc:'D',reset:'B',next:'C',discPos:antonioUpfield,p:{A:hhTrail,B:out,C:charlieUpfieldOption,D:antonioUpfield,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,C:charlieUpfieldDef,D:antonioOpenDef,E:stackD.E}),routes:[route('move',charlieUpfieldContinue),route('defense',charlieReturnCoveredDef)],body:`${name('C')} keeps going upfield after the throw. ${name('D')} catches and checks if the return lane is clean.`,whole:'Keep moving after the throw. If the defender stays tight, clear out.',why:'A cutter who throws can still be the next option, but only if the defender loses separation.'},
+  {title:'If covered: Charlie L-cuts out',disc:'D',reset:'B',next:'E',discPos:antonioUpfield,p:{A:hhTrail,B:out,C:charlieBackDeep,D:antonioUpfield,E:richardWait,F:st.F,G:st.G},d:dmap({...stackD,C:charlieBackDef,D:antonioOpenDef,E:[58,43]}),routes:[route('clear',charlieLClearToBack),route('defense',charlieLClearDef)],body:`If ${name('C')} is covered, ${name('C')} keeps running and L-cuts to the back of the stack.`,whole:`Once ${name('C')} is looked off, the next cutter can go.`,why:'The clear keeps the lane open instead of letting the thrower stare at a covered option.'},
+  {title:'Richard attacks the next lane',disc:'D',reset:'B',next:'E',discPos:antonioUpfield,p:{A:hhTrail,B:out,C:charlieBackDeep,D:antonioUpfield,E:richardUnder,F:st.F,G:st.G},d:dmap({...stackD,C:charlieBackDef,D:antonioOpenDef,E:[62,39]}),routes:[route('move',richardUnderAfterAntonio)],body:`As ${name('C')} clears out, ${name('E')} attacks the next clean lane.`,whole:'The next cutter goes when the previous lane is dead.',why:''},
   {title:'Cole clears to make reset space',disc:'D',reset:'A',next:'A',discPos:antonioUpfield,p:{A:kiraWide,B:[74,52],C:charlieBackDeep,D:antonioUpfield,E:richardWait,F:st.F,G:st.G},d:dmap({...stackD,A:[kiraWide[0]+6,kiraWide[1]],B:[70,54],C:charlieBackDef,D:antonioOpenDef,E:[65,46]}),routes:[route('move',coleClearForDump)],body:`If the upfield lane is covered, ${name('B')} clears away and opens the reset space for ${name('A')}.`,whole:'The reset works because space is created first.',why:'The dump is easier when the other handler pulls a defender away instead of standing still.'},
   {title:'Kira comes underneath for the dump',disc:'A',reset:'B',next:'F',discPos:kiraDump,p:{A:kiraDump,B:[74,52],C:charlieBackDeep,D:antonioUpfield,E:richardWait,F:st.F,G:st.G},d:dmap({...stackD,A:[kiraDump[0]+4,kiraDump[1]],B:[70,54],C:charlieBackDef,D:antonioOpenDef,E:[65,46]}),routes:[route('reset',kiraDumpCut),route('disc',antonioToKiraDump)],body:`${name('A')} catches underneath, and the offense gets a new angle.`,whole:'The reset keeps the disc safe and sets up the swing.',why:''},
   {title:'Cole fills Kira’s old space',disc:'A',reset:'B',next:'F',discPos:kiraDump,p:{A:kiraDump,B:kiraWide,C:charlieBackDeep,D:antonioBack,E:richardWait,F:st.F,G:st.G},d:dmap({...stackD,A:[kiraDump[0]+4,kiraDump[1]],B:[kiraWide[0]+6,kiraWide[1]],C:charlieBackDef,D:[72,32],E:[65,46],G:[54,31]}),routes:[route('move',`M74,52 C67,58 55,64 ${kiraWide[0]},${kiraWide[1]}`)],body:`After the dump, ${name('B')} fills the space ${name('A')} left. That gives the handlers a swing shape.`,whole:'Handlers rotate so the next throw has a better angle.',why:`The reset is not the end of the play. The handler rotation creates the next side.`},
@@ -304,13 +309,15 @@ function playerBody(s){const ps=players(), p=ps.find(x=>x.id===player); if(!p)re
   if(player==='C'&&step===13)return `${p.name}, throw only if ${name('D')} is clearly ahead.`;
   if(player==='C'&&step===14)return `${p.name}, throw to ${name('D')} only if the lane is clean.`;
   if(player==='D'&&step===14)return `${p.name}, run through the continuation catch.`;
-  if(player==='D'&&step===15)return `${p.name}, catch, turn, and look for the next cutter.`;
-  if(player==='D'&&step===16)return `${p.name}, check the deep look, the next cutter, and the reset. Throw only to the clean lane.`;
-  if(player==='A'&&step===16)return `${p.name}, be ready to attack deep only if the lane opens.`;
-  if(player==='E'&&step===16)return `${p.name}, wait until ${name('D')} is balanced before you go.`;
-  if(player==='B'&&step===16)return `${p.name}, clear space if the reset is needed.`;
-  if(player==='E'&&step===17)return `${p.name}, attack under only if the lane is clean.`;
-  if(player==='D'&&step===17)return `${p.name}, read ${name('E')}. Do not force it through traffic.`;
+  if(player==='D'&&step===15)return `${p.name}, catch and check ${name('C')} upfield first. Throw only if the return lane is clean.`;
+  if(player==='C'&&step===15)return `${p.name}, keep moving upfield after the throw. Do not drop back yet.`;
+  if(player==='D'&&step===16)return `${p.name}, look ${name('C')} off if the defender is tight. Do not force the return throw.`;
+  if(player==='C'&&step===16)return `${p.name}, if you are covered, keep going and L-cut to the back of the stack.`;
+  if(player==='A'&&step===16)return `${p.name}, stay ready as the reset shape while ${name('C')} clears.`;
+  if(player==='E'&&step===16)return `${p.name}, wait until ${name('C')} is looked off and clearing before you go.`;
+  if(player==='B'&&step===16)return `${p.name}, stay available behind the disc while the upfield look clears.`;
+  if(player==='E'&&step===17)return `${p.name}, now go. Attack the lane that ${name('C')} cleared.`;
+  if(player==='D'&&step===17)return `${p.name}, read ${name('E')} after ${name('C')} clears. Do not force it through traffic.`;
   if(player==='D'&&step===18)return `${p.name}, reset to ${name('B')} if the next lane is not clean.`;
   if(player==='B'&&step===18)return `${p.name}, be the safe reset when ${name('D')} needs help.`;
   if(player==='A'&&step===19)return `${p.name}, stay wide and ready. ${name('B')} may need the safe swing.`;
@@ -364,9 +371,9 @@ function callout(s){
    12:{D:'Plant and cut upfield.',C:'Read the continuation lane.'},
    13:{D:'Show clear separation.',C:`Throw only if ${name('D')} is ahead.`},
    14:{C:`Throw to ${name('D')} if it is clean.`,D:'Run through the catch.'},
-   15:{D:'Catch, turn, and look upfield.'},
-   16:{D:'Check the next cutter first.',E:'Wait for the cue.'},
-   17:{E:'Go only if the lane is open.',D:'Do not force it.'},
+   15:{D:`Catch and check ${name('C')} first.`,C:'Keep moving upfield after the throw.'},
+   16:{D:`Look ${name('C')} off if covered.`,C:'L-cut to the back if covered.',E:`Wait until ${name('C')} clears.`},
+   17:{E:`Attack the lane after ${name('C')} clears.`,D:`Read ${name('E')} without forcing it.`},
    18:{D:`Reset to ${name('B')} if the lane is not clean.`,B:'Be the safe reset.'},
    19:{B:`Look to ${name('A')} instead of forcing it.`,A:'Stay spaced for the swing.'},
    20:{A:'Start the L-cut upfield.'},
