@@ -103,8 +103,8 @@ try{localStorage.removeItem('ufc-rosters');localStorage.removeItem('ufc-rosters-
 function normalizeRosters(){Object.entries(defaultRosters).forEach(([k,v])=>{if(!rosters[k])rosters[k]=clone(v);if(!Array.isArray(rosters[k].players)||rosters[k].players.length<7)rosters[k].players=clone(v.players);if(Array.isArray(rosters[k].subs)&&!Array.isArray(rosters[k].extras))rosters[k].extras=rosters[k].subs;if(!Array.isArray(rosters[k].extras))rosters[k].extras=clone(v.extras||[]);if(!Array.isArray(rosters[k].extraTargets))rosters[k].extraTargets=clone(v.extraTargets||[]);delete rosters[k].subs;if(!rosters[k].label)rosters[k].label=v.label})}
 normalizeRosters();
 const ids=['A','B','C','D','E','F','G'];
-const seqLabels={pull:'Vertical Stack',ho:'Horizontal Stack · Beta',pregame:'10-Min Pre-Game Warmup',triangle:'Triangle Cutting Drill',dump:'Dump/Swing Reset Drill',endzone:'Endzone Basics',give:'Give-and-go Flow · Coming soon'};
-const disabledSeqs=new Set(['give']);
+const seqLabels={pull:'Vertical Stack',ho:'Horizontal Stack · Beta',pregame:'10-Min Pre-Game Warmup',triangle:'Triangle Cutting Drill',dump:'Dump/Swing Reset Drill',endzone:'Endzone Basics',give:'Give-and-go Flow'};
+const disabledSeqs=new Set([]);
 const pulls={
  middle:{label:'middle',landing:[50,76],hhStart:[48,92],h2Start:[56,92],outlet:[58,68],c1:[62,26],c2:[58,54]},
  left:{label:'left',landing:[31,76],hhStart:[34,92],h2Start:[52,92],outlet:[47,68],c1:[42,26],c2:[35,54]},
@@ -403,27 +403,27 @@ function makeEndzoneSteps(){
 }
 
 function makeGiveSteps(){
- const source=makePullSteps();
- const indices=[4,5,6,7,8,12,13,19,20,21,22,23,24,25,26,27];
- const copy=[
-  {title:'Give-and-go starts',body:`${name('B')} has the disc. ${name('C')} is ready to attack up the right side.`,whole:'Attack up the right side. If it stalls, swing left.',why:'Push one lane first. If it gets shut down, don’t force it.'},
-  {title:'Sell one way first',body:`${name('C')} makes the defender think the cut is going left first.`,whole:"Make the defense think you're going one way, then cut hard the other.",why:'The fake matters because the real cut needs separation before the throw.'},
-  {title:'Cut hard right',body:`${name('C')} plants and cuts diagonally right.`,whole:'The give-and-go cutter goes hard into the right lane.',why:'A hard cut gives the thrower a simple read. Drifting keeps the defender attached.'},
-  {title:'Read the give-and-go',body:`${name('B')} checks ${name('C')}. Open means throw. Covered means swing.`,whole:'Read the cutter before choosing.',why:'The throw is only good if the cutter is clearly open.'},
-  {title:`If open: ${name('B')} throws to ${name('C')}`,body:`If ${name('C')} is open, ${name('B')} throws to ${name('C')} and ${name('C')} keeps moving.`,whole:'Open look: take the easy give-and-go.',why:'The quick throw works because the cutter has already won the right-side lane.'},
-  {title:`If covered: ${name('C')} clears`,body:`If ${name('C')} is not open, ${name('B')} keeps the disc and ${name('C')} clears hard.`,whole:'Covered look: don’t force it.',why:'The clear tells the thrower to save the disc and move to the next read.'},
-  {title:`${name('C')} gets out`,body:`${name('C')} clears behind the stack so the next lane stays clean.`,whole:'Clear hard, then get to the back.',why:'The next cutter needs the lane that the first cut used.'},
-  {title:'If not there: swing left',body:`No clean right-side look? ${name('B')} looks left to ${name('A')}.`,whole:'Swing, reset the angle, and let the next pair attack.',why:'The swing changes the angle instead of forcing a throw through traffic.'},
-  {title:`${name('A')} sets up the swing`,body:`${name('A')} cuts upfield first to move the defender.`,whole:'Fake before coming back.',why:'The setup fake makes the return pass easier.'},
-  {title:`${name('A')} comes back`,body:`${name('A')} plants and comes back into the swing lane.`,whole:'Come back hard for the safe pass.',why:'Coming back hard gives the thrower a short swing instead of a risky upfield throw.'},
-  {title:`${name('B')} swings to ${name('A')}`,body:`${name('B')} throws to ${name('A')} to reset the angle.`,whole:'The swing opens the next side.',why:'Moving the disc left makes a new lane for the next cutter.'},
-  {title:'New side, same pattern',body:'The disc is left now. The next pair can attack the new open space.',whole:'Same idea: push one lane, then swing if it stalls.',why:'A covered lane can become open once the disc moves.'},
-  {title:`${name('E')} reads the new lane`,body:`${name('E')} waits until the swing opens the lane.`,whole:'Don’t start early.',why:'Waiting keeps the new lane clear for the cutter.'},
-  {title:`If open: ${name('E')} attacks`,body:`If ${name('E')} is open, ${name('E')} cuts across into the new lane.`,whole:'The new side attacks after the swing.',why:'The cut works because the disc moved and the defender has to adjust.'},
-  {title:`${name('A')} throws if clean`,body:`If the lane is clean, ${name('A')} throws to ${name('E')}.`,whole:'Throw only when the lane is clear.',why:'A clean short throw beats a risky throw through the stack.'},
-  {title:`If covered: ${name('E')} clears`,body:`If ${name('E')} is covered, ${name('E')} clears and the offense resets again.`,whole:'If it’s covered, clear and keep flowing.',why:'The pattern keeps working only if covered cutters leave the lane.'}
+ const A=[38,66], B=[52,60], C=[28,62], D=[43,54], E=[70,56], F=[58,45], G=[76,44];
+ const Aopen=[50,52], Aclear=[62,48], Cgo=[39,48];
+ const base={A,B,C,D,E,F,G};
+ const dbase=dmap({A:[40,63],B:[55,58],C:[26,65],D:[45,56],E:[72,58],F:[60,47],G:[78,46]});
+ const passAB=`M${A[0]},${A[1]} C42,62 47,60 ${B[0]},${B[1]}`;
+ const aGo=[A,[44,58],Aopen], backBA=`M${B[0]},${B[1]} C54,56 53,53 ${Aopen[0]},${Aopen[1]}`;
+ const swingBC=`M${B[0]},${B[1]} C45,63 36,64 ${C[0]},${C[1]}`;
+ const cToD=`M${C[0]},${C[1]} C32,58 38,55 ${D[0]},${D[1]}`;
+ const cGo=[C,[33,55],Cgo];
+ return [
+  {title:'Set up the give-and-go',disc:'A',reset:'B',next:'A',focus:'Throw and move',discPos:A,p:base,d:dbase,routes:[],body:'A give-and-go teaches one simple habit: after you throw, move. You’ll either get the disc back or swing to the next side.',whole:'The problem this solves: new players throw the disc and stand still.',why:'Moving after the throw makes the defender react instead of resting.'},
+  {title:'Kira throws to Cole',disc:'B',reset:'A',next:'A',focus:'First pass',discPos:B,p:base,d:dbase,routes:[route('disc',passAB)],body:'Kira throws to Cole. That pass starts the timing.',whole:'First make the easy pass. The cut comes next.',why:'The first pass makes the defender look at the disc.'},
+  {title:'Kira moves right away',disc:'B',reset:'A',next:'A',focus:'Go',discPos:B,p:{...base,A:Aopen},d:dmap({A:[47,56],B:[55,58],C:[26,65],D:[45,56],E:[72,58],F:[60,47],G:[78,46]}),routes:[route('move',aGo),route('defense',[[40,63],[44,59],[47,56]])],body:'After throwing, Kira moves right away. She doesn’t stand and watch the pass.',whole:'Only Kira moves here. Cole holds the disc and reads the return pass.',why:'The defender is late because Kira moved as the disc left her hand.'},
+  {title:'If Kira is open, give it back',disc:'A',reset:'B',next:'D',focus:'Return pass',discPos:Aopen,p:{...base,A:Aopen},d:dmap({A:[47,56],B:[55,58],C:[26,65],D:[45,56],E:[72,58],F:[60,47],G:[78,46]}),routes:[route('disc',backBA)],body:'If Kira is open, Cole gives it back. That’s the give-and-go.',whole:'The return throw is short and soft. Don’t force a hard throw.',why:'A quick return rewards the thrower for moving right away.'},
+  {title:'Why it works',disc:'A',reset:'B',next:'D',focus:'Read',discPos:Aopen,p:{...base,A:Aopen},d:dmap({A:[47,56],B:[55,58],C:[26,65],D:[45,56],E:[72,58],F:[60,47],G:[78,46]}),routes:[],body:'The first throw makes the defender react late. Kira’s quick cut creates the easy return pass.',whole:'This is the open branch: throw, move, get it back.',why:'The thrower becomes dangerous because they don’t stop moving.'},
+  {title:'If Kira is covered, don’t force it',disc:'B',reset:'A',next:'C',focus:'Covered',discPos:B,p:{...base,A:Aopen},d:dmap({A:[50,53],B:[55,58],C:[26,65],D:[45,56],E:[72,58],F:[60,47],G:[78,46]}),routes:[route('choice',backBA)],body:'On the covered branch, Cole keeps the disc. If the return pass isn’t easy, don’t force it.',whole:'The defender is close enough to take away the return pass.',why:'Keeping the disc is better than throwing into a covered lane.'},
+  {title:'Swing left',disc:'C',reset:'B',next:'D',focus:'Swing',discPos:C,p:{...base,A:Aclear},d:dmap({A:[58,50],B:[55,58],C:[26,65],D:[45,56],E:[72,58],F:[60,47],G:[78,46]}),routes:[route('disc',swingBC)],body:'Cole swings left instead. The swing keeps the disc moving and gives the offense a new angle.',whole:'Kira gets out of the way. Charlie becomes the new thrower.',why:'The swing solves the covered return pass without forcing it.'},
+  {title:'New pair forms',disc:'C',reset:'B',next:'D',focus:'Reset pattern',discPos:C,p:{...base,A:Aclear},d:dmap({A:[58,50],B:[55,58],C:[26,65],D:[45,56],E:[72,58],F:[60,47],G:[78,46]}),routes:[],body:'Now Charlie has the disc. Antonio is close enough to start the same idea from the new side.',whole:'This is a pause. See the new thrower and the new nearby option.',why:'The pattern can restart anywhere the disc moves.'},
+  {title:'Repeat the pattern',disc:'D',reset:'C',next:'C',focus:'Throw and go',discPos:D,p:{...base,A:Aclear,C:Cgo},d:dmap({A:[58,50],B:[55,58],C:[34,54],D:[45,56],E:[72,58],F:[60,47],G:[78,46]}),routes:[route('disc',cToD),route('move',cGo)],body:'The pattern repeats: throw, move right away, and look for the return pass.',whole:'Charlie throws to Antonio and starts moving as the pass leaves.',why:'The new side starts the same habit again.'},
+  {title:'Give-and-go rule',disc:'D',reset:'C',next:'C',focus:'Rule',discPos:D,p:{...base,A:Aclear,C:Cgo},d:dmap({A:[58,50],B:[55,58],C:[34,54],D:[45,56],E:[72,58],F:[60,47],G:[78,46]}),routes:[],body:'After you throw, move. If the return pass is open, take it. If it’s covered, swing and start again.',whole:'That’s the loop: throw, move, return if open, swing if covered.',why:'A beginner can remember this in a game after one watch.'}
  ];
- return indices.map((idx,i)=>({...source[idx],...copy[i]}));
 }
 const steps=[
  {title:'Disc is pulled',disc:'A',reset:'B',next:'C',discPos:[50,26],p:{A:[42,86],B:[58,86],C:[47,82],D:[53,82],E:[50,78],F:[40,88],G:[62,88]},d:{A:[24,18],B:[39,14],C:[55,16],D:[70,14],E:[82,18]},routes:[['disc',[[50,8],[50,18],[50,26]]]],body:`Watch the disc first. ${name('A')} reads the pull while ${name('B')} gets ready as the outlet.`,why:'The pull is still in the air. Find the disc first, then move it before the defense fully sets up.',whole:`Track the pull. ${name('B')} sets up wide/downfield as the outlet. Everyone else gets into stack position.`},
