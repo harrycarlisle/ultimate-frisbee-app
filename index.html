@@ -103,8 +103,8 @@ try{localStorage.removeItem('ufc-rosters');localStorage.removeItem('ufc-rosters-
 function normalizeRosters(){Object.entries(defaultRosters).forEach(([k,v])=>{if(!rosters[k])rosters[k]=clone(v);if(!Array.isArray(rosters[k].players)||rosters[k].players.length<7)rosters[k].players=clone(v.players);if(Array.isArray(rosters[k].subs)&&!Array.isArray(rosters[k].extras))rosters[k].extras=rosters[k].subs;if(!Array.isArray(rosters[k].extras))rosters[k].extras=clone(v.extras||[]);if(!Array.isArray(rosters[k].extraTargets))rosters[k].extraTargets=clone(v.extraTargets||[]);delete rosters[k].subs;if(!rosters[k].label)rosters[k].label=v.label})}
 normalizeRosters();
 const ids=['A','B','C','D','E','F','G'];
-const seqLabels={pull:'Vertical Stack',ho:'Horizontal Stack · Beta',pregame:'10-Min Pre-Game Warmup',triangle:'Triangle Cutting Drill',dump:'Dump/Swing Reset Drill',endzone:'Endzone Basics · Coming soon',give:'Give-and-go Flow · Coming soon'};
-const disabledSeqs=new Set(['endzone','give']);
+const seqLabels={pull:'Vertical Stack',ho:'Horizontal Stack · Beta',pregame:'10-Min Pre-Game Warmup',triangle:'Triangle Cutting Drill',dump:'Dump/Swing Reset Drill',endzone:'Endzone Basics',give:'Give-and-go Flow · Coming soon'};
+const disabledSeqs=new Set(['give']);
 const pulls={
  middle:{label:'middle',landing:[50,76],hhStart:[48,92],h2Start:[56,92],outlet:[58,68],c1:[62,26],c2:[58,54]},
  left:{label:'left',landing:[31,76],hhStart:[34,92],h2Start:[52,92],outlet:[47,68],c1:[42,26],c2:[35,54]},
@@ -382,6 +382,27 @@ function makeDumpSwingSteps(){
  ];
 }
 
+function makeEndzoneSteps(){
+ const A=[50,32], B=[38,41], C=[66,36], D0=[50,23], Dscore=[64,17], Dclear=[76,25], E0=[50,17], Escore=[60,18], F0=[50,12], G0=[58,13];
+ const cones=[{x:A[0],y:A[1],label:'disc'},{x:B[0],y:B[1],label:'reset'},{x:Dscore[0],y:Dscore[1],label:'score'},{x:Dclear[0],y:Dclear[1],label:'clear'}];
+ const setupP={A,B,C,D:D0,E:E0,F:F0,G:G0};
+ const setupD=dmap({A:[54,33],B:[35,43],C:[68,39],D:[54,24],E:[54,17],F:[54,12],G:[62,14]});
+ const firstCut=[D0,[57,21],Dscore], scoreThrow=`M${A[0]},${A[1]} C55,25 60,20 ${Dscore[0]},${Dscore[1]}`;
+ const clearRoute=[Dscore,[69,20],Dclear], resetCut=[B,[42,37],B], resetPass=`M${A[0]},${A[1]} C47,35 42,38 ${B[0]},${B[1]}`;
+ const swingPass=`M${B[0]},${B[1]} C48,40 58,38 ${C[0]},${C[1]}`, secondCut=[E0,[55,18],Escore], secondScore=`M${C[0]},${C[1]} C63,28 61,22 ${Escore[0]},${Escore[1]}`;
+ return [
+  {title:'Set up near the goal line',disc:'A',reset:'B',next:'D',discPos:A,p:setupP,d:setupD,cones,routes:[],body:'The disc is close to the end zone. Space is smaller now, so the offense has to be patient.',whole:'This is a scoring situation, but not everyone should sprint to the goal line.',why:'Near the goal line, clean timing matters more than speed.'},
+  {title:'Do not crowd the goal line',disc:'A',reset:'B',next:'D',discPos:A,p:setupP,d:setupD,cones,routes:[route('choice',[A,[56,20],Dscore]),route('choice',[A,[52,17],Escore])],body:'The mistake is everyone cutting to the goal line at once. That brings too many defenders into the same space.',whole:'One cutter goes. The rest wait and keep the scoring lane clear.',why:'Crowding gives the defense extra help and makes easy throws look risky.'},
+  {title:'First cutter goes',disc:'A',reset:'B',next:'D',discPos:A,p:{...setupP,D:Dscore},d:dmap({A:[54,33],B:[35,43],C:[68,39],D:[59,22],E:[54,17],F:[54,12],G:[62,14]}),cones,routes:[route('move',firstCut)],body:'One cutter goes first. The first look is short and simple: cut to open space, show hands, and keep moving.',whole:'Everyone else waits. Do not bring two cutters into the same space.',why:'One clear cut gives the thrower a simple yes-or-no read.'},
+  {title:'If open, throw the score',disc:'D',reset:'A',next:'E',discPos:Dscore,p:{...setupP,D:Dscore},d:dmap({A:[54,33],B:[35,43],C:[68,39],D:[59,22],E:[54,17],F:[54,12],G:[62,14]}),cones,routes:[route('move',firstCut),route('disc',scoreThrow)],body:'If the cutter is clearly open, throw the easy score. Do not wait for a harder throw.',whole:'The scoring throw should be short, clean, and early.',why:'Beginners often wait too long near the end zone. Take the simple goal when it is there.'},
+  {title:'If covered, clear immediately',disc:'A',reset:'B',next:'E',discPos:A,p:{...setupP,D:Dclear},d:dmap({A:[54,33],B:[35,43],C:[68,39],D:[72,27],E:[54,17],F:[54,12],G:[62,14]}),cones,routes:[route('clear',clearRoute)],body:'If the throw is not clean, the cutter leaves right away. Clearing gives the next teammate room.',whole:'The covered cutter must leave the scoring space.',why:'Clearing is the habit that prevents end-zone traffic jams.'},
+  {title:'Reset saves the possession',disc:'B',reset:'A',next:'E',discPos:B,p:{...setupP,D:Dclear,B:B},d:dmap({A:[54,33],B:[35,43],C:[68,39],D:[72,27],E:[54,17],F:[54,12],G:[62,14]}),cones,routes:[route('reset',resetCut),route('disc',resetPass)],body:'When the first cut is covered, reset the disc. A reset is not failure. It gives the offense a new angle.',whole:'The reset stands behind and wide so the thrower has a safe pass.',why:'The reset keeps possession and changes what the defense has to guard.'},
+  {title:'Swing to change the angle',disc:'C',reset:'B',next:'E',discPos:C,p:{...setupP,D:Dclear,B:B,C:C},d:dmap({A:[52,35],B:[39,44],C:[68,39],D:[72,27],E:[54,17],F:[54,12],G:[62,14]}),cones,routes:[route('disc',swingPass)],body:'The swing changes the angle. Now the defense has to turn, and a new scoring lane opens.',whole:'The reset is not just safe. It creates the next attack.',why:'Moving the disc sideways can turn a covered lane into an open one.'},
+  {title:'Next cutter goes',disc:'E',reset:'C',next:'F',discPos:Escore,p:{...setupP,D:Dclear,E:Escore},d:dmap({A:[52,35],B:[39,44],C:[68,39],D:[72,27],E:[56,22],F:[54,12],G:[62,14]}),cones,routes:[route('move',secondCut),route('disc',secondScore)],body:'The next cutter goes only after the lane opens. This keeps the end zone from becoming crowded.',whole:'Wait for the new angle, then make one clear scoring cut.',why:'Timing turns the reset into a real scoring chance.'},
+  {title:'End-zone rule to remember',disc:'E',reset:'C',next:'F',discPos:Escore,p:{...setupP,D:Dclear,E:Escore,F:[50,13],G:G0},d:dmap({A:[52,35],B:[39,44],C:[68,39],D:[72,27],E:[56,22],F:[54,13],G:[62,14]}),cones:[],routes:[],body:'End zone rule: one cut, then clear. If it is not open, reset and attack the new angle.',whole:'Simple rule: one cutter, clear, reset, swing, next cutter.',why:'This gives beginners one repeatable plan near the goal line.'}
+ ];
+}
+
 function makeGiveSteps(){
  const source=makePullSteps();
  const indices=[4,5,6,7,8,12,13,19,20,21,22,23,24,25,26,27];
@@ -419,7 +440,7 @@ const steps=[
  {title:'Use Cole as the reset.',disc:'B',reset:'B',next:'D',discPos:[64,70],p:{A:[47,66],B:[64,70],C:[64,22],D:[75,34],E:[61,43],F:[50,31],G:[50,23]},d:{A:[43,66],B:[61,68],C:[67,25],D:[70,38],E:[57,43]},routes:[['reset',[[75,34],[64,70]]]],why:'Cole stays behind the disc so Antonio has a safe option when Richard is covered.'},
  {title:'Antonio attacks up-line.',disc:'B',reset:'A',next:'E',discPos:[64,70],p:{A:[47,66],B:[64,70],C:[64,22],D:[70,52],E:[56,45],F:[50,31],G:[50,23]},d:{A:[43,66],B:[61,68],C:[67,25],D:[66,54],E:[59,45]},routes:[['move',[[75,34],[72,45],[70,52]]]],why:'The reset changes the angle. Antonio can attack up-line because Cole has the disc now.'}
 ];
-const sequences={endzone:steps.slice(0,4),ho:steps.slice(0,4)};
+const sequences={};
 function firstName(n){return String(n||'').trim().split(/\s+/)[0]||''}
 function makeAbbr(n){const f=firstName(n);return (f.slice(0,2)||'P').toUpperCase()}
 function lineExtras(v){return Array.isArray(v.extras)?v.extras.map(firstName).filter(Boolean):[]}
@@ -429,7 +450,7 @@ function activeLinePlayers(){const r=rosters[team];const lineup=r.players.slice(
 function players(){return activeLinePlayers().map((p,i)=>({id:ids[i],name:p[0],abbr:p[1],role:p[2]}))}
 function name(id){return players().find(p=>p.id===id)?.name||id}
 function abbr(id){return players().find(p=>p.id===id)?.abbr||id}
-function activeSteps(){if(sequence==='pull')return makePullSteps();if(sequence==='ho')return makeHorizontalSteps();if(sequence==='pregame')return makePreGameWarmupSteps();if(sequence==='triangle')return makeTriangleCuttingSteps();if(sequence==='dump')return makeDumpSwingSteps();if(sequence==='give')return makeGiveSteps();return sequences[sequence]||steps}
+function activeSteps(){if(sequence==='pull')return makePullSteps();if(sequence==='ho')return makeHorizontalSteps();if(sequence==='pregame')return makePreGameWarmupSteps();if(sequence==='triangle')return makeTriangleCuttingSteps();if(sequence==='dump')return makeDumpSwingSteps();if(sequence==='endzone')return makeEndzoneSteps();if(sequence==='give')return makeGiveSteps();return sequences[sequence]||steps}
 function stackNeighborText(id){
  const order=['C','D','E','F','G'], i=order.indexOf(id);
  if(i<0)return '';
