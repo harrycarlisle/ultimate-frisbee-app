@@ -103,7 +103,7 @@ try{localStorage.removeItem('ufc-rosters');localStorage.removeItem('ufc-rosters-
 function normalizeRosters(){Object.entries(defaultRosters).forEach(([k,v])=>{if(!rosters[k])rosters[k]=clone(v);if(!Array.isArray(rosters[k].players)||rosters[k].players.length<7)rosters[k].players=clone(v.players);if(Array.isArray(rosters[k].subs)&&!Array.isArray(rosters[k].extras))rosters[k].extras=rosters[k].subs;if(!Array.isArray(rosters[k].extras))rosters[k].extras=clone(v.extras||[]);if(!Array.isArray(rosters[k].extraTargets))rosters[k].extraTargets=clone(v.extraTargets||[]);delete rosters[k].subs;if(!rosters[k].label)rosters[k].label=v.label})}
 normalizeRosters();
 const ids=['A','B','C','D','E','F','G'];
-const seqLabels={pull:'Vertical Stack',ho:'Horizontal Stack · Beta',pregame:'10-Min Pre-Game Warmup',triangle:'Triangle Cutting Drill',dump:'Dump/Swing Reset Drill',endzone:'Endzone Basics',give:'Give-and-go Flow'};
+const seqLabels={pull:'Vertical Stack',ho:'Horizontal Stack · Beta',cup:'Breaking the Cup',pregame:'10-Min Pre-Game Warmup',triangle:'Triangle Cutting Drill',dump:'Dump/Swing Reset Drill',endzone:'Endzone Basics',give:'Give-and-go Flow'};
 const disabledSeqs=new Set([]);
 const pulls={
  middle:{label:'middle',landing:[50,76],hhStart:[48,92],h2Start:[56,92],outlet:[58,68],c1:[62,26],c2:[58,54]},
@@ -402,6 +402,28 @@ function makeEndzoneSteps(){
  ];
 }
 
+function makeBreakCupSteps(){
+ const A=[48,68], B=[35,70], C=[65,70], D0=[50,55], Dbreak=[34,56], E0=[62,48], Ecut=[72,51], F0=[43,44], G0=[58,36], Gfake=[54,38], Gscore=[72,22];
+ const base={A,B,C,D:D0,E:E0,F:F0,G:G0};
+ const cupD={A:[49,63],B:[41,61],C:[57,61],D:[51,52],E:[64,45],F:[43,40],G:[59,33]};
+ const breakLane=`M${A[0]},${A[1]} C43,63 38,58 ${Dbreak[0]},${Dbreak[1]}`;
+ const antonioBreak=[D0,[43,58],Dbreak];
+ const richardCut=[E0,[66,50],Ecut], antonioToRichard=`M${Dbreak[0]},${Dbreak[1]} C45,54 60,52 ${Ecut[0]},${Ecut[1]}`;
+ const kristinFake=[G0,Gfake], kristinDeep=[Gfake,[64,30],Gscore], richardToKristin=`M${Ecut[0]},${Ecut[1]} C76,42 76,30 ${Gscore[0]},${Gscore[1]}`;
+ return [
+  {title:'The cup traps Kira',disc:'A',reset:'B',next:'D',discPos:A,p:base,d:dmap(cupD),routes:[],body:'A cup is three defenders around the thrower. Antonio’s job is to find the gap before the cup resets.',whole:'The cup blocks the easy forward throw. The offense needs one quick cut through the gap.',why:'A cup works when the thrower waits and stares at the wall.'},
+  {title:'Antonio finds the gap',disc:'A',reset:'B',next:'D',discPos:A,p:base,d:dmap(cupD),routes:[route('choice',[A,[42,62],Dbreak])],body:'Antonio looks for the space between defenders. He needs to move before the cup can settle.',whole:'The gap is open for a moment. Kira has to be ready.',why:'The first cutter gives the thrower a target through the cup.'},
+  {title:'Antonio breaks left',disc:'A',reset:'B',next:'D',discPos:A,p:{...base,D:Dbreak},d:dmap({...cupD,A:[48,63],B:[41,61],C:[56,61],D:[43,58]}),routes:[route('move',antonioBreak)],body:'Antonio runs through the cup, then breaks left into open space.',whole:'Only Antonio moves. Everyone else stays ready.',why:'The cut works because it goes through a real gap, not through a defender.'},
+  {title:'Kira hits the break',disc:'D',reset:'A',next:'E',discPos:Dbreak,p:{...base,D:Dbreak},d:dmap({...cupD,A:[48,63],B:[41,61],C:[56,61],D:[43,58]}),routes:[route('disc',breakLane)],body:'Kira throws as soon as Antonio clears the cup. Waiting gives the defense time to close.',whole:'The first throw breaks the cup. Now the disc has to keep moving.',why:'The cup is weakest right after the first clean pass through it.'},
+  {title:'Don’t let the cup reset',disc:'D',reset:'B',next:'E',discPos:Dbreak,p:{...base,D:Dbreak},d:dmap({A:[43,62],B:[49,62],C:[56,63],D:[43,58],E:[64,45],F:[43,40],G:[59,33]}),routes:[],body:'Once the disc gets through, don’t pause. The cup is trying to reset around Antonio.',whole:'This is a read beat. Antonio has the disc and looks for the next fast pass.',why:'Standing still lets the cup become a wall again.'},
+  {title:'Richard cuts across',disc:'D',reset:'B',next:'E',discPos:Dbreak,p:{...base,D:Dbreak,E:Ecut},d:dmap({A:[43,62],B:[49,62],C:[56,63],D:[43,58],E:[66,53],F:[43,40],G:[59,33]}),routes:[route('move',richardCut)],body:'Richard cuts across while the defense is still turning.',whole:'Only Richard moves here. Antonio keeps the disc and reads the lane.',why:'The next cutter goes before the cup can find a new shape.'},
+  {title:'Antonio moves it quickly',disc:'E',reset:'D',next:'G',discPos:Ecut,p:{...base,D:Dbreak,E:Ecut},d:dmap({A:[43,62],B:[49,62],C:[56,63],D:[43,58],E:[66,53],F:[43,40],G:[59,33]}),routes:[route('disc',antonioToRichard)],body:'Antonio moves the disc quickly. That keeps the cup chasing instead of trapping.',whole:'The second fast pass turns the break into real flow.',why:'A cup wants time. Quick throws take that time away.'},
+  {title:'Kristin starts with a fake',disc:'E',reset:'D',next:'G',discPos:Ecut,p:{...base,D:Dbreak,E:Ecut,G:Gfake},d:dmap({A:[43,62],B:[49,62],C:[56,63],D:[43,58],E:[66,53],F:[43,40],G:[60,37]}),routes:[route('fake',kristinFake)],body:'Kristin starts with a short fake. When the defender follows, the deep space opens.',whole:'The fake is small. It just moves the defender enough to open the next cut.',why:'The back cutter waits until the disc is through the cup before going.'},
+  {title:'Kristin goes deep',disc:'E',reset:'D',next:'G',discPos:Ecut,p:{...base,D:Dbreak,E:Ecut,G:Gscore},d:dmap({A:[43,62],B:[49,62],C:[56,63],D:[43,58],E:[66,53],F:[43,40],G:[68,27]}),routes:[route('move',kristinDeep)],body:'Kristin cuts hard into the open space before the defense catches up.',whole:'Richard has the disc. The deep lane is open because the cup is still turning.',why:'The third cut finishes the advantage created by the first break.'},
+  {title:'Break complete',disc:'G',reset:'E',next:'D',discPos:Gscore,p:{...base,D:Dbreak,E:Ecut,G:Gscore},d:dmap({A:[43,62],B:[49,62],C:[56,63],D:[43,58],E:[66,53],F:[43,40],G:[68,27]}),routes:[route('disc',richardToKristin)],body:'The cup is broken. One quick cut got the disc through, and the next two throws kept the defense behind.',whole:'Break through, move it fast, then keep going before the cup resets.',why:'That’s the beginner rule for beating a cup.'}
+ ];
+}
+
 function makeGiveSteps(){
  const A=[38,66], B=[52,60], C=[28,62], D=[43,54], E=[70,56], F=[58,45], G=[76,44];
  const Aopen=[50,52], Aclear=[62,48], Cgo=[39,48];
@@ -449,7 +471,7 @@ function activeLinePlayers(){const r=rosters[team];const lineup=r.players.slice(
 function players(){return activeLinePlayers().map((p,i)=>({id:ids[i],name:p[0],abbr:p[1],role:p[2]}))}
 function name(id){return players().find(p=>p.id===id)?.name||id}
 function abbr(id){return players().find(p=>p.id===id)?.abbr||id}
-function activeSteps(){if(sequence==='pull')return makePullSteps();if(sequence==='ho')return makeHorizontalSteps();if(sequence==='pregame')return makePreGameWarmupSteps();if(sequence==='triangle')return makeTriangleCuttingSteps();if(sequence==='dump')return makeDumpSwingSteps();if(sequence==='endzone')return makeEndzoneSteps();if(sequence==='give')return makeGiveSteps();return sequences[sequence]||steps}
+function activeSteps(){if(sequence==='pull')return makePullSteps();if(sequence==='ho')return makeHorizontalSteps();if(sequence==='cup')return makeBreakCupSteps();if(sequence==='pregame')return makePreGameWarmupSteps();if(sequence==='triangle')return makeTriangleCuttingSteps();if(sequence==='dump')return makeDumpSwingSteps();if(sequence==='endzone')return makeEndzoneSteps();if(sequence==='give')return makeGiveSteps();return sequences[sequence]||steps}
 function stackNeighborText(id){
  const order=['C','D','E','F','G'], i=order.indexOf(id);
  if(i<0)return '';
