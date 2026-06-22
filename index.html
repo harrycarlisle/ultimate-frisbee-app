@@ -252,10 +252,10 @@ function makePullSteps(){
   {title:'Charlie clears as Richard starts',disc:'D',reset:'B',next:'E',discPos:antonioUpfield,p:{A:hhTrail,B:out,C:charlieBackDeep,D:antonioUpfield,E:richardUnder,F:st.F,G:st.G},d:dmap({...stackD,C:charlieBackDef,D:antonioMarkDef,E:[62,39]}),routes:[route('clear',charlieLClearToBack),route('move',richardUnderAfterAntonio)],body:`If ${name('C')} is covered, ${name('D')} looks it off. ${name('C')} clears out and ${name('E')} starts the next cut.`,whole:`Once ${name('C')} is looked off, the next cutter goes.`,why:'The clear keeps the lane open instead of letting the thrower stare at a covered option.'},
   {title:'Richard is the next live option',disc:'D',reset:'B',next:'E',discPos:antonioUpfield,p:{A:hhTrail,B:out,C:charlieBackDeep,D:antonioUpfield,E:richardUnder,F:st.F,G:st.G},d:dmap({...stackD,C:charlieBackDef,D:antonioMarkDef,E:[62,39]}),routes:[],body:`${name('E')} is now in the next clean lane after ${name('C')} clears.`,whole:'The next cutter goes when the previous lane is dead.',why:''},
   {title:'Richard cuts into the next lane',disc:'D',reset:'B',next:'E',discPos:antonioUpfield,p:{A:kiraWide,B:out,C:charlieBackDeep,D:antonioUpfield,E:richardUp,F:st.F,G:st.G},d:dmap({...stackD,A:[kiraWide[0]+6,kiraWide[1]],B:[out[0]-4,out[1]-6],C:charlieBackDef,D:antonioMarkDef,E:richardUpDef}),routes:[route('move',richardUpAfterAntonio)],body:'Richard cuts upfield as Antonio turns. Antonio has a clean throw before the defense can settle.',whole:'The continuation is open because Charlie cleared and Richard waited.',why:'This keeps the disc moving forward instead of forcing a reset through traffic.'},
-  {title:'Antonio leads Richard wide',disc:'E',reset:'D',next:'G',discPos:richardWide,p:{A:kiraFollow,B:coleFollow,C:charlieBackDeep,D:antonioUpfield,E:richardWide,F:st.F,G:kristinSetup},d:dmap({...stackD,A:[kiraFollow[0]+6,kiraFollow[1]],B:[coleFollow[0]-4,coleFollow[1]-6],C:charlieBackDef,D:antonioMarkDef,E:richardUpDef,G:kristinSetupDef}),routes:[route('disc',antonioToRichardUp)],body:'Antonio throws Richard wide toward the sideline. That gives Richard the angle for the next throw.',whole:'Take the clean continuation when it is there.',why:''},
-  {title:'Kristin breaks up and right',disc:'E',reset:'A',next:'G',discPos:richardWide,p:{A:kiraFollow,B:coleFollow,C:charlieBackDeep,D:antonioUpfield,E:richardWide,F:st.F,G:kristinBreak},d:dmap({...stackD,A:[kiraFollow[0]+6,kiraFollow[1]],B:[coleFollow[0]-4,coleFollow[1]-6],C:charlieBackDef,D:antonioMarkDef,E:richardUpDef,G:kristinBreakDef}),routes:[route('move',kristinUpfieldCut)],body:'Kristin goes upfield first, then breaks hard right. D7 is chasing from behind.',whole:'The next cutter goes before the reset comes underneath.',why:''},
-  {title:'Richard releases early',disc:'E',discLabel:'In air',possession:false,reset:'A',next:'G',discPos:[86,18],p:{A:kiraFollow,B:coleFollow,C:charlieBackDeep,D:antonioUpfield,E:richardWide,F:st.F,G:kristinLead},d:dmap({...stackD,A:[kiraFollow[0]+6,kiraFollow[1]],B:[coleFollow[0]-4,coleFollow[1]-6],C:charlieBackDef,D:antonioMarkDef,E:richardUpDef,G:kristinLeadDef}),routes:[route('disc',richardToKristinUpfield)],body:"Richard throws before Kristin stops. He leads the disc into the space she's running to.",whole:'Lead the throw into space before the cutter has to slow down.',why:''},
-  {title:'Kristin scores',disc:'G',reset:'E',next:'G',discPos:kristinUpfield,p:{A:kiraFollow,B:coleFollow,C:charlieBackDeep,D:antonioUpfield,E:richardWide,F:st.F,G:kristinUpfield},d:dmap({...stackD,A:[kiraFollow[0]+6,kiraFollow[1]],B:[coleFollow[0]-4,coleFollow[1]-6],C:charlieBackDef,D:antonioMarkDef,E:richardUpDef,G:kristinUpfieldDef}),routes:[],body:"Kristin runs onto the disc and catches it inbounds. That's the payoff: one clean continuation turns into a score.",whole:'One clean continuation can become a score when the next cutter is ready.',why:'',scoreZone:'top',scoreText:'+1'},
+  {title:`${name('D')} leads ${name('E')} wide`,disc:'E',reset:'D',next:'G',discPos:richardWide,p:{A:kiraFollow,B:coleFollow,C:charlieBackDeep,D:antonioUpfield,E:richardWide,F:st.F,G:kristinSetup},d:dmap({...stackD,A:[kiraFollow[0]+6,kiraFollow[1]],B:[coleFollow[0]-4,coleFollow[1]-6],C:charlieBackDef,D:antonioMarkDef,E:richardUpDef,G:kristinSetupDef}),routes:[route('disc',antonioToRichardUp)],body:`${name('D')} throws ${name('E')} wide toward the sideline. That gives ${name('E')} the angle for the next throw.`,whole:'Take the clean continuation when it is there.',why:''},
+  {title:`${name('G')} breaks up and right`,disc:'E',reset:'A',next:'G',discPos:richardWide,p:{A:kiraFollow,B:coleFollow,C:charlieBackDeep,D:antonioUpfield,E:richardWide,F:st.F,G:kristinBreak},d:dmap({...stackD,A:[kiraFollow[0]+6,kiraFollow[1]],B:[coleFollow[0]-4,coleFollow[1]-6],C:charlieBackDef,D:antonioMarkDef,E:richardUpDef,G:kristinBreakDef}),routes:[route('move',kristinUpfieldCut)],body:`${name('G')} goes upfield first, then breaks hard right. D7 is chasing from behind.`,whole:'The next cutter goes before the reset comes underneath.',why:''},
+  {title:`${name('E')} releases early`,disc:'E',discLabel:'In air',possession:false,reset:'A',next:'G',discPos:[86,18],p:{A:kiraFollow,B:coleFollow,C:charlieBackDeep,D:antonioUpfield,E:richardWide,F:st.F,G:kristinLead},d:dmap({...stackD,A:[kiraFollow[0]+6,kiraFollow[1]],B:[coleFollow[0]-4,coleFollow[1]-6],C:charlieBackDef,D:antonioMarkDef,E:richardUpDef,G:kristinLeadDef}),routes:[route('disc',richardToKristinUpfield)],body:`${name('E')} throws before ${name('G')} stops. The disc leads into the space ${name('G')} is running to.`,whole:'Lead the throw into space before the cutter has to slow down.',why:''},
+  {title:`${name('G')} scores`,disc:'G',reset:'E',next:'G',discPos:kristinUpfield,p:{A:kiraFollow,B:coleFollow,C:charlieBackDeep,D:antonioUpfield,E:richardWide,F:st.F,G:kristinUpfield},d:dmap({...stackD,A:[kiraFollow[0]+6,kiraFollow[1]],B:[coleFollow[0]-4,coleFollow[1]-6],C:charlieBackDef,D:antonioMarkDef,E:richardUpDef,G:kristinUpfieldDef}),routes:[],body:`${name('G')} runs onto the disc and catches it inbounds. That's the payoff: one clean continuation turns into a score.`,whole:'One clean continuation can become a score when the next cutter is ready.',why:'',scoreZone:'top',scoreText:'+1'},
   {title:'If covered: Kira comes underneath',disc:'E',reset:'A',next:'A',discPos:richardWide,p:{A:kiraDump,B:coleFollow,C:charlieBackDeep,D:antonioUpfield,E:richardWide,F:st.F,G:kristinUpfield},d:dmap({...stackD,A:[kiraDump[0]+4,kiraDump[1]],B:[coleFollow[0]-4,coleFollow[1]-6],C:charlieBackDef,D:antonioMarkDef,E:richardUpDef,G:kristinCoveredDef}),routes:[route('move',kiraUnderneathCut)],body:"If the upfield throw isn't clean, Kira comes underneath so Richard has a safe reset.",whole:'The reset is the covered branch, not the first look.',why:''},
   {title:'If covered: Richard hits Kira underneath',disc:'A',reset:'E',next:'B',discPos:kiraDump,p:{A:kiraDump,B:coleFollow,C:charlieBackDeep,D:antonioBack,E:richardWide,F:st.F,G:kristinUpfield},d:dmap({...stackD,A:[49,60],B:[70,52],C:charlieBackDef,D:[72,26],E:[84,24],G:kristinCoveredDef}),routes:[route('disc',richardToKiraReset)],body:"If Kristin is covered, Richard uses Kira underneath as the safe reset.",whole:'Use the safe reset when the upfield throw is not clean.',why:''},
   {title:'Kira looks to swing',disc:'A',reset:'B',next:'F',discPos:kiraDump,p:{A:kiraDump,B:kiraWide,C:charlieBackDeep,D:antonioBack,E:richardWait,F:st.F,G:st.G},d:dmap({...stackD,A:[kiraDump[0]+4,kiraDump[1]],B:[kiraWide[0]+6,kiraWide[1]],C:charlieBackDef,D:[72,32],E:[65,46],G:[54,31]}),routes:[route('choice',kiraToColeSwing)],body:`${name('A')} turns and looks to swing. ${name('F')} waits until the angle changes.`,whole:`Don’t cut before the swing matters.`,why:`The next cutter should time the cut off the thrower’s angle, not just run because they are next.`},
@@ -541,30 +541,20 @@ function playerBody(s){const ps=players(), p=ps.find(x=>x.id===player); if(!p)re
   if(player==='B'&&step===16)return `${p.name}, stay available behind the disc while the upfield look clears.`;
   if(player==='E'&&step===17)return `${p.name}, you’re now the live option in the lane ${name('C')} cleared.`;
   if(player==='D'&&step===17)return `${p.name}, read ${name('E')} after ${name('C')} clears. Don’t force it through traffic.`;
-  if(player==='D'&&step===18)return `${p.name}, reset to ${name('B')} if the next lane is not clean.`;
-  if(player==='B'&&step===18)return `${p.name}, be the safe reset when ${name('D')} needs help.`;
-  if(player==='A'&&step===19)return `${p.name}, stay wide and ready. ${name('B')} may need the safe swing.`;
-  if(player==='B'&&step===19)return `${p.name}, stop forcing upfield and look to ${name('A')}.`;
-  if(player==='A'&&step===20)return `${p.name}, start the L-cut by cutting up so the defender turns.`;
-  if(player==='A'&&step===21)return `${p.name}, plant and come back wide for the easy swing.`;
-  if(player==='E'&&step===21)return `${p.name}, start moving as the swing lane opens.`;
-  if(player==='B'&&step===22)return `${p.name}, swing to ${name('A')} to change the angle.`;
-  if(player==='A'&&step===22)return `${p.name}, catch the swing and face the break-side lane.`;
-  if(player==='E'&&step===22)return `${p.name}, keep attacking left as the disc swings.`;
-  if(player==='F'&&step===23)return `${p.name}, read the swing and prepare for the break-side lane.`;
-  if(player==='F'&&step===24)return `${p.name}, cut hard left into the break-side space.`;
-  if(player==='E'&&step===23)return `${p.name}, hold the stack and keep ${name('F')}'s lane clear.`;
-  if(player==='A'&&step===24)return `${p.name}, throw to ${name('E')} only if the break-side lane is clean.`;
-  if(player==='E'&&step===24)return `${p.name}, run through the clean break-side throw.`;
-  if(player==='G'&&step===25)return `${p.name}, fake right first so the defender moves.`;
-  if(player==='C'&&step===25)return `${p.name}, clear away so ${name('G')}'s lane stays open.`;
-  if(player==='G'&&step===26)return `${p.name}, plant and cut back left into space.`;
-  if(player==='E'&&step===27)return `${p.name}, look to ${name('G')} first, but use ${name('A')} as the reset if it’s not clean.`;
-  if(player==='A'&&step===27)return `${p.name}, cut up hard as the safety reset for ${name('E')}.`;
-  if(player==='E'&&step===28)return `${p.name}, throw to ${name('G')} only if the lane is clean.`;
-  if(player==='G'&&step===28)return `${p.name}, run through the catch in the left-side space.`;
-  if(player==='E'&&step===29)return `${p.name}, if covered, clear hard and leave the lane for ${name('F')}.`;
-  if(player==='F'&&step===29)return `${p.name}, wait for ${name('E')} to clear before you go.`;
+  if(player==='D'&&step===18)return `${p.name}, you have the disc. Look for ${name('E')} moving into the lane.`;
+  if(player==='E'&&step===18)return `${p.name}, cut into the next lane and show ${name('D')} the wide target.`;
+  if(player==='D'&&step===19)return `${p.name}, lead ${name('E')} wide with a curved throw.`;
+  if(player==='E'&&step===19)return `${p.name}, move wide and catch ${name('D')}'s lead pass.`;
+  if(player==='G'&&step===19)return `${p.name}, get ready. ${name('E')} is catching wide, and your cut is about to start.`;
+  if((player==='A'||player==='B')&&step===19)return `${p.name}, move upfield behind the play and stay available as help.`;
+  if(player==='G'&&step===20)return `${p.name}, go upfield first, then break hard right. Make D7 chase.`;
+  if(player==='E'&&step===20)return `${p.name}, turn upfield and see ${name('G')}'s cut.`;
+  if((player==='A'||player==='B')&&step===20)return `${p.name}, keep moving upfield behind the play. Stay ready as help.`;
+  if(player==='E'&&step===21)return `${p.name}, release early. Lead ${name('G')} into space.`;
+  if(player==='G'&&step===21)return `${p.name}, keep running. ${name('E')} is leading the disc into your path.`;
+  if((player==='A'||player==='B')&&step===21)return `${p.name}, hold the helper shape behind the play.`;
+  if(player==='G'&&step===22)return `${p.name}, run onto the disc and catch it inbounds.`;
+  if(player==='E'&&step===22)return `${p.name}, put the disc where ${name('G')} is running, not where they started.`;
   if(![s.disc,s.reset,s.next].includes(player))return `${p.name}, hold your lane and wait. If your cut gets covered, clear hard and get to the back.`;
   if(player===s.disc)return `${p.name}, read the first clean option. If nothing is there, use the reset.`;
   if(player===s.reset)return `${p.name}, stay available as the reset. Keep enough spacing for an easy pass.`;
@@ -600,18 +590,11 @@ function callout(s){
    15:{D:`Catch and check ${name('C')} first.`,C:'Keep moving upfield after the throw.'},
    16:{D:`Look ${name('C')} off if covered.`,C:'L-cut to the back if covered.',E:`Start as ${name('C')} clears.`},
    17:{E:`Be the next live option.`,D:`Read ${name('E')} without forcing it.`},
-   18:{D:`Reset to ${name('B')} if the lane is not clean.`,B:'Be the safe reset.'},
-   19:{B:`Look to ${name('A')} instead of forcing it.`,A:'Stay spaced for the swing.'},
-   20:{A:'Start the L-cut upfield.'},
-   21:{A:'Plant and come back wide.',E:'Start timing the break-side cut.'},
-   22:{B:`Swing to ${name('A')}.`,A:'Catch and face the new side.',E:'Keep attacking left.'},
-   23:{E:'Cut hard into the break-side lane.'},
-   24:{A:`Throw to ${name('E')} only if it’s clean.`,E:'Run through the clean throw.'},
-   25:{G:'Fake right first.',C:`Clear space for ${name('G')}.`},
-   26:{G:'Plant and cut back left.',C:'Keep clearing the lane.'},
-   27:{E:`Read ${name('G')} first.`,A:'Be the safety reset.'},
-   28:{E:`Throw to ${name('G')} if it’s clean.`,G:'Run through the catch.'},
-   29:{E:'Clear hard if covered.',F:'Wait for the next lane.'}
+   18:{D:`Look for ${name('E')} moving into the lane.`,E:`Cut into the next lane for ${name('D')}.`},
+   19:{D:`Lead ${name('E')} wide.`,E:`Catch wide near the sideline.`,G:'Get ready for your scoring cut.',A:'Move upfield behind the play.',B:'Move upfield behind the play.'},
+   20:{G:'Go upfield, then break hard right.',E:`Turn and read ${name('G')}.`,A:'Stay available as help.',B:'Stay available as help.'},
+   21:{E:`Release early to ${name('G')}.`,G:'Keep running onto the lead throw.',A:'Hold the helper shape.',B:'Hold the helper shape.'},
+   22:{G:'Catch it inbounds.',E:`Lead ${name('G')} into space.`}
   };
   if(jobs[step]?.[player])return ['Your job',jobs[step][player]];
  }
