@@ -74,7 +74,7 @@ For every contributor change:
 - summarize user-facing behavior affected
 - flag risky coordinate or route changes
 - verify desktop
-- verify mobile
+- verify representative mobile coverage across small, standard, and large phone viewports
 - verify Line 1
 - verify Line 2
 - verify selected-player view

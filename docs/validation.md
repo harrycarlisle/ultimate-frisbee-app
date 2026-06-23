@@ -45,14 +45,70 @@
 
 ## Mobile validation
 
+Do not claim "works on every phone." Use:
+
+> Passed representative mobile coverage across small, standard, and large phone viewports.
+
+### Mobile viewport matrix
+
+Tiny phone:
+
+- `320x568`
+- `360x640`
+- `375x667`
+
+Standard iPhone:
+
+- `390x844`
+- `393x852`
+- `414x896`
+
+Large phone:
+
+- `430x932`
+- `480x915`
+
+Short-height stress test:
+
+- narrow width with `600-667px` height
+
+Browser behavior:
+
+- iOS Safari or Safari-like viewport if available
+- Android Chrome or Chrome mobile emulation
+- touch interaction
+- reduced-motion mode
+
+### Mobile checks per viewport
+
+- No horizontal scroll.
+- Practice / Line / View controls are usable.
+- Edit roster does not overlap controls.
 - Field fits.
-- Dropdowns are usable.
+- Pucks are readable.
+- Disc glow is visible.
+- Route lines are visible.
+- Step card is readable.
 - Controls are tappable.
-- Cards are readable.
-- Player instruction tag is readable.
 - Score/confetti does not block the UI.
-- No horizontal scroll unless intentional.
-- Mobile final score sequence is still readable.
+- Selected-player notes are readable.
+- Step 1 pull animation works unless reduced-motion is enabled.
+- Next nudge works only when sessionStorage is clear.
+- Vertical Stack final score works.
+- Breaking the Cup final score works.
+- Horizontal Stack, Endzone Basics, Give-and-go Flow, and drills load.
+- No removed UI appears.
+- No app console errors.
+
+### Reporting mobile-only bugs
+
+If a bug appears on only one viewport, report:
+
+- viewport size
+- browser/emulation used
+- exact step/practice
+- screenshot if possible
+- severity: blocker, important, or polish
 
 ## Deploy validation
 
