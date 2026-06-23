@@ -259,9 +259,9 @@ function makePullSteps(){
   {title:'Cole reads Charlie',disc:'B',reset:'A',next:'C',focusPlayers:['B','C'],discPos:out,p:{A:hhTrail,B:out,C:charlieLane,D:st.D,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,C:[65.5,56.5]}),routes:[route('choice',coleReadCharlie)],body:`Open means throw. Covered means ${name('C')} clears and ${name('D')} is next.`,whole:'Read the first cut before choosing.',why:`The read comes first. ${name('B')} should not throw just because ${name('C')} started moving.`},
   {title:'If open: Cole throws to Charlie',disc:'C',reset:'B',next:'D',focusPlayers:['B','C'],discPos:charlieCatch,p:{A:hhTrail,B:out,C:charlieCatch,D:st.D,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,C:[69.4,53.2]}),routes:[route('disc',coleToCharlie)],body:'',whole:'',why:''},
   {title:'Charlie catches and looks upfield',disc:'C',reset:'B',next:'D',discPos:charlieCatch,p:{A:hhTrail,B:out,C:charlieCatch,D:st.D,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,C:[69.4,53.2],D:[55,49]}),routes:[],body:'The mark takes away one side. Turn and look for the next cut.',whole:'',why:''},
-  {title:`${name('D')} watches ${name('C')}'s catch and waits`,disc:'C',reset:'B',next:'D',focusPlayers:['B','C','D'],discPos:charlieCatch,p:{A:hhTrail,B:coleResetSpot,C:charlieCatch,D:antonioPrepSpot,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,B:coleDefReset,C:[69.4,53.2],D:[60,51]}),routes:[route('move',coleResetRight),route('defense',coleDefResetTrail)],body:'',whole:'',why:''},
-  {title:`${name('D')} fakes inside first to pull the defender`,disc:'C',reset:'B',next:'D',discPos:charlieCatch,p:{A:hhTrail,B:coleResetSpot,C:charlieCatch,D:antonioFakeSpot,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,B:coleDefReset,C:[69.4,53.2],D:[55,50]}),routes:[route('fake',antonioSellFake),route('defense',antonioDefBite)],body:'',whole:'',why:''},
-  {title:'Antonio cuts into the next lane',disc:'C',reset:'B',next:'D',discPos:charlieCatch,p:{A:hhTrail,B:coleResetSpot,C:charlieCatch,D:antonioLane,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,B:coleDefReset,C:[69.4,53.2],D:[66,47]}),routes:[route('move',antonioContinuationCut)],body:`${name('D')} plants and cuts wider upfield after ${name('C')} is ready.`,whole:'',why:`The timing keeps two cutters from bringing two defenders into the same lane.`},
+  {title:`${name('D')} watches ${name('C')}'s catch and waits`,disc:'C',reset:'B',next:'D',focusPlayers:['B','C','D'],discPos:charlieCatch,p:{A:hhTrail,B:out,C:charlieCatch,D:antonioPrepSpot,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,C:[69.4,53.2],D:[60,51]}),routes:[],body:'',whole:'',why:''},
+  {title:`${name('D')} fakes inside first to pull the defender`,disc:'C',reset:'B',next:'D',discPos:charlieCatch,p:{A:hhTrail,B:out,C:charlieCatch,D:antonioFakeSpot,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,C:[69.4,53.2],D:[55,50]}),routes:[route('fake',antonioSellFake),route('defense',antonioDefBite)],body:'',whole:'',why:''},
+  {title:'Antonio cuts into the next lane',disc:'C',reset:'B',next:'D',discPos:charlieCatch,p:{A:hhTrail,B:coleResetSpot,C:charlieCatch,D:antonioLane,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,B:coleDefReset,C:[69.4,53.2],D:[66,47]}),routes:[route('move',antonioContinuationCut),route('move',coleResetRight),route('defense',coleDefResetTrail)],body:`${name('D')} cuts into the next lane. ${name('B')} also heads over for the dump in case ${name('C')} needs it.`,whole:'',why:`The timing keeps two cutters from bringing two defenders into the same lane.`},
   {title:'Antonio wins separation',disc:'C',reset:'B',next:'D',discPos:charlieCatch,p:{A:hhTrail,B:coleResetAdjust,C:charlieCatch,D:antonioRelease,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,B:coleDefAdjust,C:[69.4,53.2],D:antonioOpenDef,E:stackD.E}),routes:[route('move',antonioFullCut)],body:`${name('D')} is wide and ahead of the defender. ${name('C')} checks the window.`,whole:'',why:''},
   {title:'If open: Charlie throws to Antonio',disc:'D',reset:'B',next:'E',discPos:antonioUpfield,p:{A:hhTrail,B:coleResetAdjust,C:charlieBackDeep,D:antonioUpfield,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,B:coleDefAdjust,C:charlieBackDef,D:[65.2,37.9],E:stackD.E}),routes:[route('disc',charlieToAntonioSafe),route('clear',charlieAfterThrowToBack)],body:`${name('D')} has separation. ${name('C')} throws, then clears directly behind ${name('G')} at the back of the stack.`,whole:'',why:'After throwing, the cutter must leave the lane so the new thrower has the next option.'},
   {title:'Antonio checks Charlie in the end zone',disc:'D',reset:'B',next:'C',discPos:antonioUpfield,p:{A:hhTrail,B:out,C:charlieUpfieldOption,D:antonioUpfield,E:st.E,F:st.F,G:st.G},d:dmap({...stackD,C:charlieUpfieldDef,D:antonioMarkDef,E:stackD.E}),routes:[route('move',charlieUpfieldContinue),route('choice',antonioToCharlieDenied)],body:`${name('C')} cuts right into the end zone from behind ${name('G')}. The mark takes away ${name('D')}'s backhand, so throw only if the window is clean.`,whole:`${name('D')} has two choices: take ${name('C')} in the end zone if clean, or look it off and move to the next cutter.`,why:'The front-side mark changes the throw. The end-zone option is there, but it has to be clean.'},
@@ -613,14 +613,16 @@ const pullActiveJobs={
   C:"run through the catch on the open branch."
  },
  9:{C:"catch, turn, and look upfield before the next cut starts."},
- 10:{D:()=>`watch ${name("C")}'s catch. Do not leave early.`},
+ 10:{D:()=>`watch ${name("C")}'s catch. Do not leave early.`,B:()=>`hold your handler spot. The dump comes on ${name("D")}'s cut.`},
  11:{
+  B:"hold your handler spot. Wait for the fake to set up the cut.",
   C:"stay balanced and keep your eyes upfield.",
   D:"sell the fake first. Make the defender move."
  },
  12:{
-  C:"read the continuation lane. Do not throw early.",
-  D:()=>`plant and cut upfield after ${name("C")} is ready.`,
+  B:()=>`move over for the dump. Give ${name("C")} a safe option if the next cut is covered.`,
+  C:()=>`read ${name("D")} first. ${name("B")} is the safe dump if needed.`,
+  D:()=>`plant and cut into the next lane.`,
   E:()=>`stay in the stack. This is still ${name("D")}'s lane.`
  },
  13:{
@@ -721,24 +723,24 @@ const pullHoldJobs={
   G:()=>`watch the throw reach ${name("C")}. Do not creep forward yet.`
  },
  9:{
-  B:()=>`stay behind the new thrower as the reset. Keep the angle easy.`,
+  B:()=>`hold your handler spot. The dump move comes on ${name("D")}'s cut.`,
   D:()=>`watch ${name("C")} turn upfield. Your setup starts after the catch is secure.`,
   E:()=>`stay in the stack and leave room for ${name("D")}'s setup.`,
   G:()=>`watch the mark arrive on ${name("C")}. You are still the back anchor.`
  },
  10:{
-  B:()=>`hold the reset a step behind ${name("C")}.`,
+  B:"hold your handler spot. Do not drift to the dump yet.",
   C:()=>`stay calm with the disc and wait for ${name("D")}'s fake to matter.`,
   E:()=>`hold the middle and do not leave before ${name("D")} moves the defender.`,
   G:()=>`stay patient at the back while ${name("D")} times the next cut.`
  },
  11:{
-  B:()=>`stay behind the disc as the safe outlet if ${name("D")} is covered.`,
+  B:"hold your handler spot while Antonio sells the fake.",
   E:()=>`stay in line. ${name("D")} still owns this lane.`,
   G:()=>`keep the back of the stack quiet while ${name("D")} sells the fake.`
  },
  12:{
-  B:"hold the reset and let the throw go only if the lane is clean.",
+  B:()=>`move over for the dump. Give ${name("C")} a safe option if the cut is covered.`,
   G:()=>`watch ${name("D")} go upfield, but keep the back of the stack spaced.`
  },
  13:{
