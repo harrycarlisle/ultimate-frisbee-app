@@ -61,6 +61,8 @@ Reference: <https://github.com/marcwagn/ultimate_analytics>
 
 This project shows how ultimate video can become a tactical board using player detection/tracking and a bird's-eye visualization.
 
+Local evaluation notes live in `docs/video-lab.md`. The external repo was cloned into `experiments/ultimate-analytics/`, which is ignored and must not be committed.
+
 Use it as inspiration for future film review and team-data features:
 
 - upload a clip and map players to pucks

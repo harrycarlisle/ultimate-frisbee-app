@@ -1,3 +1,19 @@
 .understand-anything/intermediate/
 .understand-anything/diff-overlay.json
+experiments/ultimate-analytics/
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.pt
+*.onnx
+*.pkl
+.venv/
+__pycache__/
+.streamlit/cache/
+*.csv
+*.parquet
+*.npy
+*.npz
+runs/
 

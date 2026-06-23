@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Video Lab | Learn Ultimate Frisbee</title>
+<style>
+:root{--cream:#f6f1e9;--card:#fffdfa;--ink:#0c1a1d;--muted:#52605e;--green:#0e4b24}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at top left,#fff 0,#f8f4ed 34%,var(--cream) 100%);color:var(--ink)}a{color:inherit}.shell{width:min(100% - 24px,1120px);margin:12px auto 32px;padding:26px;background:rgba(255,253,249,.9);border:1px solid #e5ddd2;border-radius:18px;box-shadow:0 18px 60px rgba(41,31,18,.08)}.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:34px}.back{border:1px solid #d8d0c5;border-radius:999px;background:#fffdfa;padding:9px 13px;font-size:13px;font-weight:900;text-decoration:none}.badge{display:inline-flex;border:1px solid rgba(14,75,36,.22);border-radius:999px;background:#fffdfa;color:var(--green);padding:5px 10px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:24px;align-items:center;margin-bottom:22px}.hero h1{font-size:54px;line-height:.98;margin:10px 0 12px;letter-spacing:-.03em}.hero p{font-size:19px;line-height:1.45;color:#34413f;margin:0}.board{min-height:300px;border-radius:18px;background:linear-gradient(180deg,#164f27,#113d22);position:relative;overflow:hidden;box-shadow:inset 0 0 0 2px rgba(255,255,255,.16),0 18px 42px rgba(18,44,23,.16)}.line{position:absolute;left:12%;right:12%;top:18%;height:1px;background:rgba(255,255,255,.35)}.line.bottom{top:82%}.puck{position:absolute;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#1669e8;color:#fff;border:3px solid #fff;font-weight:950;font-size:11px;box-shadow:0 8px 18px rgba(0,0,0,.24)}.p1{left:24%;top:62%}.p2{left:44%;top:48%}.p3{left:67%;top:30%}.p4{left:72%;top:21%}.disc{position:absolute;left:60%;top:34%;width:30px;height:12px;border-radius:50%;background:#fff;box-shadow:0 0 18px rgba(255,255,255,.8)}.path{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.path path{fill:none;stroke:#fff;stroke-width:1.4;stroke-dasharray:3 6;opacity:.8}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:22px}.card{background:var(--card);border:1px solid #e4dbd0;border-radius:14px;padding:18px;box-shadow:0 12px 28px rgba(42,31,18,.07)}.card h2{font-size:21px;margin:0 0 10px}.card p{margin:0;color:#3d4646;line-height:1.45}.card ul{margin:0;padding-left:18px;color:#3d4646;line-height:1.55}.status{border-color:#dfe8dc;background:linear-gradient(135deg,#f7fff8,#fffdfa)}.cta{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}.button{display:inline-flex;border-radius:999px;background:var(--green);color:#fff;text-decoration:none;padding:12px 16px;font-weight:950}.button.secondary{background:#fffdfa;color:#0e4b24;border:1px solid #d8d0c5}@media(max-width:760px){.shell{padding:18px}.top{margin-bottom:22px}.hero{grid-template-columns:1fr}.hero h1{font-size:38px}.hero p{font-size:16px}.grid{grid-template-columns:1fr}.board{min-height:250px}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <div class="top">
+    <span class="badge">Prototype</span>
+    <a class="back" href="index.html">Back to app</a>
+  </div>
+  <section class="hero">
+    <div>
+      <span class="badge">Video Lab</span>
+      <h1>Video Lab: turn ultimate film into a field-level teaching board.</h1>
+      <p>Teams already have film. Video Lab explores how a clip can become a simple puck board that shows spacing, timing, and the teachable moment.</p>
+      <div class="cta">
+        <a class="button" href="index.html">Open the teaching app</a>
+        <a class="button secondary" href="docs/video-lab.md">Read prototype notes</a>
+      </div>
+    </div>
+    <div class="board" aria-label="Video Lab tactical board concept">
+      <div class="line"></div><div class="line bottom"></div>
+      <svg class="path" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M24,62 C42,54 54,42 67,30 C70,26 72,23 74,21" /></svg>
+      <div class="puck p1">H1</div><div class="puck p2">C1</div><div class="puck p3">C2</div><div class="puck p4">+1</div><div class="disc"></div>
+    </div>
+  </section>
+  <section class="grid">
+    <article class="card">
+      <h2>How it will work</h2>
+      <ul>
+        <li>Upload a clip.</li>
+        <li>Map the players.</li>
+        <li>Watch the puck board.</li>
+        <li>Find the teaching moment.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h2>Why it matters</h2>
+      <p>Film is hard to teach from when everyone is chasing the disc. A tactical board makes spacing obvious and can turn one possession into a drill.</p>
+    </article>
+    <article class="card status">
+      <h2>Prototype status</h2>
+      <p>This is early. The teaching app is live and stays fast. Video analysis is being explored separately so the main app stays reliable.</p>
+    </article>
+    <article class="card">
+      <h2>Future workflow</h2>
+      <ul>
+        <li>Video in.</li>
+        <li>Player tracking.</li>
+        <li>Bird's-eye board.</li>
+        <li>Coaching notes.</li>
+        <li>Drill builder.</li>
+      </ul>
+    </article>
+  </section>
+</main>
+</body>
+</html>
