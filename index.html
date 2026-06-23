@@ -512,6 +512,28 @@ function stackNeighborText(id){
 function pullStandbyNote(p){return `${p.name}, stay connected to the stack and keep the lane open for the cutter.`}
 function pullScoringShapeNote(p){return `${p.name}, keep the shape behind the play. Don't crowd the scoring lane.`}
 function pullSafeFallback(p){return `${p.name}, hold your spot and keep the lane clear.`}
+function pullFJobs(step){
+ const n=name;
+ const jobs={
+  8:`stay connected, but be ready to cut to the open break side if the disc swings back through ${n('B')} to ${n('A')}.`,
+  9:`stay ready and keep watching the disc. Watch ${n('D')}'s cut, but don't leave the stack too early.`,
+  10:`hold the stack shape and watch the disc. ${n('D')} is waiting on ${n('C')}'s catch.`,
+  11:`watch the disc and ${n('D')}'s fake. Stay patient and don't cut too early.`,
+  12:`watch ${n('D')}'s cut and hold your lane. Don't crowd the active cutter.`,
+  13:`keep watching ${n('D')}. Stay ready if the disc swings back your way.`,
+  14:`watch ${n('C')} read ${n('D')}. Hold the stack and don't cut early.`,
+  15:`watch ${n('D')} check ${n('C')} upfield. Stay back and be ready if the disc swings.`,
+  16:`watch ${n('C')} clear and ${n('E')} go. Hold shape and be ready if the angle changes.`,
+  17:`watch ${n('E')} become the live option. Stay patient and don't crowd the lane.`,
+  18:`watch ${n('E')}. If ${n('E')} gets looked off, cut over fast so ${n('D')} has another option.`,
+  19:`hold the shape behind ${n('E')} and ${n('G')}. Stay ready, but don't crowd the scoring lane.`,
+  20:`prepare to cut up toward the end zone, then break right like an L cut if ${n('G')} is defended hard.`,
+  21:`stay out of ${n('G')}'s scoring lane. ${n('E')} is leading the throw.`,
+  22:`hold the shape behind the score. Let ${n('G')} finish the point.`
+ };
+ return jobs[step]||'';
+}
+function pullFBody(step,p){const note=pullFJobs(step);return note?`${p.name}, ${note}`:''}
 function pullEarlyBody(step,p){
  const early={
   0:{A:'read the pull and get to the disc early. Settle it before the first throw.',B:`track the pull and peel wide as the outlet for ${name('A')}.`,C:`climb into stack order. You'll cut after ${name('A')} and ${name('B')} settle the disc.`,D:`${stackNeighborText('D')} Hold your stack spot until ${name('C')}'s cut starts.`,E:`${stackNeighborText('E')} Stay central and get organized.`,F:`${stackNeighborText('F')} Don't drift into the first cutting lane.`,G:`${stackNeighborText('G')} Stay patient at the back of the stack.`},
@@ -563,6 +585,7 @@ function playerBody(s){const ps=players(), p=ps.find(x=>x.id===player); if(!p)re
  if(sequence==='pull'){
   if(step<4){const early=pullEarlyBody(step,p);if(early)return early}
   if(player==='A'){const kira=pullKiraBody(step,s,p);if(kira)return kira}
+  if(player==='F'&&step>=8){const fNote=pullFBody(step,p);if(fNote)return fNote}
   if(player==='B'&&step===4)return `${p.name}, feel the force. The flick side is the open side.`;
   if(player==='C'&&step===5)return `${p.name}, sell down-left first. Make the defender lean before you plant.`;
  if(player==='B'&&step===5)return `${p.name}, hold the disc and watch the fake. Don’t throw yet.`;
@@ -594,14 +617,12 @@ function playerBody(s){const ps=players(), p=ps.find(x=>x.id===player); if(!p)re
   if(player==='B'&&step===16)return `${p.name}, stay available behind the disc while the upfield look clears.`;
   if(player==='E'&&step===17)return `${p.name}, you’re now the live option in the lane ${name('C')} cleared.`;
   if(player==='D'&&step===17)return `${p.name}, read ${name('E')} after ${name('C')} clears. Don’t force it through traffic.`;
-  if(player==='F'&&step===18)return `${p.name}, watch ${name('E')}. If ${name('E')} gets looked off, cut over fast so ${name('D')} has another option.`;
   if(player==='D'&&step===18)return `${p.name}, you have the disc. Look for ${name('E')} moving into the lane.`;
   if(player==='E'&&step===18)return `${p.name}, cut into the next lane and show ${name('D')} the wide target.`;
   if(player==='D'&&step===19)return `${p.name}, lead ${name('E')} wide with a curved throw.`;
   if(player==='E'&&step===19)return `${p.name}, move wide and catch ${name('D')}'s lead pass.`;
   if(player==='G'&&step===19)return `${p.name}, get ready. ${name('E')} is catching wide, and your cut is about to start.`;
   if(player==='B'&&step===19)return `${p.name}, move upfield behind the play and stay available as help.`;
-  if(player==='F'&&step===20)return `${p.name}, prepare to cut up toward the end zone, then break right like an L cut if ${name('G')} is defended hard.`;
   if(player==='G'&&step===20)return `${p.name}, go upfield first, then break hard right. Make D7 chase.`;
   if(player==='E'&&step===20)return `${p.name}, turn upfield and see ${name('G')}'s cut.`;
   if(player==='B'&&step===20)return `${p.name}, keep moving upfield behind the play. Stay ready as help.`;
@@ -646,6 +667,7 @@ function callout(s){
   return ['Your job','Hold your space and be ready for the next throw.'];
  }
  if(sequence==='pull'&&step<4){const jobs={0:{A:'Read the pull and get to the disc early.',B:`Track the pull and peel wide as outlet for ${name('A')}.`,C:`Climb into stack order. You cut after ${name('A')} and ${name('B')} settle the disc.`,D:'Hold the front-middle lane. Don’t start early.',E:'Hold the middle lane and get organized.',F:'Get to the back-left of the stack and keep the lane open.',G:'Get to the back-right of the stack and keep the lane open.'},1:{A:'Read the pull and get under it early.',B:`Peel wide and be ready for ${name('A')}'s first pass.`,C:`Keep climbing into stack order. Wait for ${name('A')} and ${name('B')}.`,D:'Hold the front-middle lane. Don’t start early.',E:'Hold the middle lane and watch the handlers settle.',F:'Hold the back-left space.',G:'Hold the back-right space.'},2:{A:`Look to ${name('B')} first and make the easy throw.`,B:`Stay wide and ready while ${name('A')} settles the disc.`,C:`Hold the front. You'll cut after ${name('A')} and ${name('B')} settle the disc.`,D:'Hold the front-middle lane. Don’t start early.',E:'Hold the middle lane and watch the first pass.',F:'Hold the back-left space.',G:'Hold the back-right space.'},3:{A:`Hold your spot while ${name('B')} has the disc.`,B:'Read the stack and be ready for the first cut.',C:`Wait at the front for ${name('B')} to read the force.`,D:'Hold the front-middle lane. Don’t start early.',E:'Hold the middle lane and watch the first cut develop.',F:'Hold the back-left space.',G:'Hold the back-right space.'}};return ['Your job',jobs[step]?.[player]||'Move into shape and keep the first lane clear.']}
+if(sequence==='pull'&&player==='F'&&step>=8){const fJob=pullFJobs(step);if(fJob)return ['Your job',fJob.charAt(0).toUpperCase()+fJob.slice(1)]}
  if(sequence==='pull'){
   const jobs={
    4:{B:'Use the flick side. Don’t stare at the closed side.',C:'Get ready, but don’t leave before the force is set.'},
