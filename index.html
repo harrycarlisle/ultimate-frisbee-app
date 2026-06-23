@@ -41,7 +41,6 @@ label{display:block;font-size:11px;font-weight:720;color:#66706d;letter-spacing:
 .num.keep.mid35{top:49.65%!important;right:-220px!important;transform:none!important;writing-mode:vertical-rl;white-space:nowrap;line-height:1;color:rgba(255,255,255,.38);font-size:9px!important;letter-spacing:.08em;text-transform:uppercase;font-weight:900}
 @media(max-width:620px){.endline,.yard.keep{left:18px!important;right:18px!important}.num.keep.mid35{display:none!important}}
 .drill-cones{position:absolute;inset:0;z-index:7;pointer-events:none}.drill-cone{--x:50;--y:50;position:absolute;left:calc(var(--x)*1%);top:calc(var(--y)*1%);transform:translate(-50%,-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:16px solid #ff8a2a;filter:drop-shadow(0 2px 3px rgba(0,0,0,.28))}.drill-cone:after{content:attr(data-label);position:absolute;left:50%;top:16px;transform:translateX(-50%);color:#fffdfa;background:rgba(12,18,16,.72);border-radius:999px;padding:1px 5px;font-size:8px;font-weight:900;white-space:nowrap}@media(max-width:620px){.drill-cone{border-left-width:5px;border-right-width:5px;border-bottom-width:12px}.drill-cone:after{display:none}}
-.video-lab-card{width:min(100%,1084px);margin:14px auto 6px;border:1px solid #dfe8dc;border-radius:16px;background:linear-gradient(135deg,#f7fff8,#fffdfa 58%,#eef7f0);box-shadow:0 14px 34px rgba(42,31,18,.07);padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center}.video-lab-kicker{display:flex;align-items:center;gap:8px;margin-bottom:6px;color:#0e4b24;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.09em}.video-lab-badge{border:1px solid rgba(14,75,36,.22);border-radius:999px;background:#fffdfa;color:#0e4b24;padding:3px 8px;font-size:10px;font-weight:900;letter-spacing:.06em}.video-lab-card h2{margin:0 0 6px;font-size:24px;line-height:1.08}.video-lab-card p{margin:0;color:#3d4646;font-size:14.5px;line-height:1.38}.video-lab-points{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.video-lab-points span{border:1px solid #e4dbd0;background:#fffdfa;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:800;color:#34413f}.video-lab-actions{display:flex;flex-direction:column;gap:8px;align-items:flex-end}.video-lab-link{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:999px;background:#0e4b24;color:#fff;text-decoration:none;padding:10px 14px;font-size:13px;font-weight:900;white-space:nowrap}.video-lab-note{font-size:11px;color:#66706d;font-weight:760;text-align:right;max-width:180px}@media(max-width:760px){.video-lab-card{grid-template-columns:1fr;padding:13px 14px}.video-lab-actions{align-items:flex-start}.video-lab-note{text-align:left;max-width:none}.video-lab-card h2{font-size:20px}.video-lab-card p{font-size:13px}}@media(max-width:620px){.video-lab-card{margin:8px 0 0;border-radius:12px}.video-lab-points{display:none}.video-lab-link{width:100%}}
 </style>
 </head>
 <body>
@@ -51,18 +50,7 @@ label{display:block;font-size:11px;font-weight:720;color:#66706d;letter-spacing:
     <h1>Learn Ultimate Frisbee</h1>
     <p class="sub">A simple step-by-step guide to 7v7 ultimate.</p>
   </header>
-  <section class="video-lab-card" aria-labelledby="videoLabTitle">
-    <div>
-      <div class="video-lab-kicker">Video Lab <span class="video-lab-badge">Prototype</span></div>
-      <h2 id="videoLabTitle">Turn game film into a teaching board.</h2>
-      <p>Upload a clip, map the players, and see the possession as a clean tactical board. The goal is simple: help teams understand spacing, timing, and what should happen next.</p>
-      <div class="video-lab-points" aria-label="Video Lab feature ideas"><span>Upload a clip</span><span>Convert movement into pucks</span><span>Review spacing from above</span><span>Save teachable moments</span><span>Build drills from real possessions</span></div>
-    </div>
-    <div class="video-lab-actions">
-      <a class="video-lab-link" href="video-lab.html">Explore Video Lab</a>
-      <div class="video-lab-note">Prototype coming soon. The teaching app stays fast.</div>
-    </div>
-  </section>
+  <!-- Video Lab is intentionally hidden from the public homepage until the feature is ready. -->
   <section class="topbar">
     <label>Practice<div class="select"><select id="practiceSelect"></select></div><button class="edit practice-info-toggle" id="practiceInfoToggle" type="button">Why? ⓘ</button><div class="practice-info" id="practiceInfo"></div></label>
     <label>Line<div class="select"><select id="teamSelect"></select></div></label>
