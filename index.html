@@ -422,23 +422,23 @@ function makeEndzoneSteps(){
 }
 
 function makeBreakCupSteps(){
- const A=[48,68], B=[31.9,67.6], C0=[66,42], Cscore=[84,18], D0=[52,55], Dfake=[50,48], Dgap=[56,60], E0=[62,49], Eleft=[50,49], Eright=[74,45], F0=[42,47], G0=[58,36], Gflood=[88,17];
+ const A=[48,68], B=[31.9,67.6], C0=[48.2,29.8], Cscore=[78.9,16.9], D0=[48.8,50.2], Dfake=[45.2,51.4], Dgap=[61.3,69.5], E0=[48.5,43.5], Eleft=[44.7,44.1], Eright=[71.8,42.8], Ecatch=[77.3,43], F0=[48.2,36.6], G0=[47.8,22.6], Gflood=[61.8,12.9];
  const base={A,B,C:C0,D:D0,E:E0,F:F0,G:G0};
- const cupD={A:[48,64],B:[42,63],C:[55,63],D:[54,52],E:[63,48],F:[42,42],G:[59,32]};
- const antonioFake=[D0,[51,50],Dfake], antonioBack=[Dfake,[53,56],Dgap], kiraToAntonio=`M${A[0]},${A[1]} C50,64 53,61 ${Dgap[0]},${Dgap[1]}`;
- const richardLeft=[E0,[57,49],Eleft], richardRight=[Eleft,[62,47],Eright], antonioToRichard=`M${Dgap[0]},${Dgap[1]} C62,55 69,49 ${Eright[0]},${Eright[1]}`;
- const kristinFlood=[G0,[74,27],Gflood], charlieFlood=[C0,[76,32],Cscore], richardToKristin=`M${Eright[0]},${Eright[1]} C81,34 88,24 ${Gflood[0]},${Gflood[1]}`;
+ const cupD={A:[49.1,62.6],B:[37.6,60.3],C:[58.9,61.2],D:[52.6,52.3],E:[52.9,44.3],F:[52.3,25.3],G:[52.6,37.9]};
+ const antonioFake=[D0,[47.8,47.5],Dfake], antonioBack=[Dfake,[50,61],[55,67],Dgap], kiraToAntonio=`M${A[0]},${A[1]} C52,66 56,67 ${Dgap[0]},${Dgap[1]}`;
+ const richardLeft=[E0,[47,43],Eleft], richardRight=[Eleft,[56,43],[66,42.8],Eright], antonioToRichard=`M${Dgap[0]},${Dgap[1]} C70,66 79,55 ${Ecatch[0]},${Ecatch[1]}`;
+ const kristinFlood=[G0,[54,15],Gflood], charlieFlood=[C0,[62,25],[72,19],Cscore], richardToCharlie=`M${Ecatch[0]},${Ecatch[1]} C80,33 82,23 ${Cscore[0]},${Cscore[1]}`;
  return [
   {title:'The cup traps Kira',disc:'A',reset:'B',next:'D',discPos:A,p:base,d:dmap(cupD),routes:[],body:'A cup is three defenders around the thrower. Antonio’s job is to find the gap before the cup resets.',whole:'The cup blocks the easy forward throw. The offense needs one quick cut through the gap.',why:'A cup works when the thrower waits and stares at the wall.'},
-  {title:'Antonio sells the first move',disc:'A',reset:'B',next:'D',discPos:A,p:{...base,D:Dfake},d:dmap({...cupD,D:[52,51]}),routes:[route('fake',antonioFake)],body:'Antonio fakes up toward the cup. That makes the defense react.',whole:'The fake moves the cup just enough to open the gap.',why:'A small fake can make a zone defender take the wrong step.'},
-  {title:'Antonio comes back to the gap',disc:'A',reset:'B',next:'D',discPos:A,p:{...base,D:Dgap},d:dmap({...cupD,D:[52,55]}),routes:[route('move',antonioBack)],body:'Antonio comes back down into the open gap. Now Kira has a quick throw through the cup.',whole:'The gap is open now. Throw before the cup resets.',why:'The cup is weakest when it has to turn and reset.'},
-  {title:'Kira hits Antonio',disc:'D',reset:'A',next:'E',discPos:Dgap,p:{...base,D:Dgap},d:dmap({...cupD,A:[45,64],B:[41,62],C:[59,64],D:[52,55]}),routes:[route('disc',kiraToAntonio)],body:'Kira throws through the gap before the cup can reset.',whole:'The first throw breaks the cup. Now the disc has to keep moving.',why:'A quick throw through the gap makes the cup chase.'},
-  {title:'Richard sells left',disc:'D',reset:'A',next:'E',discPos:Dgap,p:{...base,D:Dgap,E:Eleft},d:dmap({...cupD,A:[46,63],B:[51,63],C:[58,64],D:[52,55],E:[52,52],F:[42,42],G:[59,32]}),routes:[route('move',richardLeft),route('defense',[[63,48],[57,50],[52,52]])],body:'Richard cuts left first. His defender follows.',whole:'Sell left before the right-side break.',why:'The first move pulls the defender away from the easy lane.'},
-  {title:'Richard breaks hard right',disc:'D',reset:'A',next:'E',discPos:Dgap,p:{...base,D:Dgap,E:Eright},d:dmap({...cupD,A:[45,63],B:[51,63],C:[59,64],D:[52,55],E:[63,59],F:[42,42],G:[59,32]}),routes:[route('move',richardRight)],body:'Richard breaks hard right before the defender can recover.',whole:'The defender is late. Antonio should take the easy throw.',why:'Move fast before the cup finds its shape again.'},
-  {title:'Antonio hits Richard',disc:'E',reset:'D',next:'G',discPos:Eright,p:{...base,D:Dgap,E:Eright},d:dmap({...cupD,A:[45,63],B:[51,63],C:[59,64],D:[52,55],E:[63,59],F:[42,42],G:[59,32]}),routes:[route('disc',antonioToRichard)],body:'Antonio takes the easy throw. The cup is behind the play now.',whole:'The second fast pass turns the break into real yards.',why:'A cup wants time. Quick throws take that time away.'},
-  {title:'The right side opens',disc:'E',reset:'D',next:'G',discPos:Eright,p:{...base,C:Cscore,D:Dgap,E:Eright,G:Gflood},d:dmap({...cupD,A:[45,64],B:[52,64],C:[62,62],D:[52,55],E:[70,53],F:[42,42],G:[78,24]}),routes:[route('move',kristinFlood),route('move',charlieFlood)],body:'Now the defense is chasing. Kristin and Charlie flood the right side before the cup resets.',whole:'The right side is open because the cup is still behind the play.',why:'Flooding the right side gives Richard two quick scoring options.'},
-  {title:'Richard picks the open player',disc:'G',reset:'E',next:'G',discPos:Gflood,p:{...base,C:Cscore,D:Dgap,E:Eright,G:Gflood},d:dmap({...cupD,A:[45,64],B:[52,64],C:[62,62],D:[52,55],E:[72,52],F:[42,42],G:[78,24]}),routes:[route('disc',richardToKristin)],body:'Richard looks right and throws to the open cutter.',whole:'Kristin is the cleaner option on the right side.',why:'The throw is open because D5 is still trying to recover.'},
-  {title:'And that’s a point',disc:'G',reset:'E',next:'G',discPos:Gflood,p:{...base,C:Cscore,D:Dgap,E:Eright,G:Gflood},d:dmap({...cupD,A:[45,64],B:[52,64],C:[62,62],D:[52,55],E:[70,49],F:[42,42],G:[78,24]}),routes:[],body:'The cup never catches up. One quick break turns into an easy point.',whole:'Break the cup, move fast, and score before it resets.',why:'',scoreZone:'top',scoreText:'+1'}
+  {title:'Antonio sells the first move',disc:'A',reset:'B',next:'D',discPos:A,p:{...base,D:Dfake},d:dmap({...cupD,D:[53.1,52]}),routes:[route('fake',antonioFake)],body:'Antonio fakes up toward the cup. That makes the defense react.',whole:'The fake moves the cup just enough to open the gap.',why:'A small fake can make a zone defender take the wrong step.'},
+  {title:'Antonio comes back to the gap',disc:'A',reset:'B',next:'D',discPos:A,p:{...base,D:Dgap},d:dmap({...cupD,D:[53.1,52]}),routes:[route('move',antonioBack)],body:'Antonio comes back down into the open gap. Now Kira has a quick throw through the cup.',whole:'The gap is open now. Throw before the cup resets.',why:'The cup is weakest when it has to turn and reset.'},
+  {title:'Kira hits Antonio',disc:'D',reset:'A',next:'E',discPos:Dgap,p:{...base,D:Dgap},d:dmap({...cupD,D:[53.1,52]}),routes:[route('disc',kiraToAntonio)],body:'Kira throws through the gap before the cup can reset.',whole:'The first throw breaks the cup. Now the disc has to keep moving.',why:'A quick throw through the gap makes the cup chase.'},
+  {title:'Richard sells left',disc:'D',reset:'A',next:'E',discPos:Dgap,p:{...base,D:Dgap,E:Eleft},d:dmap({...cupD,D:[53.1,52],E:[50,44.7]}),routes:[route('move',richardLeft),route('defense',[[52.9,44.3],[51,44.4],[50,44.7]])],body:'Richard cuts left first. His defender follows.',whole:'Sell left before the right-side break.',why:'The first move pulls the defender away from the easy lane.'},
+  {title:'Richard breaks hard right',disc:'D',reset:'A',next:'E',discPos:Dgap,p:{...base,D:Dgap,E:Eright},d:dmap({...cupD,D:[53.1,52],E:[50,44.7]}),routes:[route('move',richardRight)],body:'Richard breaks hard right before the defender can recover.',whole:'The defender is late. Antonio should take the easy throw.',why:'Move fast before the cup finds its shape again.'},
+  {title:'Antonio hits Richard',disc:'E',reset:'D',next:'C',discPos:Ecatch,p:{...base,D:Dgap,E:Ecatch},d:dmap({...cupD,D:[53.1,52],E:[71.2,42.7]}),routes:[route('disc',antonioToRichard)],body:'Antonio takes the easy throw. The cup is behind the play now.',whole:'The second fast pass turns the break into real yards.',why:'A cup wants time. Quick throws take that time away.'},
+  {title:'The right side opens',disc:'E',reset:'D',next:'C',discPos:Ecatch,p:{...base,C:Cscore,D:Dgap,E:Ecatch,G:Gflood},d:dmap({...cupD,D:[53.1,52],E:[71.2,42.7],F:[57.9,17.4]}),routes:[route('move',kristinFlood),route('move',charlieFlood)],body:'Now the defense is chasing. Kristin and Charlie flood the right side before the cup resets.',whole:'The right side is open because the cup is still behind the play.',why:'Flooding the right side gives Richard two quick scoring options.'},
+  {title:'Richard picks the open player',disc:'C',reset:'E',next:'C',discPos:Cscore,p:{...base,C:Cscore,D:Dgap,E:Ecatch,G:Gflood},d:dmap({...cupD,D:[53.1,52],E:[71.2,42.7],F:[57.9,17.4]}),routes:[route('disc',richardToCharlie)],body:'Richard looks right and throws to the open cutter.',whole:'Charlie is the cleaner option on the right side.',why:'The throw is open because D5 is still trying to recover.'},
+  {title:'And that’s a point',disc:'C',reset:'E',next:'C',discPos:Cscore,p:{...base,C:Cscore,D:Dgap,E:Ecatch,G:Gflood},d:dmap({...cupD,D:[53.1,52],E:[71.2,42.7],F:[57.9,17.4]}),routes:[],body:'The cup never catches up. One quick break turns into an easy point.',whole:'Break the cup, move fast, and score before it resets.',why:'',scoreZone:'top',scoreText:'+1'}
  ];
 }
 
@@ -520,9 +520,9 @@ function playerBody(s){const ps=players(), p=ps.find(x=>x.id===player); if(!p)re
    4:{E:'sell left first. Make D5 follow.',D:'hold the disc and watch Richard sell left.'},
    5:{E:'break hard right before D5 recovers.',D:'read Richard breaking right.'},
    6:{D:'take the easy throw to Richard.',E:'catch on the right and look upfield.'},
-   7:{E:'look right before the cup resets.',G:'flood the right side and stay wide.',C:'flood the right side as the second option.'},
-   8:{E:'throw to the open cutter on the right.',G:'stay wide and run onto the score.',C:'give Richard another scoring option.'},
-   9:{G:'catch it inbounds for the point.',E:'you found the open cutter before the cup reset.'}
+   7:{E:'look right before the cup resets.',C:'flood the right side and stay wide.',G:'flood the right side as the second option.'},
+   8:{E:'throw to the open cutter on the right.',C:'stay wide and run onto the score.',G:'give Richard another scoring option.'},
+   9:{C:'catch it inbounds for the point.',E:'you found the open cutter before the cup reset.'}
   };
   if(jobs[step]?.[player])return `${p.name}, ${jobs[step][player]}`;
   return `${p.name}, hold your space and be ready for the next throw.`;
@@ -604,9 +604,9 @@ function callout(s){
    4:{E:'Sell left.',D:'Watch Richard.'},
    5:{E:'Break hard right.',D:'Read the right cut.'},
    6:{D:'Hit Richard.',E:'Catch and look right.'},
-   7:{E:'Look right.',G:'Flood the right side.',C:'Flood the right side.'},
-   8:{E:'Throw to the open cutter.',G:'Run onto the score.',C:'Be the other scoring option.'},
-   9:{G:'Catch it for the point.',E:'You moved it before the cup reset.'}
+   7:{E:'Look right.',C:'Flood the right side.',G:'Flood the right side.'},
+   8:{E:'Throw to the open cutter.',C:'Run onto the score.',G:'Be the other scoring option.'},
+   9:{C:'Catch it for the point.',E:'You moved it before the cup reset.'}
   };
   if(jobs[step]?.[player])return ['Your job',jobs[step][player]];
   return ['Your job','Hold your space and be ready for the next throw.'];
