@@ -422,24 +422,23 @@ function makeEndzoneSteps(){
 }
 
 function makeBreakCupSteps(){
- const A=[48,68], B=[35,70], C=[65,70], D0=[50,55], Dbreak=[34,56], E0=[62,48], Ecut=[72,51], F0=[43,44], G0=[58,36], Gfake=[54,38], Gscore=[72,22];
- const base={A,B,C,D:D0,E:E0,F:F0,G:G0};
- const cupD={A:[49,63],B:[41,61],C:[57,61],D:[51,52],E:[64,45],F:[43,40],G:[59,33]};
- const breakLane=`M${A[0]},${A[1]} C43,63 38,58 ${Dbreak[0]},${Dbreak[1]}`;
- const antonioBreak=[D0,[43,58],Dbreak];
- const richardCut=[E0,[66,50],Ecut], antonioToRichard=`M${Dbreak[0]},${Dbreak[1]} C45,54 60,52 ${Ecut[0]},${Ecut[1]}`;
- const kristinFake=[G0,Gfake], kristinDeep=[Gfake,[64,30],Gscore], richardToKristin=`M${Ecut[0]},${Ecut[1]} C76,42 76,30 ${Gscore[0]},${Gscore[1]}`;
+ const A=[48,68], B=[31.9,67.6], C0=[66,42], Cscore=[84,18], D0=[52,55], Dfake=[50,48], Dgap=[56,60], E0=[62,49], Eleft=[50,49], Eright=[74,45], F0=[42,47], G0=[58,36], Gflood=[88,17];
+ const base={A,B,C:C0,D:D0,E:E0,F:F0,G:G0};
+ const cupD={A:[48,64],B:[42,63],C:[55,63],D:[54,52],E:[63,48],F:[42,42],G:[59,32]};
+ const antonioFake=[D0,[51,50],Dfake], antonioBack=[Dfake,[53,56],Dgap], kiraToAntonio=`M${A[0]},${A[1]} C50,64 53,61 ${Dgap[0]},${Dgap[1]}`;
+ const richardLeft=[E0,[57,49],Eleft], richardRight=[Eleft,[62,47],Eright], antonioToRichard=`M${Dgap[0]},${Dgap[1]} C62,55 69,49 ${Eright[0]},${Eright[1]}`;
+ const kristinFlood=[G0,[74,27],Gflood], charlieFlood=[C0,[76,32],Cscore], richardToKristin=`M${Eright[0]},${Eright[1]} C81,34 88,24 ${Gflood[0]},${Gflood[1]}`;
  return [
   {title:'The cup traps Kira',disc:'A',reset:'B',next:'D',discPos:A,p:base,d:dmap(cupD),routes:[],body:'A cup is three defenders around the thrower. Antonio’s job is to find the gap before the cup resets.',whole:'The cup blocks the easy forward throw. The offense needs one quick cut through the gap.',why:'A cup works when the thrower waits and stares at the wall.'},
-  {title:'Antonio finds the gap',disc:'A',reset:'B',next:'D',discPos:A,p:base,d:dmap(cupD),routes:[route('choice',[A,[42,62],Dbreak])],body:'Antonio looks for the space between defenders. He needs to move before the cup can settle.',whole:'The gap is open for a moment. Kira has to be ready.',why:'The first cutter gives the thrower a target through the cup.'},
-  {title:'Antonio breaks left',disc:'A',reset:'B',next:'D',discPos:A,p:{...base,D:Dbreak},d:dmap({...cupD,A:[48,63],B:[41,61],C:[56,61],D:[43,58]}),routes:[route('move',antonioBreak)],body:'Antonio runs through the cup, then breaks left into open space.',whole:'Only Antonio moves. Everyone else stays ready.',why:'The cut works because it goes through a real gap, not through a defender.'},
-  {title:'Kira hits the break',disc:'D',reset:'A',next:'E',discPos:Dbreak,p:{...base,D:Dbreak},d:dmap({...cupD,A:[48,63],B:[41,61],C:[56,61],D:[43,58]}),routes:[route('disc',breakLane)],body:'Kira throws as soon as Antonio clears the cup. Waiting gives the defense time to close.',whole:'The first throw breaks the cup. Now the disc has to keep moving.',why:'The cup is weakest right after the first clean pass through it.'},
-  {title:'Don’t let the cup reset',disc:'D',reset:'B',next:'E',discPos:Dbreak,p:{...base,D:Dbreak},d:dmap({A:[43,62],B:[49,62],C:[56,63],D:[43,58],E:[64,45],F:[43,40],G:[59,33]}),routes:[],body:'Once the disc gets through, don’t pause. The cup is trying to reset around Antonio.',whole:'This is a read beat. Antonio has the disc and looks for the next fast pass.',why:'Standing still lets the cup become a wall again.'},
-  {title:'Richard cuts across',disc:'D',reset:'B',next:'E',discPos:Dbreak,p:{...base,D:Dbreak,E:Ecut},d:dmap({A:[43,62],B:[49,62],C:[56,63],D:[43,58],E:[66,53],F:[43,40],G:[59,33]}),routes:[route('move',richardCut)],body:'Richard cuts across while the defense is still turning.',whole:'Only Richard moves here. Antonio keeps the disc and reads the lane.',why:'The next cutter goes before the cup can find a new shape.'},
-  {title:'Antonio moves it quickly',disc:'E',reset:'D',next:'G',discPos:Ecut,p:{...base,D:Dbreak,E:Ecut},d:dmap({A:[43,62],B:[49,62],C:[56,63],D:[43,58],E:[66,53],F:[43,40],G:[59,33]}),routes:[route('disc',antonioToRichard)],body:'Antonio moves the disc quickly. That keeps the cup chasing instead of trapping.',whole:'The second fast pass turns the break into real flow.',why:'A cup wants time. Quick throws take that time away.'},
-  {title:'Kristin starts with a fake',disc:'E',reset:'D',next:'G',discPos:Ecut,p:{...base,D:Dbreak,E:Ecut,G:Gfake},d:dmap({A:[43,62],B:[49,62],C:[56,63],D:[43,58],E:[66,53],F:[43,40],G:[60,37]}),routes:[route('fake',kristinFake)],body:'Kristin starts with a short fake. When the defender follows, the deep space opens.',whole:'The fake is small. It just moves the defender enough to open the next cut.',why:'The back cutter waits until the disc is through the cup before going.'},
-  {title:'Kristin goes deep',disc:'E',reset:'D',next:'G',discPos:Ecut,p:{...base,D:Dbreak,E:Ecut,G:Gscore},d:dmap({A:[43,62],B:[49,62],C:[56,63],D:[43,58],E:[66,53],F:[43,40],G:[68,27]}),routes:[route('move',kristinDeep)],body:'Kristin cuts hard into the open space before the defense catches up.',whole:'Richard has the disc. The deep lane is open because the cup is still turning.',why:'The third cut finishes the advantage created by the first break.'},
-  {title:'Break complete',disc:'G',reset:'E',next:'D',discPos:Gscore,p:{...base,D:Dbreak,E:Ecut,G:Gscore},d:dmap({A:[43,62],B:[49,62],C:[56,63],D:[43,58],E:[66,53],F:[43,40],G:[68,27]}),routes:[route('disc',richardToKristin)],body:'The cup is broken. One quick cut got the disc through, and the next two throws kept the defense behind.',whole:'Break through, move it fast, then keep going before the cup resets.',why:'That’s the beginner rule for beating a cup.'}
+  {title:'Antonio sells the first move',disc:'A',reset:'B',next:'D',discPos:A,p:{...base,D:Dfake},d:dmap({...cupD,D:[52,51]}),routes:[route('fake',antonioFake)],body:'Antonio fakes up toward the cup. That makes the defense react.',whole:'The fake moves the cup just enough to open the gap.',why:'A small fake can make a zone defender take the wrong step.'},
+  {title:'Antonio comes back to the gap',disc:'A',reset:'B',next:'D',discPos:A,p:{...base,D:Dgap},d:dmap({...cupD,D:[52,55]}),routes:[route('move',antonioBack)],body:'Antonio comes back down into the open gap. Now Kira has a quick throw through the cup.',whole:'The gap is open now. Throw before the cup resets.',why:'The cup is weakest when it has to turn and reset.'},
+  {title:'Kira hits Antonio',disc:'D',reset:'A',next:'E',discPos:Dgap,p:{...base,D:Dgap},d:dmap({...cupD,A:[45,64],B:[41,62],C:[59,64],D:[52,55]}),routes:[route('disc',kiraToAntonio)],body:'Kira throws through the gap before the cup can reset.',whole:'The first throw breaks the cup. Now the disc has to keep moving.',why:'A quick throw through the gap makes the cup chase.'},
+  {title:'Richard sells left',disc:'D',reset:'A',next:'E',discPos:Dgap,p:{...base,D:Dgap,E:Eleft},d:dmap({...cupD,A:[46,63],B:[51,63],C:[58,64],D:[52,55],E:[52,52],F:[42,42],G:[59,32]}),routes:[route('move',richardLeft),route('defense',[[63,48],[57,50],[52,52]])],body:'Richard cuts left first. His defender follows.',whole:'Sell left before the right-side break.',why:'The first move pulls the defender away from the easy lane.'},
+  {title:'Richard breaks hard right',disc:'D',reset:'A',next:'E',discPos:Dgap,p:{...base,D:Dgap,E:Eright},d:dmap({...cupD,A:[45,63],B:[51,63],C:[59,64],D:[52,55],E:[63,59],F:[42,42],G:[59,32]}),routes:[route('move',richardRight)],body:'Richard breaks hard right before the defender can recover.',whole:'The defender is late. Antonio should take the easy throw.',why:'Move fast before the cup finds its shape again.'},
+  {title:'Antonio hits Richard',disc:'E',reset:'D',next:'G',discPos:Eright,p:{...base,D:Dgap,E:Eright},d:dmap({...cupD,A:[45,63],B:[51,63],C:[59,64],D:[52,55],E:[63,59],F:[42,42],G:[59,32]}),routes:[route('disc',antonioToRichard)],body:'Antonio takes the easy throw. The cup is behind the play now.',whole:'The second fast pass turns the break into real yards.',why:'A cup wants time. Quick throws take that time away.'},
+  {title:'The right side opens',disc:'E',reset:'D',next:'G',discPos:Eright,p:{...base,C:Cscore,D:Dgap,E:Eright,G:Gflood},d:dmap({...cupD,A:[45,64],B:[52,64],C:[62,62],D:[52,55],E:[70,53],F:[42,42],G:[78,24]}),routes:[route('move',kristinFlood),route('move',charlieFlood)],body:'Now the defense is chasing. Kristin and Charlie flood the right side before the cup resets.',whole:'The right side is open because the cup is still behind the play.',why:'Flooding the right side gives Richard two quick scoring options.'},
+  {title:'Richard picks the open player',disc:'G',reset:'E',next:'G',discPos:Gflood,p:{...base,C:Cscore,D:Dgap,E:Eright,G:Gflood},d:dmap({...cupD,A:[45,64],B:[52,64],C:[62,62],D:[52,55],E:[72,52],F:[42,42],G:[78,24]}),routes:[route('disc',richardToKristin)],body:'Richard looks right and throws to the open cutter.',whole:'Kristin is the cleaner option on the right side.',why:'The throw is open because D5 is still trying to recover.'},
+  {title:'And that’s a point',disc:'G',reset:'E',next:'G',discPos:Gflood,p:{...base,C:Cscore,D:Dgap,E:Eright,G:Gflood},d:dmap({...cupD,A:[45,64],B:[52,64],C:[62,62],D:[52,55],E:[70,49],F:[42,42],G:[78,24]}),routes:[],body:'The cup never catches up. One quick break turns into an easy point.',whole:'Break the cup, move fast, and score before it resets.',why:'',scoreZone:'top',scoreText:'+1'}
  ];
 }
 
@@ -512,6 +511,22 @@ function playerBody(s){const ps=players(), p=ps.find(x=>x.id===player); if(!p)re
   const jobs={A:'You’re the left handler reset. Stay wide so the thrower always has a safe swing.',B:'You’re the middle handler. Read the cutter, then swing if it’s covered.',C:'You’re the right handler. Stay wide and be ready when the disc swings to your side.',D:'You’re the first cutter. Fake deep, cut under, then clear if the throw is not there.',E:'You’re the continuation cutter. Wait for the under catch, then attack deep or clear.',F:'You’re the next-side cutter. Wait until the swing changes the angle, then cut under.',G:'You’re the far-side deep option. Time your cut after the under catch.'};
   return `${p.name}, ${jobs[player]||'hold your spacing and wait for the lane to open.'}`;
  }
+ if(sequence==='cup'){
+  const jobs={
+   0:{A:'hold the disc and wait for Antonio to hit the gap.',D:'find the gap before the cup resets.'},
+   1:{D:'fake up first. Make the cup react.',A:'hold the disc and watch the fake.'},
+   2:{D:'come back down into the open gap.',A:'get ready to throw through the gap.'},
+   3:{A:'throw through the gap before the cup resets.',D:'catch and move it quickly.'},
+   4:{E:'sell left first. Make D5 follow.',D:'hold the disc and watch Richard sell left.'},
+   5:{E:'break hard right before D5 recovers.',D:'read Richard breaking right.'},
+   6:{D:'take the easy throw to Richard.',E:'catch on the right and look upfield.'},
+   7:{E:'look right before the cup resets.',G:'flood the right side and stay wide.',C:'flood the right side as the second option.'},
+   8:{E:'throw to the open cutter on the right.',G:'stay wide and run onto the score.',C:'give Richard another scoring option.'},
+   9:{G:'catch it inbounds for the point.',E:'you found the open cutter before the cup reset.'}
+  };
+  if(jobs[step]?.[player])return `${p.name}, ${jobs[step][player]}`;
+  return `${p.name}, hold your space and be ready for the next throw.`;
+ }
  if(sequence==='pull'&&step<4){
   const direct={A:`${p.name}, you're reading the pull. Get to the landing spot early and get the disc settled.`,B:`${p.name}, you're the reset/outlet. Get wide enough that ${name('A')} has an easy first pass.`,C:`${p.name}, you're near the front of the stack. ${stackNeighborText('C')} Get organized, then be ready to make the first real cut.`,D:`${p.name}, hold your stack spot. ${stackNeighborText('D')} Wait until ${name('C')}'s cut starts.`,E:`${p.name}, you're in the middle of the stack. ${stackNeighborText('E')}\n\nStay central, get organized quickly, and watch the first cut develop.`,F:`${p.name}, hold your stack spot. ${stackNeighborText('F')} Don't drift into the first cutting lane.`,G:`${p.name}, hold the back of the stack. ${stackNeighborText('G')} Stay patient and keep the lane clear.`};
   return direct[player];
@@ -580,6 +595,22 @@ function callout(s){
  if(sequence==='ho'){
   if(step<4){const startJobs={A:'Field the pull, then find Cole.',B:'Be Kira’s first outlet.',C:'Become the right swing handler.',D:'Wait as the first cutter.',E:'Spread wide and wait.',F:'Spread wide and wait.',G:'Hold the far-side space.'};return ['Your job',startJobs[player]||'Move into the horizontal shape.']}
   const jobs={A:'Stay wide as the left reset.',B:'Read the cutter, then swing if it’s covered.',C:'Be the right swing handler.',D:'Fake deep, cut under, then clear.',E:'Wait, then attack deep after the under catch.',F:'Cut from the new angle after the swing.',G:'Attack deep from the far side or clear.'};return ['Your job',jobs[player]||'Hold your spacing.']}
+ if(sequence==='cup'){
+  const jobs={
+   0:{A:'Hold the disc.',D:'Find the gap.'},
+   1:{D:'Fake up first.',A:'Watch the fake.'},
+   2:{D:'Come back to the gap.',A:'Prepare the quick throw.'},
+   3:{A:'Throw through the gap.',D:'Catch and move it.'},
+   4:{E:'Sell left.',D:'Watch Richard.'},
+   5:{E:'Break hard right.',D:'Read the right cut.'},
+   6:{D:'Hit Richard.',E:'Catch and look right.'},
+   7:{E:'Look right.',G:'Flood the right side.',C:'Flood the right side.'},
+   8:{E:'Throw to the open cutter.',G:'Run onto the score.',C:'Be the other scoring option.'},
+   9:{G:'Catch it for the point.',E:'You moved it before the cup reset.'}
+  };
+  if(jobs[step]?.[player])return ['Your job',jobs[step][player]];
+  return ['Your job','Hold your space and be ready for the next throw.'];
+ }
  if(sequence==='pull'&&step<4){const jobs={A:'Get to the landing spot calmly. Pick up the disc and look for Cole.',B:'Be the safe outlet. Stay wide and ready for the first pass.',C:'Wait at the front. You cut after Kira and Cole settle the disc.',D:'Hold the front-middle lane. Don’t start early.',E:'Hold the middle lane and get ready for the next cut.',F:'Get to the back-left of the stack and keep the lane open.',G:'Get to the back-right of the stack and keep the lane open.'};return ['Your job',jobs[player]||'Move into shape and keep the first lane clear.']}
  if(sequence==='pull'){
   const jobs={
