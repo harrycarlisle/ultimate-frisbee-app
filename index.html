@@ -431,7 +431,7 @@ function makeBreakCupSteps(){
  return [
   {title:'The cup traps Kira',disc:'A',reset:'B',next:'D',discPos:A,p:base,d:dmap(cupD),routes:[],body:'A cup is three defenders around the thrower. Antonio’s job is to find the gap before the cup resets.',whole:'The cup blocks the easy forward throw. The offense needs one quick cut through the gap.',why:'A cup works when the thrower waits and stares at the wall.'},
   {title:'Antonio sells the first move',disc:'A',reset:'B',next:'D',discPos:A,p:{...base,D:Dfake},d:dmap({...cupD,D:[53.1,52]}),routes:[route('fake',antonioFake)],body:'Antonio fakes up toward the cup. That makes the defense react.',whole:'The fake moves the cup just enough to open the gap.',why:'A small fake can make a zone defender take the wrong step.'},
-  {title:'Antonio comes back to the gap',disc:'A',reset:'B',next:'D',discPos:A,p:{...base,D:Dgap},d:dmap({...cupD,D:[53.1,52]}),routes:[route('move',antonioBack)],body:'Antonio comes back down into the open gap. Now Kira has a quick throw through the cup.',whole:'The gap is open now. Throw before the cup resets.',why:'The cup is weakest when it has to turn and reset.'},
+  {title:'Antonio breaks down through the cup',disc:'A',reset:'B',next:'D',discPos:A,p:{...base,D:Dgap},d:dmap({...cupD,D:[53.1,52]}),routes:[route('move',antonioBack)],body:'Antonio cuts hard down through the cup. Now Kira can quickly swing the disc to Antonio.',whole:'The gap is open now. Throw before the cup resets.',why:'The cup is weakest when it has to turn and reset.'},
   {title:'Kira hits Antonio',disc:'D',reset:'A',next:'E',discPos:Dgap,p:{...base,D:Dgap},d:dmap({...cupD,D:[53.1,52]}),routes:[route('disc',kiraToAntonio)],body:'Kira throws through the gap before the cup can reset.',whole:'The first throw breaks the cup. Now the disc has to keep moving.',why:'A quick throw through the gap makes the cup chase.'},
   {title:'Richard sells left',disc:'D',reset:'A',next:'E',discPos:Dgap,p:{...base,D:Dgap,E:Eleft},d:dmap({...cupD,D:[53.1,52],E:[50,44.7]}),routes:[route('move',richardLeft),route('defense',[[52.9,44.3],[51,44.4],[50,44.7]])],body:'Richard cuts left first. His defender follows.',whole:'Sell left before the right-side break.',why:'The first move pulls the defender away from the easy lane.'},
   {title:'Richard breaks hard right',disc:'D',reset:'A',next:'E',discPos:Dgap,p:{...base,D:Dgap,E:Eright},d:dmap({...cupD,D:[53.1,52],E:[50,44.7]}),routes:[route('move',richardRight)],body:'Richard breaks hard right before the defender can recover.',whole:'The defender is late. Antonio should take the easy throw.',why:'Move fast before the cup finds its shape again.'},
@@ -515,7 +515,7 @@ function playerBody(s){const ps=players(), p=ps.find(x=>x.id===player); if(!p)re
   const jobs={
    0:{A:'hold the disc and wait for Antonio to hit the gap.',D:'find the gap before the cup resets.'},
    1:{D:'fake up first. Make the cup react.',A:'hold the disc and watch the fake.'},
-   2:{D:'come back down into the open gap.',A:'get ready to throw through the gap.'},
+   2:{D:'cut hard down through the cup.',A:'get ready to swing the disc to Antonio.'},
    3:{A:'throw through the gap before the cup resets.',D:'catch and move it quickly.'},
    4:{E:'sell left first. Make D5 follow.',D:'hold the disc and watch Richard sell left.'},
    5:{E:'break hard right before D5 recovers.',D:'read Richard breaking right.'},
@@ -599,7 +599,7 @@ function callout(s){
   const jobs={
    0:{A:'Hold the disc.',D:'Find the gap.'},
    1:{D:'Fake up first.',A:'Watch the fake.'},
-   2:{D:'Come back to the gap.',A:'Prepare the quick throw.'},
+   2:{D:'Cut hard down through the cup.',A:'Prepare the quick throw.'},
    3:{A:'Throw through the gap.',D:'Catch and move it.'},
    4:{E:'Sell left.',D:'Watch Richard.'},
    5:{E:'Break hard right.',D:'Read the right cut.'},
