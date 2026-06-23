@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gameplay Analyzer | Learn Ultimate Frisbee</title>
+<style>
+:root{--cream:#f6f1e9;--card:#fffdfa;--ink:#0c1a1d;--muted:#52605e;--green:#0e4b24;--field:#113d22;--blue:#1669e8}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at top left,#fff 0,#f8f4ed 34%,var(--cream) 100%);color:var(--ink)}a{color:inherit}.shell{width:min(100% - 24px,1120px);margin:12px auto 32px;padding:26px;background:rgba(255,253,249,.9);border:1px solid #e5ddd2;border-radius:18px;box-shadow:0 18px 60px rgba(41,31,18,.08)}.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:30px}.back{border:1px solid #d8d0c5;border-radius:999px;background:#fffdfa;padding:9px 13px;font-size:13px;font-weight:900;text-decoration:none}.eyebrow,.badge{display:inline-flex;border:1px solid rgba(14,75,36,.22);border-radius:999px;background:#fffdfa;color:var(--green);padding:5px 10px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.95fr);gap:24px;align-items:center}.hero h1{font-size:54px;line-height:.98;margin:10px 0 12px;letter-spacing:-.03em}.hero p{font-size:19px;line-height:1.45;color:#34413f;margin:0}.cta{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}.button{display:inline-flex;border-radius:999px;background:var(--green);color:#fff;text-decoration:none;padding:12px 16px;font-weight:950;border:0}.button[aria-disabled="true"]{opacity:.78;cursor:not-allowed}.button.secondary{background:#fffdfa;color:var(--green);border:1px solid #d8d0c5}.mockup{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch}.video-card,.board{min-height:270px;border-radius:18px;overflow:hidden;position:relative;box-shadow:0 18px 42px rgba(18,44,23,.16)}.video-card{background:linear-gradient(145deg,#151b1d,#2b3435)}.video-card:before{content:"Game clip";position:absolute;left:16px;top:14px;color:rgba(255,255,255,.72);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em}.video-frame{position:absolute;inset:48px 16px 46px;border:1px solid rgba(255,255,255,.18);border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02))}.video-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 10px rgba(255,255,255,.8)}.v1{left:22%;top:58%}.v2{left:43%;top:44%}.v3{left:68%;top:33%}.timeline{position:absolute;left:16px;right:16px;bottom:18px;height:7px;border-radius:999px;background:rgba(255,255,255,.18)}.timeline:after{content:"";display:block;width:46%;height:100%;border-radius:inherit;background:#fff}.board{background:linear-gradient(180deg,#164f27,var(--field));box-shadow:inset 0 0 0 2px rgba(255,255,255,.16),0 18px 42px rgba(18,44,23,.16)}.board:before{content:"Tactical board";position:absolute;left:16px;top:14px;color:rgba(255,255,255,.72);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em}.line{position:absolute;left:12%;right:12%;top:20%;height:1px;background:rgba(255,255,255,.34)}.line.bottom{top:82%}.puck{position:absolute;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;border:3px solid #fff;font-weight:950;font-size:10px;box-shadow:0 8px 18px rgba(0,0,0,.24)}.p1{left:22%;top:62%}.p2{left:44%;top:48%}.p3{left:68%;top:32%}.p4{left:74%;top:21%}.disc{position:absolute;left:62%;top:36%;width:28px;height:11px;border-radius:50%;background:#fff;box-shadow:0 0 18px rgba(255,255,255,.8)}.path{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.path path{fill:none;stroke:#fff;stroke-width:1.4;stroke-dasharray:3 6;opacity:.82}.arrow{display:grid;place-items:center;align-self:center;justify-self:center;width:42px;height:42px;border-radius:999px;background:#fffdfa;border:1px solid #d8d0c5;color:var(--green);font-weight:950;margin:-28px;z-index:2}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:26px}.card{background:var(--card);border:1px solid #e4dbd0;border-radius:14px;padding:17px;box-shadow:0 12px 28px rgba(42,31,18,.07)}.card h2{font-size:18px;margin:0 0 8px}.card p,.status p{margin:0;color:#3d4646;line-height:1.45}.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.flow div{border:1px solid #e4dbd0;border-radius:12px;background:#fffdfa;padding:12px;font-weight:900;color:#34413f}.status{margin-top:22px;border:1px solid #dfe8dc;border-radius:16px;background:linear-gradient(135deg,#f7fff8,#fffdfa);padding:18px}.status h2{margin:0 0 8px;font-size:21px}@media(max-width:900px){.hero{grid-template-columns:1fr}.mockup{grid-template-columns:1fr}.arrow{margin:-22px 0;transform:rotate(90deg)}.grid,.flow{grid-template-columns:1fr 1fr}.hero h1{font-size:42px}}@media(max-width:560px){.shell{padding:18px}.top{margin-bottom:20px}.hero h1{font-size:34px}.hero p{font-size:16px}.grid,.flow{grid-template-columns:1fr}.mockup{gap:8px}.video-card,.board{min-height:235px}.button{width:100%;justify-content:center}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <div class="top">
+    <span class="badge">Hidden prototype</span>
+    <a class="back" href="index.html">Back to app</a>
+  </div>
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Gameplay Analyzer</span>
+      <h1>Turn game film into a teaching board.</h1>
+      <p>Upload a clip, map the players, and see the possession as a clean field view. The goal is simple: help teams understand spacing, timing, and what should happen next.</p>
+      <div class="cta">
+        <button class="button" type="button" aria-disabled="true" onclick="document.getElementById('prototypeNote').scrollIntoView({behavior:'smooth',block:'center'})">Prototype coming soon</button>
+        <a class="button secondary" href="index.html">Back to app</a>
+      </div>
+    </div>
+    <div class="mockup" aria-label="Gameplay Analyzer clip to board mockup">
+      <div class="video-card"><div class="video-frame"><i class="video-dot v1"></i><i class="video-dot v2"></i><i class="video-dot v3"></i></div><div class="timeline"></div></div>
+      <div class="arrow">→</div>
+      <div class="board"><div class="line"></div><div class="line bottom"></div><svg class="path" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M22,62 C42,54 54,42 68,32 C71,27 73,23 76,21" /></svg><div class="puck p1">H1</div><div class="puck p2">C1</div><div class="puck p3">C2</div><div class="puck p4">+1</div><div class="disc"></div></div>
+    </div>
+  </section>
+  <section class="grid">
+    <article class="card"><h2>Upload a clip</h2><p>Start with a game clip from practice or a point.</p></article>
+    <article class="card"><h2>Map the players</h2><p>Turn players into clean pucks so spacing is easier to see.</p></article>
+    <article class="card"><h2>Find the teaching moment</h2><p>See where the throw, cut, reset, or score opened up.</p></article>
+    <article class="card"><h2>Build the drill</h2><p>Turn a real possession into something the team can practice.</p></article>
+  </section>
+  <section class="status" id="prototypeNote">
+    <h2>Prototype status</h2>
+    <p>Gameplay Analyzer is an early prototype. The current teaching app stays fast and simple while video analysis is explored separately. There is no public upload yet, and no ML/video pipeline runs in the live app. Future work may connect to the Ultimate Analytics reference.</p>
+    <div class="flow" aria-label="Future workflow"><div>1. Clip in</div><div>2. Players mapped</div><div>3. Board view</div><div>4. Notes and drills</div></div>
+  </section>
+</main>
+</body>
+</html>

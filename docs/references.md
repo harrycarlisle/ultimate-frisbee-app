@@ -55,13 +55,15 @@ Reference: <https://graphology.github.io/>
 
 Graphology is a strong JavaScript graph library. This app does not need it yet. Use graph ideas for team data and line mapping, but do not add the dependency while the app remains a static single-file page.
 
-## Ultimate Analytics
+## Ultimate Analytics and Gameplay Analyzer
 
 Reference: <https://github.com/marcwagn/ultimate_analytics>
 
 This project shows how ultimate video can become a tactical board using player detection/tracking and a bird's-eye visualization.
 
 Local evaluation notes live in `docs/video-lab.md`. The external repo was cloned into `experiments/ultimate-analytics/`, which is ignored and must not be committed.
+
+The product concept is now called **Gameplay Analyzer**. It is hidden from the public homepage and available only by direct URL at `gameplay-analyzer.html` until the feature is ready.
 
 Use it as inspiration for future film review and team-data features:
 

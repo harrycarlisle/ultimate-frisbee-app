@@ -1,10 +1,10 @@
-# Video Lab Prototype
+# Gameplay Analyzer Prototype
 
 ## What this is
 
-Video Lab is a future feature that turns ultimate video into a tactical board, then uses that board to teach spacing, cuts, resets, and scoring patterns.
+Gameplay Analyzer is a future feature that turns ultimate video into a tactical board, then uses that board to teach spacing, cuts, resets, and scoring patterns.
 
-The main teaching app should stay static, fast, and reliable. Video Lab is a separate prototype track.
+The main teaching app should stay static, fast, and reliable. Gameplay Analyzer is a separate prototype track. The older internal name was Video Lab.
 
 ## External reference
 
@@ -72,10 +72,11 @@ Model/data status:
 
 ## Product direction
 
-Working name: **Video Lab**
+Working name: **Gameplay Analyzer**
 
 Other name ideas:
 
+- Video Lab
 - Film to Field
 - Clip to Chalkboard
 - Video to Playbook
@@ -108,7 +109,7 @@ User promise:
 
 ## Integration plan
 
-The current app stays static. Video Lab can become:
+The current app stays static. Gameplay Analyzer can become:
 
 - a separate route
 - a separate prototype app
@@ -116,3 +117,7 @@ The current app stays static. Video Lab can become:
 - eventually a backend-powered feature
 
 Keep the teaching app and the video-analysis system separate until there is a clear backend/deployment plan.
+
+## Public status
+
+Gameplay Analyzer is hidden from the public homepage. It is available only by direct URL at `gameplay-analyzer.html` for internal review/testing.
