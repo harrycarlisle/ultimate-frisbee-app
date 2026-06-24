@@ -1,4 +1,4 @@
-/* Free Ultimate Frisbee Gameplay Analyzer — public SEO landing page */
+/* Free Ultimate Frisbee Gameplay Analyzer — hero-only SEO teaser page */
 :root {
   --fga-bg: #f3f7f1;
   --fga-ink: #1a211e;
@@ -9,7 +9,7 @@
   --fga-card-border: rgba(14, 75, 36, 0.16);
   --fga-shadow: 0 12px 32px rgba(24, 44, 30, 0.07);
   --fga-radius: 14px;
-  --fga-max: 1080px;
+  --fga-max: 1040px;
 }
 
 *,
@@ -26,6 +26,9 @@ body {
 }
 
 body.fga-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
   background: radial-gradient(circle at top left, #ffffff 0%, var(--fga-bg) 40%, #edf3ea 100%);
   color: var(--fga-ink);
@@ -44,7 +47,7 @@ body.fga-page {
 }
 
 .fga-header {
-  padding: 16px 0 8px;
+  padding: 16px 0 4px;
 }
 
 .fga-logo {
@@ -62,14 +65,21 @@ body.fga-page {
   color: var(--fga-green-bright);
 }
 
+.fga-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 8px 0 20px;
+}
+
 .fga-hero {
-  padding: 20px 0 12px;
+  width: 100%;
 }
 
 .fga-hero__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.95fr);
-  gap: 24px;
+  grid-template-columns: minmax(0, 1.05fr) minmax(240px, 0.9fr);
+  gap: 22px;
   align-items: center;
 }
 
@@ -89,7 +99,7 @@ body.fga-page {
 
 .fga-hero h1 {
   margin: 0 0 12px;
-  font-size: clamp(32px, 4.8vw, 48px);
+  font-size: clamp(30px, 4.6vw, 46px);
   line-height: 1.02;
   letter-spacing: -0.03em;
 }
@@ -98,14 +108,14 @@ body.fga-page {
   margin: 0 0 18px;
   font-size: 16px;
   color: var(--fga-muted);
-  max-width: 34rem;
+  max-width: 32rem;
 }
 
 .fga-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .fga-btn {
@@ -142,7 +152,7 @@ body.fga-page {
 
 .fga-status {
   margin: 0;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--fga-muted);
   font-weight: 650;
 }
@@ -158,106 +168,29 @@ body.fga-page {
 .fga-board-svg {
   display: block;
   width: 100%;
-  max-height: 360px;
+  max-height: 340px;
   height: auto;
   border-radius: var(--fga-radius);
 }
 
-.fga-section {
-  padding: 14px 0 20px;
-}
-
-.fga-section--compact {
-  padding: 10px 0 16px;
-}
-
-.fga-section--last {
-  padding-bottom: 28px;
-}
-
-.fga-section h2 {
-  margin: 0 0 12px;
-  font-size: clamp(22px, 2.8vw, 28px);
-  letter-spacing: -0.02em;
-}
-
-.fga-section__lead {
-  margin: -4px 0 12px;
-  font-size: 15px;
-  color: var(--fga-muted);
-}
-
-.fga-cards {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.fga-card {
-  border: 1px solid var(--fga-card-border);
-  border-radius: var(--fga-radius);
-  background: var(--fga-card);
-  padding: 14px 15px;
-  box-shadow: var(--fga-shadow);
-}
-
-.fga-card h3 {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.25;
-}
-
-.fga-lessons {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.fga-lesson {
-  display: block;
-  border: 1px solid var(--fga-card-border);
-  border-radius: var(--fga-radius);
-  background: var(--fga-card);
-  padding: 14px 15px;
-  box-shadow: var(--fga-shadow);
-  transition: border-color 0.15s ease;
-}
-
-.fga-lesson:hover {
-  border-color: rgba(22, 163, 74, 0.35);
-}
-
-.fga-lesson h3 {
-  margin: 0;
-  font-size: 16px;
-  color: var(--fga-green);
-}
-
-.fga-prototype {
-  margin: 0;
-  font-size: 15px;
-  color: #34413f;
-  line-height: 1.45;
-}
-
 .fga-footer {
-  border-top: 1px solid rgba(14, 75, 36, 0.1);
-  padding: 18px 0 24px;
+  border-top: 1px solid rgba(14, 75, 36, 0.08);
+  padding: 14px 0 18px;
 }
 
 .fga-footer__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
   flex-wrap: wrap;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--fga-muted);
 }
 
 .fga-footer__links {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
@@ -270,18 +203,15 @@ body.fga-page {
     grid-template-columns: 1fr;
   }
 
-  .fga-cards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .fga-lessons {
-    grid-template-columns: 1fr;
+  .fga-board-card {
+    max-width: 380px;
+    margin: 0 auto;
   }
 }
 
 @media (max-width: 560px) {
-  .fga-hero {
-    padding-top: 12px;
+  .fga-main {
+    padding-top: 4px;
   }
 
   .fga-actions {
@@ -290,10 +220,6 @@ body.fga-page {
 
   .fga-btn {
     width: 100%;
-  }
-
-  .fga-cards {
-    grid-template-columns: 1fr;
   }
 
   .fga-footer__inner {
