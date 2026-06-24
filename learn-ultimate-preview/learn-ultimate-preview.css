@@ -130,12 +130,107 @@ body.lup-preview {
   box-shadow: none;
 }
 
-.lup-btn--ghost .lup-play {
+/* Lucide icons — preview page only */
+.lup-preview svg.lucide,
+.lup-preview i[data-lucide] {
+  display: inline-block;
+  vertical-align: -0.125em;
+  flex-shrink: 0;
+}
+
+.lup-preview svg.lucide {
+  width: 1em;
+  height: 1em;
+  stroke: currentColor;
+}
+
+.lup-icon--badge {
+  width: 14px;
+  height: 14px;
+  margin-right: 2px;
+}
+
+.lup-icon--badge:not(svg)::before {
+  content: "★";
+  font-size: 11px;
+  line-height: 1;
+}
+
+.lup-icon--btn {
+  width: 16px;
+  height: 16px;
+}
+
+.lup-btn .lup-icon--btn[data-lucide="arrow-right"]:not(svg)::after {
+  content: "→";
+  font-size: 14px;
+  line-height: 1;
+}
+
+.lup-btn .lup-icon--btn[data-lucide="play"]:not(svg)::before {
+  content: "";
+  display: inline-block;
   width: 0;
   height: 0;
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-left: 8px solid var(--lup-ink);
+  border-left: 8px solid currentColor;
+}
+
+.lup-icon--chevron {
+  width: 20px;
+  height: 20px;
+}
+
+.lup-carousel__btn .lup-icon--chevron[data-lucide="chevron-left"]:not(svg)::before {
+  content: "‹";
+  font-size: 22px;
+  line-height: 1;
+}
+
+.lup-carousel__btn .lup-icon--chevron[data-lucide="chevron-right"]:not(svg)::before {
+  content: "›";
+  font-size: 22px;
+  line-height: 1;
+}
+
+.lup-icon--check {
+  width: 14px;
+  height: 14px;
+}
+
+.lup-icon--check:not(svg)::before {
+  content: "✓";
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--lup-green);
+  line-height: 1;
+}
+
+.lup-stars-icons {
+  display: none;
+  align-items: center;
+  gap: 2px;
+}
+
+.lup-stars:has(svg) .lup-stars-fallback {
+  display: none;
+}
+
+.lup-stars:has(svg) .lup-stars-icons {
+  display: inline-flex;
+}
+
+.lup-icon--star {
+  width: 14px;
+  height: 14px;
+  color: var(--lup-green-bright);
+}
+
+.lup-stars-fallback {
+  color: var(--lup-green-bright);
+  letter-spacing: 0.12em;
+  font-size: 13px;
 }
 
 .lup-header__cta {
@@ -176,11 +271,6 @@ body.lup-preview {
   font-size: 12px;
   font-weight: 800;
   margin-bottom: 14px;
-}
-
-.lup-badge::before {
-  content: "★";
-  font-size: 11px;
 }
 
 .lup-hero h1 {
@@ -279,10 +369,13 @@ body.lup-preview {
 }
 
 .lup-stars {
+  margin-bottom: 8px;
+}
+
+.lup-stars:not(:has(svg)) {
   color: var(--lup-green-bright);
   letter-spacing: 0.12em;
   font-size: 13px;
-  margin-bottom: 8px;
 }
 
 .lup-quote {
@@ -315,12 +408,11 @@ body.lup-preview {
   border: 1px solid var(--lup-card-border);
   background: var(--lup-card);
   color: var(--lup-muted);
-  font-size: 22px;
-  line-height: 1;
   display: grid;
   place-items: center;
   box-shadow: 0 6px 16px rgba(24, 44, 30, 0.08);
   z-index: 2;
+  padding: 0;
 }
 
 .lup-carousel__btn:hover {
@@ -432,6 +524,32 @@ body.lup-preview {
   margin: 0 auto 14px;
   color: var(--lup-green);
   transition: transform 0.25s ease;
+  display: block;
+}
+
+.lup-step__icon:not(svg) {
+  font-size: 40px;
+  line-height: 54px;
+  text-align: center;
+}
+
+.lup-step__icon[data-lucide="layout-grid"]:not(svg)::before {
+  content: "▦";
+}
+
+.lup-step__icon[data-lucide="route"]:not(svg)::before {
+  content: "↗";
+}
+
+.lup-step__icon[data-lucide="users"]:not(svg)::before {
+  content: "👥";
+  font-size: 32px;
+}
+
+.lup-step__icon.lucide {
+  width: 54px;
+  height: 54px;
+  stroke-width: 1.75;
 }
 
 .lup-step:hover .lup-step__icon {
@@ -497,13 +615,8 @@ body.lup-preview {
   color: var(--lup-muted);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-}
-
-.lup-cta__note::before {
-  content: "✓";
-  color: var(--lup-green);
-  font-weight: 900;
 }
 
 /* Footer */
@@ -530,6 +643,10 @@ body.lup-preview {
 
 .lup-footer__links a:hover {
   color: var(--lup-ink);
+}
+
+.lup-cta__note .lup-icon--check svg.lucide {
+  color: var(--lup-green);
 }
 
 .lup-preview-note {
@@ -628,7 +745,7 @@ body.lup-preview {
     border-color: rgba(255, 255, 255, 0.12);
   }
 
-  .lup-btn--ghost .lup-play {
+  .lup-btn--ghost .lup-icon--btn[data-lucide="play"]:not(svg)::before {
     border-left-color: #fff;
   }
 
