@@ -15,5 +15,8 @@ __pycache__/
 *.parquet
 *.npy
 *.npz
-runs/
+analyzer/outputs/*
+!analyzer/outputs/.gitkeep
+analyzer/outputs/uploads/
+analyzer/.venv/
 
