@@ -120,4 +120,4 @@ Keep the teaching app and the video-analysis system separate until there is a cl
 
 ## Public status
 
-Gameplay Analyzer is hidden from the public homepage. It is available only by direct URL at `gameplay-analyzer.html` for internal review/testing.
+Gameplay Analyzer is hidden from the public homepage. Access is locked behind a subtle top-right tools control on `index.html` (access code in source). Direct visits to `gameplay-analyzer.html` also require unlock.
