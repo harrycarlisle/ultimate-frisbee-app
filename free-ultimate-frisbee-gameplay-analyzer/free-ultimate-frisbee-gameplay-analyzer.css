@@ -7,11 +7,9 @@
   --fga-green-bright: #16a34a;
   --fga-card: #ffffff;
   --fga-card-border: rgba(14, 75, 36, 0.16);
-  --fga-shadow: 0 16px 44px rgba(24, 44, 30, 0.08);
-  --fga-radius: 16px;
+  --fga-shadow: 0 12px 32px rgba(24, 44, 30, 0.07);
+  --fga-radius: 14px;
   --fga-max: 1080px;
-  --fga-blue: #1669e8;
-  --fga-black: #171717;
 }
 
 *,
@@ -46,7 +44,7 @@ body.fga-page {
 }
 
 .fga-header {
-  padding: 18px 0 10px;
+  padding: 16px 0 8px;
 }
 
 .fga-logo {
@@ -65,13 +63,13 @@ body.fga-page {
 }
 
 .fga-hero {
-  padding: 28px 0 36px;
+  padding: 20px 0 12px;
 }
 
 .fga-hero__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
-  gap: 28px;
+  grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.95fr);
+  gap: 24px;
   align-items: center;
 }
 
@@ -86,28 +84,28 @@ body.fga-page {
   font-weight: 900;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .fga-hero h1 {
-  margin: 0 0 14px;
-  font-size: clamp(34px, 4.8vw, 52px);
+  margin: 0 0 12px;
+  font-size: clamp(32px, 4.8vw, 48px);
   line-height: 1.02;
   letter-spacing: -0.03em;
 }
 
 .fga-hero__sub {
-  margin: 0 0 20px;
-  font-size: 17px;
+  margin: 0 0 18px;
+  font-size: 16px;
   color: var(--fga-muted);
-  max-width: 36rem;
+  max-width: 34rem;
 }
 
 .fga-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .fga-btn {
@@ -115,22 +113,31 @@ body.fga-page {
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  padding: 12px 18px;
+  padding: 11px 17px;
   font-size: 14px;
   font-weight: 850;
   border: 0;
+  cursor: pointer;
 }
 
 .fga-btn--primary {
   background: var(--fga-green);
   color: #fff;
-  box-shadow: 0 10px 24px rgba(14, 75, 36, 0.2);
+  box-shadow: 0 8px 20px rgba(14, 75, 36, 0.18);
+}
+
+.fga-btn--primary:hover {
+  filter: brightness(1.04);
 }
 
 .fga-btn--secondary {
   background: var(--fga-card);
   color: var(--fga-green);
   border: 1px solid #d8e5dc;
+}
+
+.fga-btn--secondary:hover {
+  border-color: var(--fga-green-bright);
 }
 
 .fga-status {
@@ -145,144 +152,97 @@ body.fga-page {
   border-radius: calc(var(--fga-radius) + 2px);
   background: var(--fga-card);
   box-shadow: var(--fga-shadow);
-  padding: 12px;
+  padding: 10px;
 }
 
 .fga-board-svg {
   display: block;
   width: 100%;
+  max-height: 360px;
   height: auto;
   border-radius: var(--fga-radius);
 }
 
 .fga-section {
-  padding: 18px 0 34px;
+  padding: 14px 0 20px;
+}
+
+.fga-section--compact {
+  padding: 10px 0 16px;
+}
+
+.fga-section--last {
+  padding-bottom: 28px;
 }
 
 .fga-section h2 {
-  margin: 0 0 18px;
-  font-size: clamp(26px, 3vw, 34px);
+  margin: 0 0 12px;
+  font-size: clamp(22px, 2.8vw, 28px);
   letter-spacing: -0.02em;
+}
+
+.fga-section__lead {
+  margin: -4px 0 12px;
+  font-size: 15px;
+  color: var(--fga-muted);
 }
 
 .fga-cards {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
 }
 
 .fga-card {
   border: 1px solid var(--fga-card-border);
   border-radius: var(--fga-radius);
   background: var(--fga-card);
-  padding: 16px 17px;
+  padding: 14px 15px;
   box-shadow: var(--fga-shadow);
 }
 
 .fga-card h3 {
   margin: 0;
-  font-size: 16px;
-  line-height: 1.25;
-}
-
-.fga-card p {
-  margin: 8px 0 0;
-  font-size: 14px;
-  color: var(--fga-muted);
-  line-height: 1.4;
-}
-
-.fga-steps {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.fga-step {
-  border: 1px solid var(--fga-card-border);
-  border-radius: var(--fga-radius);
-  background: var(--fga-card);
-  padding: 14px;
-  box-shadow: var(--fga-shadow);
-}
-
-.fga-step__num {
-  display: inline-grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--fga-green);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 900;
-  margin-bottom: 10px;
-}
-
-.fga-step h3 {
-  margin: 0 0 6px;
   font-size: 15px;
-}
-
-.fga-step p {
-  margin: 0;
-  font-size: 13px;
-  color: var(--fga-muted);
-  line-height: 1.4;
-}
-
-.fga-note {
-  margin-top: 14px;
-  font-size: 13px;
-  color: var(--fga-muted);
+  line-height: 1.25;
 }
 
 .fga-lessons {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: 10px;
 }
 
 .fga-lesson {
+  display: block;
   border: 1px solid var(--fga-card-border);
   border-radius: var(--fga-radius);
   background: var(--fga-card);
-  padding: 16px;
+  padding: 14px 15px;
   box-shadow: var(--fga-shadow);
+  transition: border-color 0.15s ease;
+}
+
+.fga-lesson:hover {
+  border-color: rgba(22, 163, 74, 0.35);
 }
 
 .fga-lesson h3 {
-  margin: 0 0 6px;
-  font-size: 17px;
+  margin: 0;
+  font-size: 16px;
   color: var(--fga-green);
 }
 
-.fga-lesson p {
-  margin: 0;
-  font-size: 14px;
-  color: var(--fga-muted);
-}
-
 .fga-prototype {
-  border: 1px solid #dfe8dc;
-  border-radius: calc(var(--fga-radius) + 2px);
-  background: linear-gradient(135deg, #f7fcf8, #fffdfa);
-  padding: 20px 22px;
-  box-shadow: var(--fga-shadow);
-}
-
-.fga-prototype p {
   margin: 0;
   font-size: 15px;
   color: #34413f;
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 .fga-footer {
   border-top: 1px solid rgba(14, 75, 36, 0.1);
-  padding: 22px 0 30px;
-  margin-top: 10px;
+  padding: 18px 0 24px;
 }
 
 .fga-footer__inner {
@@ -297,7 +257,7 @@ body.fga-page {
 
 .fga-footer__links {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
@@ -310,19 +270,18 @@ body.fga-page {
     grid-template-columns: 1fr;
   }
 
-  .fga-cards,
-  .fga-lessons {
+  .fga-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .fga-steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .fga-lessons {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 560px) {
   .fga-hero {
-    padding-top: 16px;
+    padding-top: 12px;
   }
 
   .fga-actions {
@@ -333,9 +292,7 @@ body.fga-page {
     width: 100%;
   }
 
-  .fga-cards,
-  .fga-lessons,
-  .fga-steps {
+  .fga-cards {
     grid-template-columns: 1fr;
   }
 
