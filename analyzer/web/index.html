@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Gameplay Analyzer Workspace | Learn Ultimate</title>
+<link rel="stylesheet" href="analyzer.css" />
+</head>
+<body class="ga-app">
+<!-- Private research workspace. Not linked from public navigation. -->
+<div id="gaLockShell" class="ga-lock-shell">
+  <div class="ga-lock-card">
+    <span class="ga-badge">Private prototype</span>
+    <h1>Gameplay Analyzer is locked.</h1>
+    <p>Enter access code to open the private research workspace. Analyze only footage you own or have permission to use.</p>
+    <label for="gaLockCode">Access code<input id="gaLockCode" type="password" autocomplete="off" spellcheck="false" placeholder="Enter code" /></label>
+    <p class="ga-lock-error" id="gaLockError" hidden>Wrong code. Still locked.</p>
+    <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+      <button class="ga-btn" id="gaUnlockBtn" type="button">Unlock</button>
+      <a class="ga-btn ga-btn--ghost" href="../../index.html">Back to app</a>
+    </div>
+  </div>
+</div>
+
+<div id="gaAppShell" class="ga-app-shell" hidden>
+  <div class="ga-wrap">
+    <header class="ga-topbar">
+      <div>
+        <span class="ga-badge">Private research build</span>
+        <span class="ga-badge ga-badge--demo" id="gaDemoBadge" hidden>Demo data</span>
+        <h1>Gameplay Analyzer</h1>
+      </div>
+      <div class="ga-topbar-actions">
+        <button class="ga-btn ga-btn--ghost ga-btn--sm" id="gaDemoBtn" type="button">Load demo possession</button>
+        <a class="ga-btn ga-btn--ghost ga-btn--sm" href="../../index.html">Back to app</a>
+      </div>
+    </header>
+
+    <p class="ga-hint" id="gaBackendStatus">Checking backend…</p>
+
+    <section class="ga-section" id="gaSourceSection" data-component="Source">
+      <h2>1. Source</h2>
+      <div class="ga-warn-box">
+        <strong>Permission reminder:</strong> Only analyze footage you own, have permission to use, or are legally allowed to process.
+        YouTube URLs provide embed preview and metadata only — <strong>no public download</strong>.
+        This is a research prototype, not production ML.
+      </div>
+      <div class="ga-grid-2">
+        <div class="ga-field">
+          <label for="gaYoutubeUrl">YouTube URL (preview / metadata only)</label>
+          <input id="gaYoutubeUrl" type="url" placeholder="https://www.youtube.com/watch?v=…" />
+        </div>
+        <div class="ga-field">
+          <label for="gaVideoUpload">Upload local video (permitted footage)</label>
+          <input id="gaVideoUpload" type="file" accept="video/*" />
+        </div>
+      </div>
+      <div class="ga-source-preview" id="gaSourcePreview">
+        <div class="ga-placeholder-frame">Add a YouTube URL or upload permitted local footage.</div>
+      </div>
+    </section>
+
+    <section class="ga-section" id="gaClipSection" data-component="ClipSelector">
+      <h2>2. Clip selector</h2>
+      <p class="ga-hint">Set possession start and end. Override auto-detected segments in corrections after analysis.</p>
+      <div class="ga-grid-2">
+        <div class="ga-field">
+          <label for="gaClipStart">Start time (sec) — <span id="gaClipStartVal">2.0s</span></label>
+          <input id="gaClipStart" type="range" min="0" max="30" step="0.1" value="2" />
+        </div>
+        <div class="ga-field">
+          <label for="gaClipEnd">End time (sec) — <span id="gaClipEndVal">10.5s</span></label>
+          <input id="gaClipEnd" type="range" min="0" max="30" step="0.1" value="10.5" />
+        </div>
+      </div>
+      <p class="ga-clip-meta"><span>Duration</span><span id="gaClipDuration">8.5s</span></p>
+      <button class="ga-btn" id="gaAnalyzeBtn" type="button">Analyze clip</button>
+      <div class="ga-progress" id="gaProgress" aria-live="polite">
+        <div class="ga-progress-step">extracting frames</div>
+        <div class="ga-progress-step">detecting players</div>
+        <div class="ga-progress-step">tracking movement</div>
+        <div class="ga-progress-step">mapping to board</div>
+        <div class="ga-progress-step">generating notes</div>
+        <div class="ga-progress-step">building animation</div>
+      </div>
+    </section>
+
+    <section class="ga-section" id="gaResultsSection" data-component="BoardView" hidden>
+      <h2>3. Video + board view</h2>
+      <div class="ga-split">
+        <div class="ga-video-panel" id="gaVideoPanel"></div>
+        <div class="ga-board-panel">
+          <span class="ga-panel-label">Tactical board</span>
+          <svg id="gaBoardSvg" class="ga-board-svg" role="img" aria-label="Tactical board"></svg>
+        </div>
+      </div>
+      <div class="ga-scrubber ga-field">
+        <label for="gaFrameScrub">Frame scrubber — <span id="gaFrameVal">1</span></label>
+        <input id="gaFrameScrub" type="range" min="0" max="84" value="0" />
+      </div>
+    </section>
+
+    <section class="ga-section" id="gaNotesSection" data-component="AnalysisNotes" hidden>
+      <h2>4. Analysis notes</h2>
+      <div class="ga-notes-grid" id="gaNotesGrid"></div>
+    </section>
+
+    <section class="ga-section" id="gaCorrectionsSection" data-component="Corrections" hidden>
+      <h2>5. Human corrections</h2>
+      <p class="ga-hint">Rename players, assign offense/defense, drag pucks on the board, edit notes, then regenerate animation.</p>
+      <div class="ga-corrections">
+        <div>
+          <h3 style="margin:0 0 8px;font-size:14px">Players</h3>
+          <div id="gaPlayerList"></div>
+        </div>
+        <div>
+          <h3 style="margin:0 0 8px;font-size:14px">Disc &amp; throws</h3>
+          <button class="ga-btn ga-btn--ghost ga-btn--sm" id="gaMarkDisc" type="button">Mark disc keyframe (current frame)</button>
+          <p class="ga-hint">Merge/split tracks and throw start/end editing ship in a later iteration. Demo includes sample disc track.</p>
+        </div>
+      </div>
+      <button class="ga-btn ga-btn--ghost ga-btn--sm" id="gaRegenAnim" type="button" style="margin-top:10px">Regenerate animation after edits</button>
+    </section>
+
+    <section class="ga-section" id="gaExportSection" data-component="Export" hidden>
+      <h2>6. Export</h2>
+      <div class="ga-export-row">
+        <button class="ga-btn ga-btn--ghost" id="gaExportAnim" type="button">Export animation JSON</button>
+        <button class="ga-btn ga-btn--ghost" id="gaExportLesson" type="button">Export Learn Ultimate lesson draft</button>
+        <button class="ga-btn ga-btn--ghost" id="gaExportSummary" type="button">Export coaching summary</button>
+        <button class="ga-btn ga-btn--ghost" id="gaExportFrames" type="button">Download board frames</button>
+      </div>
+      <p class="ga-statusline" id="gaStatusLine">Load demo or analyze a clip to begin.</p>
+    </section>
+
+    <footer style="padding:20px 0 32px;font-size:12px;color:var(--ga-muted)">
+      Private Gameplay Analyzer research build · not indexed · not production ML · reference-only inspiration from ultimate analytics
+    </footer>
+  </div>
+</div>
+
+<script src="analyzer.js"></script>
+</body>
+</html>

@@ -3,94 +3,47 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
 <title>Gameplay Analyzer | Learn Ultimate Frisbee</title>
 <style>
-:root{--cream:#f6f1e9;--card:#fffdfa;--ink:#0c1a1d;--muted:#52605e;--green:#0e4b24;--field:#113d22;--blue:#1669e8;--black:#171717}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at top left,#fff 0,#f8f4ed 34%,var(--cream) 100%);color:var(--ink)}a{color:inherit}.shell{width:min(100% - 24px,1120px);margin:12px auto 32px;padding:26px;background:rgba(255,253,249,.9);border:1px solid #e5ddd2;border-radius:18px;box-shadow:0 18px 60px rgba(41,31,18,.08)}.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:30px;flex-wrap:wrap}.back{border:1px solid #d8d0c5;border-radius:999px;background:#fffdfa;padding:9px 13px;font-size:13px;font-weight:900;text-decoration:none}.eyebrow,.badge{display:inline-flex;border:1px solid rgba(14,75,36,.22);border-radius:999px;background:#fffdfa;color:var(--green);padding:5px 10px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.badge.private{border-color:#e2d9cf;color:#6a635c}.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.95fr);gap:24px;align-items:center}.hero h1{font-size:54px;line-height:.98;margin:10px 0 12px;letter-spacing:-.03em}.hero .subtitle{font-size:14px;font-weight:850;color:#6a635c;margin:0 0 4px;letter-spacing:.04em;text-transform:uppercase}.hero p{font-size:19px;line-height:1.45;color:#34413f;margin:0}.cta{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}.button{display:inline-flex;border-radius:999px;background:var(--green);color:#fff;text-decoration:none;padding:12px 16px;font-weight:950;border:0}.button[aria-disabled="true"]{opacity:.78;cursor:not-allowed}.button.secondary{background:#fffdfa;color:var(--green);border:1px solid #d8d0c5}.mockup{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch}.video-card,.board{min-height:270px;border-radius:18px;overflow:hidden;position:relative;box-shadow:0 18px 42px rgba(18,44,23,.16)}.video-card{background:linear-gradient(145deg,#151b1d,#2b3435)}.video-label{position:absolute;left:16px;top:14px;color:rgba(255,255,255,.72);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em}.video-chip{position:absolute;right:14px;top:12px;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:4px 9px;color:rgba(255,255,255,.86);font-size:10px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}.video-frame{position:absolute;inset:48px 16px 58px;border:1px solid rgba(255,255,255,.18);border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02))}.video-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:#fff;box-shadow:0 0 10px rgba(255,255,255,.8)}.v1{left:22%;top:58%}.v2{left:43%;top:44%}.v3{left:68%;top:33%}.timeline-wrap{position:absolute;left:16px;right:16px;bottom:18px}.timeline-meta{display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;color:rgba(255,255,255,.72);font-size:10px;font-weight:850;letter-spacing:.06em;text-transform:uppercase}.timeline{height:7px;border-radius:999px;background:rgba(255,255,255,.18)}.timeline:after{content:"";display:block;width:46%;height:100%;border-radius:inherit;background:#fff}.board{background:linear-gradient(180deg,#164f27,var(--field));box-shadow:inset 0 0 0 2px rgba(255,255,255,.16),0 18px 42px rgba(18,44,23,.16)}.board-label{position:absolute;left:16px;top:14px;color:rgba(255,255,255,.72);font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em}.line{position:absolute;left:12%;right:12%;top:20%;height:1px;background:rgba(255,255,255,.34)}.line.bottom{top:82%}.puck{position:absolute;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;border:3px solid #fff;font-weight:950;font-size:10px;box-shadow:0 8px 18px rgba(0,0,0,.24)}.puck.def{width:24px;height:24px;background:var(--black);border:2px solid #9b9b9b;font-size:9px}.p1{left:22%;top:62%}.p2{left:44%;top:48%}.p3{left:68%;top:32%}.p4{left:74%;top:21%}.d1{left:36%;top:56%}.d2{left:58%;top:40%}.disc{position:absolute;left:62%;top:36%;width:28px;height:11px;border-radius:50%;background:#fff;box-shadow:0 0 18px rgba(255,255,255,.8)}.path{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.path path{fill:none;stroke:#fff;stroke-width:1.4;stroke-dasharray:3 6;opacity:.82}.callout{position:absolute;border-radius:999px;background:rgba(12,18,16,.78);color:#fffdfa;padding:5px 9px;font-size:9.5px;font-weight:900;letter-spacing:.04em;box-shadow:0 6px 14px rgba(0,0,0,.22)}.c-reset{left:18%;top:72%}.c-clear{left:52%;top:24%}.c-swing{right:12%;top:44%}.arrow{display:grid;place-items:center;align-self:center;justify-self:center;width:42px;height:42px;border-radius:999px;background:#fffdfa;border:1px solid #d8d0c5;color:var(--green);font-weight:950;margin:-28px;z-index:2}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:26px}.card{background:var(--card);border:1px solid #e4dbd0;border-radius:14px;padding:17px;box-shadow:0 12px 28px rgba(42,31,18,.07)}.card h2{font-size:18px;margin:0 0 8px}.card p,.status p,.ref p{margin:0;color:#3d4646;line-height:1.45}.card .tag{display:inline-flex;margin-top:10px;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:900;letter-spacing:.04em;text-transform:uppercase}.tag.good{background:#e8f7ec;color:#0e4b24}.tag.warn{background:#fff4df;color:#8a5a00}.tag.next{background:#edf3ff;color:#1a4f9c}.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}.flow div{border:1px solid #e4dbd0;border-radius:12px;background:#fffdfa;padding:12px;font-weight:900;color:#34413f}.status{margin-top:22px;border:1px solid #dfe8dc;border-radius:16px;background:linear-gradient(135deg,#f7fff8,#fffdfa);padding:18px}.status h2{margin:0 0 8px;font-size:21px}.ref{margin-top:18px;border:1px solid #e8e2d8;border-radius:14px;background:#fffdfa;padding:16px}.ref h2{margin:8px 0 8px;font-size:16px;color:#52605e}.ref ul{margin:10px 0 0;padding-left:1.2rem;color:#3d4646;line-height:1.45}.ref li+li{margin-top:4px}.ref a{color:var(--green);font-weight:850}.ref-warn{margin-top:10px;font-size:12px;color:#6a635c;font-weight:700}.lock-shell[hidden],#contentShell[hidden]{display:none!important}.lock-shell{min-height:70vh;display:grid;place-items:center;padding:24px}.lock-card{width:min(100%,420px);border:1px solid #e4dbd0;border-radius:16px;background:#fffdfa;padding:24px;box-shadow:0 18px 50px rgba(42,31,18,.08)}.lock-card h1{margin:0 0 8px;font-size:28px;line-height:1.05}.lock-card p{margin:0 0 16px;color:#3d4646;line-height:1.45}.lock-card label{display:block;font-size:12px;font-weight:760;color:#66706d;margin-bottom:8px}.lock-card input{width:100%;border:1px solid #ddd5ca;border-radius:9px;background:#fff;padding:10px 12px;font-size:14px;font-weight:700}.lock-card .actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}.lock-card button{border:1px solid #d8d0c5;border-radius:9px;background:#fffdfa;padding:10px 14px;font-size:13px;font-weight:850}.lock-card button.primary{background:var(--green);border-color:var(--green);color:#fff}.lock-error{margin-top:8px;font-size:12px;font-weight:760;color:#b42318}@media(max-width:900px){.hero{grid-template-columns:1fr}.mockup{grid-template-columns:1fr}.arrow{margin:-22px 0;transform:rotate(90deg)}.grid,.flow{grid-template-columns:1fr 1fr}.hero h1{font-size:42px}}@media(max-width:560px){.shell{padding:18px}.top{margin-bottom:20px}.hero h1{font-size:34px}.hero p{font-size:16px}.grid,.flow{grid-template-columns:1fr}.mockup{gap:8px}.video-card,.board{min-height:235px}.button{width:100%;justify-content:center}}
+:root{--green:#0e4b24;--card:#fffdfa;--ink:#0c1a1d;--muted:#52605e;--border:#e5ddd2}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:#f6f1e9;color:var(--ink)}
+.lock-shell{min-height:80vh;display:grid;place-items:center;padding:24px}
+.lock-card{width:min(100%,420px);border:1px solid var(--border);border-radius:16px;background:var(--card);padding:24px;box-shadow:0 18px 50px rgba(42,31,18,.08)}
+.lock-card h1{margin:8px 0;font-size:26px}.lock-card p{margin:0 0 16px;color:var(--muted);line-height:1.45;font-size:14px}
+.badge{display:inline-flex;border:1px solid rgba(14,75,36,.22);border-radius:999px;padding:4px 10px;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--green)}
+label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:12px 0 6px}
+input{width:100%;border:1px solid #ddd5ca;border-radius:9px;padding:10px 12px;font-size:14px}
+.actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+button,.back{border-radius:9px;padding:10px 14px;font-size:13px;font-weight:850;cursor:pointer}
+button.primary{background:var(--green);border:1px solid var(--green);color:#fff}
+button,.back.secondary{background:var(--card);border:1px solid #d8d0c5;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center}
+.lock-error{color:#b42318;font-size:12px;font-weight:700}
 </style>
 </head>
 <body>
-<div id="lockShell" class="lock-shell" hidden>
+<div id="lockShell" class="lock-shell">
   <div class="lock-card">
-    <span class="badge private">Private prototype</span>
+    <span class="badge">Private prototype</span>
     <h1>Gameplay Analyzer is locked.</h1>
-    <p>Enter access code to preview this prototype. No login required. No live upload or ML processing yet.</p>
+    <p>Enter access code to open the private research workspace. No public upload or production ML.</p>
     <label for="lockCodeInput">Access code<input id="lockCodeInput" type="password" autocomplete="off" spellcheck="false" placeholder="Enter code" /></label>
     <p class="lock-error" id="lockError" hidden>Wrong code. Still locked.</p>
-    <div class="actions"><button class="primary" id="lockUnlockBtn" type="button">Unlock</button><a class="button secondary" href="index.html">Back to app</a></div>
+    <div class="actions">
+      <button class="primary" id="lockUnlockBtn" type="button">Unlock</button>
+      <a class="back secondary" href="index.html">Back to app</a>
+    </div>
   </div>
 </div>
-<main class="shell" id="contentShell" hidden>
-  <div class="top">
-    <span class="badge private">Private prototype</span>
-    <a class="back" href="index.html">Back to app</a>
-  </div>
-  <section class="hero">
-    <div>
-      <span class="eyebrow">Gameplay Analyzer</span>
-      <p class="subtitle">Ultimate Analytics prototype</p>
-      <h1>Turn game film into a teaching board.</h1>
-      <p>Upload a clip, map the players, and turn the possession into a clean field view with notes about spacing, timing, resets, and scoring chances.</p>
-      <div class="cta">
-        <button class="button" type="button" aria-disabled="true">Prototype only</button>
-        <a class="button secondary" href="index.html">Back to app</a>
-      </div>
-    </div>
-    <div class="mockup" aria-label="Gameplay Analyzer clip to board mockup">
-      <div class="video-card">
-        <span class="video-label">Practice clip</span>
-        <span class="video-chip">Swing window</span>
-        <div class="video-frame"><i class="video-dot v1"></i><i class="video-dot v2"></i><i class="video-dot v3"></i></div>
-        <div class="timeline-wrap"><div class="timeline-meta"><span>0:14</span><span>0:22</span></div><div class="timeline"></div></div>
-      </div>
-      <div class="arrow">→</div>
-      <div class="board">
-        <span class="board-label">Tactical board</span>
-        <div class="line"></div><div class="line bottom"></div>
-        <svg class="path" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M22,62 C42,54 54,42 68,32 C71,27 73,23 76,21" /><path d="M44,48 C50,58 56,64 62,58" opacity=".55" /></svg>
-        <div class="puck p1">H1</div><div class="puck p2">C1</div><div class="puck p3">C2</div><div class="puck p4">+1</div>
-        <div class="puck def d1">D</div><div class="puck def d2">D</div>
-        <div class="disc"></div>
-        <span class="callout c-reset">Open reset</span>
-        <span class="callout c-clear">Cutter clears lane</span>
-        <span class="callout c-swing">Swing window</span>
-      </div>
-    </div>
-  </section>
-  <section class="grid" aria-label="Analysis notes">
-    <article class="card"><h2>Spacing</h2><p>Handlers stay wide. Cutters hold lanes without crowding the throw.</p><span class="tag good">Good</span></article>
-    <article class="card"><h2>Timing</h2><p>The reset comes one beat late. The swing lane closes before the dump is ready.</p><span class="tag warn">Late reset</span></article>
-    <article class="card"><h2>Next drill</h2><p>Run dump / swing reset reps with the same spacing cue from this clip.</p><span class="tag next">Dump / swing reset</span></article>
-  </section>
-  <section class="status" id="prototypeNote">
-    <h2>Prototype status</h2>
-    <p>Private prototype. No public upload yet. No live video processing. No login required. This page is a static mockup for internal review only.</p>
-    <div class="flow" aria-label="Future workflow"><div>1. Clip in</div><div>2. Players mapped</div><div>3. Possession becomes a board</div><div>4. Coach notes become drills</div></div>
-  </section>
-  <section class="ref" aria-label="Implementation reference">
-    <span class="badge private">Private planning note</span>
-    <h2>Implementation reference</h2>
-    <p>This prototype is inspired by video-to-board analysis: upload a clip, track players, and render the possession as a tactical field view. The current Learn Ultimate version is a static mockup only.</p>
-    <p><a href="https://github.com/marcwagn/ultimate_analytics" rel="noopener noreferrer" target="_blank">Reference repo</a></p>
-    <ul>
-      <li>Video upload flow</li>
-      <li>Player detection and tracking</li>
-      <li>Tactical board generation</li>
-      <li>Side-by-side video and field view</li>
-      <li>Coach notes and drill suggestions</li>
-    </ul>
-    <p class="ref-warn">No repo code or assets are copied into Learn Ultimate. This is a planning reference only.</p>
-  </section>
-</main>
 <script>
 const LAB_ACCESS_CODE='ultimate-lab',LAB_UNLOCK_KEY='ufc-gameplay-analyzer-unlocked';
-const lockShell=document.getElementById('lockShell'),contentShell=document.getElementById('contentShell'),lockCodeInput=document.getElementById('lockCodeInput'),lockError=document.getElementById('lockError'),lockUnlockBtn=document.getElementById('lockUnlockBtn');
+const lockShell=document.getElementById('lockShell'),lockCodeInput=document.getElementById('lockCodeInput'),lockError=document.getElementById('lockError'),lockUnlockBtn=document.getElementById('lockUnlockBtn');
 function isUnlocked(){try{return localStorage.getItem(LAB_UNLOCK_KEY)==='1'||new URLSearchParams(location.search).get('lab')===LAB_ACCESS_CODE}catch(e){return false}}
 function setUnlocked(){try{localStorage.setItem(LAB_UNLOCK_KEY,'1')}catch(e){}}
-function syncView(){const on=isUnlocked();lockShell.hidden=on;contentShell.hidden=!on}
-function tryUnlock(){if(lockCodeInput.value.trim()===LAB_ACCESS_CODE){setUnlocked();lockError.hidden=true;syncView();return}lockError.hidden=false}
+function goWorkspace(){location.replace('analyzer/web/index.html'+location.search+location.hash)}
+function tryUnlock(){if(lockCodeInput.value.trim()===LAB_ACCESS_CODE){setUnlocked();lockError.hidden=true;goWorkspace();return}lockError.hidden=false}
 if(new URLSearchParams(location.search).get('lab')===LAB_ACCESS_CODE)setUnlocked();
-syncView();
+if(isUnlocked())goWorkspace();
 lockUnlockBtn.onclick=()=>tryUnlock();
 lockCodeInput.onkeydown=e=>{if(e.key==='Enter')tryUnlock()};
 </script>

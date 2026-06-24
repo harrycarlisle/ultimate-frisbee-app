@@ -1,0 +1,39 @@
+{
+  "spacing": {
+    "title": "Spacing read",
+    "body": "Handlers stay wide. Cutters hold lanes without crowding the throw lane.",
+    "tag": "good",
+    "confidence": 0.82
+  },
+  "reset": {
+    "title": "Reset timing",
+    "body": "The reset comes one beat late. The swing lane closes before the dump is ready.",
+    "tag": "warn",
+    "confidence": 0.71
+  },
+  "swing": {
+    "title": "Swing window",
+    "body": "Open side clears briefly at frame 42. A quicker swing would hit C1 earlier.",
+    "tag": "good",
+    "confidence": 0.68
+  },
+  "cutter": {
+    "title": "Cutter timing",
+    "body": "C1 starts the cut before the handler looks. The cut is early but creates separation.",
+    "tag": "neutral",
+    "confidence": 0.65
+  },
+  "pressure": {
+    "title": "Defensive pressure",
+    "body": "Downfield markers stay connected. No easy break-side throw shows in this clip.",
+    "tag": "good",
+    "confidence": 0.74
+  },
+  "drill": {
+    "title": "Drill suggestion",
+    "body": "Run dump / swing reset reps with the same spacing cue from this clip.",
+    "tag": "next",
+    "confidence": 0.9,
+    "lessonRef": "vertical-stack-reset"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "title": "Film clip — swing window reset",
+  "source": "demo",
+  "formation": "vertical-stack",
+  "steps": [
+    {
+      "title": "Handlers set width",
+      "body": "CO has the disc. H1 and H2 stay wide so the mark cannot take both lanes.",
+      "disc": { "x": 0.42, "y": 0.72, "holder": "CO" },
+      "positions": {
+        "CO": { "x": 0.42, "y": 0.72, "team": "offense" },
+        "H1": { "x": 0.22, "y": 0.62, "team": "offense" },
+        "H2": { "x": 0.30, "y": 0.68, "team": "offense" },
+        "C1": { "x": 0.44, "y": 0.48, "team": "offense" }
+      },
+      "routes": [],
+      "selectedPlayerNotes": { "CO": "Look swing first. Keep the mark honest." }
+    },
+    {
+      "title": "Swing window opens",
+      "body": "C1 clears the lane. The open-side swing lane is live for two beats.",
+      "disc": { "x": 0.55, "y": 0.48, "inAir": true },
+      "positions": {
+        "CO": { "x": 0.50, "y": 0.54, "team": "offense" },
+        "C1": { "x": 0.58, "y": 0.34, "team": "offense" }
+      },
+      "routes": [
+        { "from": "CO", "to": "C1", "style": "throw", "dashed": true },
+        { "from": "C1", "to": null, "style": "cut", "points": [[0.44,0.48],[0.52,0.40],[0.58,0.34]] }
+      ],
+      "selectedPlayerNotes": { "C1": "Start the cut when the handler's shoulders open." }
+    },
+    {
+      "title": "Late reset cue",
+      "body": "The dump is a beat late. Run the same spacing but throw on the first open look.",
+      "disc": { "x": 0.72, "y": 0.32, "holder": "C1" },
+      "positions": {
+        "C1": { "x": 0.68, "y": 0.24, "team": "offense" },
+        "H1": { "x": 0.25, "y": 0.55, "team": "offense" }
+      },
+      "routes": [],
+      "selectedPlayerNotes": { "H1": "Reset earlier so the swing stays open." }
+    }
+  ],
+  "coachingSummary": "Handlers held width well. Reset timing was late. Drill: dump/swing reset reps with earlier trigger.",
+  "metadata": {
+    "exportedAt": "2026-06-24T00:00:00Z",
+    "analyzerVersion": "0.1.0",
+    "demo": true
+  }
+}
