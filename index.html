@@ -489,18 +489,35 @@ function makeTriangleCuttingSteps(){
 }
 
 function makeDumpSwingSteps(){
- const A=[70,64], B=[58,72], C=[38,70], D=[72,45], Dcovered=[72,47], Baway=[62,67], Bdump=[58,62], Bmiddle=[56,63], Ccatch=[39,68], Dnew=[54,47], Ereset=[47,72];
- const base={A,B,C,D,E:[48,50],F:[62,52],G:[80,52]};
- const mark={A:[66,62],D:[70,47]};
+ const A0=[56,68], B0=[42,74], C0=[26,66];
+ const Bdump=[46,71], Bfake=[48,69];
+ const Amid=[52,70], Cwide=[24,63], Ccatch=[24,61];
+ const Dhold=[60,44], Ehold=[48,40], Fhold=[36,38], Ghold=[72,36];
+ const Dcut=[54,38];
+ const base={A:A0,B:B0,C:C0,D:Dhold,E:Ehold,F:Fhold,G:Ghold};
+ const mark={A:[52,66],D:[58,46],B:[46,72]};
+ const bResetCut=`M${B0[0]},${B0[1]} C46,73 47,72 ${Bdump[0]},${Bdump[1]}`;
+ const downfieldLook=`M${A0[0]},${A0[1]} C58,58 60,52 ${Dhold[0]},${Dhold[1]}`;
+ const dumpPass=`M${A0[0]},${A0[1]} C50,70 48,70 ${Bdump[0]},${Bdump[1]}`;
+ const aClear=`M${A0[0]},${A0[1]} C54,69 53,69 ${Amid[0]},${Amid[1]}`;
+ const cWiden=`M${C0[0]},${C0[1]} C25,65 25,64 ${Cwide[0]},${Cwide[1]}`;
+ const swingPass=`M${Bdump[0]},${Bdump[1]} C36,68 30,66 ${Ccatch[0]},${Ccatch[1]}`;
+ const dAttack=`M${Dhold[0]},${Dhold[1]} C58,42 56,40 ${Dcut[0]},${Dcut[1]}`;
+ const contThrow=`M${Ccatch[0]},${Ccatch[1]} C40,52 48,44 ${Dcut[0]},${Dcut[1]}`;
+ const openBand={label:'OPEN SIDE',lanes:[{x:46,y:30,w:12,h:18},{x:58,y:28,w:12,h:20}]};
  return [
-  {title:'First look is covered',disc:'A',reset:'B',next:'D',focus:'Covered',discPos:A,p:{...base,D:Dcovered},d:mark,routes:[route('choice',[A,[70,55],Dcovered])],body:'The thrower has the disc. The upfield cutter is covered. This is where beginners usually panic and throw into traffic.',whole:'The lesson starts with a covered first option, not a mistake. The thrower should save the disc.',why:'A reset drill only matters if players recognize that the first look is not open.'},
-  {title:'Reset starts behind and wide',disc:'A',reset:'B',next:'D',focus:'Reset spot',discPos:A,p:{...base,D:Dcovered},d:mark,routes:[],body:'The reset stands behind and wide because they are the safety valve. They should be close enough for an easy pass, but not so close that they crowd the thrower.',whole:'Reset space is behind the disc and slightly away from the sideline.',why:'Behind-and-wide spacing gives the thrower a safe pass before the stall count gets high.'},
-  {title:'Reset moves first',disc:'A',reset:'B',next:'D',focus:'Move first',discPos:A,p:{...base,B:Bdump,D:Dcovered},d:mark,routes:[route('reset',[B,Baway,Bdump])],body:'The reset doesn’t just stand still. They move their defender a step away, then come back toward the thrower with hands ready.',whole:'A small setup move can be enough. The reset doesn’t need a huge sprint.',why:'Moving first makes the defender react instead of sitting in the dump lane.'},
-  {title:'Dump pass',disc:'B',reset:'A',next:'C',focus:'Dump',discPos:Bdump,p:{...base,B:Bdump,D:Dcovered},d:mark,routes:[route('disc',[A,Bdump])],body:'The thrower makes the easy dump pass before the stall gets high. This keeps possession instead of forcing the covered cutter.',whole:'The dump is not giving up. It’s how the offense stays alive.',why:'Beginner teams turn the disc over when they wait too long and panic. Dump early.'},
-  {title:'Swing shape appears',disc:'B',reset:'A',next:'C',focus:'Swing shape',discPos:Bdump,p:{...base,A:Bmiddle,B:Bdump,D:[78,48]},d:{A:[66,62],D:[76,50]},routes:[route('clear',[A,[63,63],Bmiddle]),route('clear',[Dcovered,[75,48],[78,48]])],body:'After the dump, the disc can move across the field. The original thrower fills space, and the far handler becomes available.',whole:'The reset changes the angle. The next pass should move the defense.',why:'Swinging the disc forces defenders to turn their heads and move to a new side.'},
-  {title:'Swing pass',disc:'C',reset:'B',next:'D',focus:'Swing',discPos:Ccatch,p:{...base,A:Bmiddle,B:Bdump,C:Ccatch,D:[78,48]},d:{A:[66,62],D:[76,50]},routes:[route('disc',[Bdump,Ccatch])],body:'The swing pass moves the disc across the field. This makes the defense turn and opens a new lane.',whole:'Throw the swing when it’s easy. Don’t wait until the defense resets.',why:'The same cutter who was covered on one side may be open after the angle changes.'},
-  {title:'New cutter attacks',disc:'C',reset:'B',next:'D',focus:'New lane',discPos:Ccatch,p:{...base,A:Bmiddle,B:Bdump,C:Ccatch,D:Dnew},d:{A:[66,62],D:[58,50]},routes:[route('move',[[78,48],[65,48],Dnew]),route('defense',[[76,50],[66,51],[58,50]])],body:'The cutter waits until the swing happens, then cuts into the new space. The defender is now chasing from the wrong angle.',whole:'Cut after the swing, not before. Timing creates the lane.',why:'This is how teams keep possession and still attack instead of just resetting forever.'},
-  {title:'Why this works in a game',disc:'D',reset:'C',next:'E',focus:'Game transfer',discPos:Dnew,p:{...base,A:Bmiddle,B:Bdump,C:Ccatch,D:Dnew,E:Ereset},d:{D:[58,50]},routes:[route('disc',[Ccatch,Dnew]),route('choice',[Dnew,[50,62],Ereset])],body:'This is how teams keep possession when the first option is covered: reset, swing, attack the new angle. If the new cut is not open, keep the reset ready again.',whole:'The pattern is simple: covered look, easy reset, swing, new lane.',why:'It prevents panic throws and teaches the whole team that a reset can create offense.'}
+  {title:`${name('A')} has the disc`,disc:'A',reset:'B',next:'C',focusPlayers:['A','B','C'],discPos:A0,p:base,d:mark,routes:[],body:`${name('A')} has the disc. ${name('B')} is the reset. ${name('C')} is the swing handler. Cutters hold downfield and stay out of the handler space.`,whole:'Three handlers make a triangle. Cutters wait upfield.',why:'You need a reset and a swing ready before the stall gets late.'},
+  {title:'Downfield is covered',disc:'A',reset:'B',next:'D',focusPlayers:['A','B','D'],discPos:A0,p:base,d:mark,routes:[route('choice',downfieldLook)],body:`${name('A')} looks downfield first. ${name('D')} is not open. ${name('B')} gets ready as the reset.`,whole:'Look forward first. If it is covered, the reset is the smart play.',why:'A reset is not panic. It keeps the disc alive when the first look is shut down.'},
+  {title:`${name('B')} sets the reset`,disc:'A',reset:'B',next:'C',focusPlayers:['A','B'],discPos:A0,p:{...base,B:Bfake},d:mark,routes:[route('reset',bResetCut)],body:`${name('B')} steps out, then comes back behind and wide. That gives ${name('A')} a clean throwing angle.`,whole:'Reset behind and wide — not flat behind the thrower.',why:'Good reset spacing makes the pass easy before the mark gets tight.'},
+  {title:`${name('A')} turns to the reset`,disc:'A',reset:'B',next:'B',focusPlayers:['A','B'],discPos:A0,p:{...base,B:Bdump},d:dmap({...mark,B:[48,70]}),routes:[],body:`The mark takes away the downfield throw. ${name('A')} pivots and faces ${name('B')}.`,whole:'Turn to the reset early. Do not wait for stall nine.',why:'Early resets are easier because the defense has not fully collapsed on the thrower.'},
+  {title:'Take the reset',disc:'B',reset:'A',next:'C',focusPlayers:['A','B'],discPos:Bdump,p:{...base,B:Bdump},d:dmap({...mark,B:[48,70]}),routes:[route('disc',dumpPass)],body:`${name('A')} throws the short reset to ${name('B')}. The disc may move back or sideways. That is fine.`,whole:'Take the easy reset before the stall gets desperate.',why:'Short resets beat forced throws into traffic.'},
+  {title:`${name('B')} catches and turns`,disc:'B',reset:'A',next:'C',focusPlayers:['B','C'],discPos:Bdump,p:{...base,A:Amid,B:Bdump},d:dmap({...mark,A:[54,68],B:[48,70]}),routes:[route('clear',aClear)],body:`${name('B')} catches and looks across the field right away. ${name('A')} clears so the swing lane stays open.`,whole:'Catch, turn, and look for the swing.',why:'The swing should happen before the defense fully resets.'},
+  {title:`${name('C')} widens for the swing`,disc:'B',reset:'A',next:'C',focusPlayers:['B','C'],discPos:Bdump,p:{...base,A:Amid,B:Bdump,C:Cwide},d:dmap({...mark,A:[54,68],B:[48,70],C:[32,64]}),routes:[route('move',cWiden)],body:`${name('C')} holds width on the far side. ${name('B')} should see the swing before the catch is finished.`,whole:'The swing handler is ready before the reset lands.',why:'If C is late, the defense can recover and take the swing away.'},
+  {title:'Swing the disc',disc:'C',reset:'B',next:'D',focusPlayers:['B','C'],discPos:Ccatch,p:{...base,A:Amid,B:Bdump,C:Ccatch},d:dmap({...mark,A:[54,68],B:[48,70],C:[32,62]}),routes:[route('disc',swingPass)],body:`${name('B')} swings the disc across the field to ${name('C')}. This is a lateral pass, not a risky huck.`,whole:'Swing before the defense resets.',why:'Moving the disc sideways makes defenders turn and opens a new side.'},
+  {title:'The field opens',disc:'C',reset:'B',next:'D',focusPlayers:['C','D'],discPos:Ccatch,p:{...base,A:Amid,B:Bdump,C:Ccatch},d:dmap({...mark,A:[54,68],B:[48,70],C:[32,62],D:[58,46]}),routes:[route('lane-guides',openBand)],body:`${name('C')} catches on the new side. The defense has shifted. A new attacking lane is open.`,whole:'Reset, swing, then attack the space that opened.',why:'Dump-swing is not just survival. It creates the next throw.'},
+  {title:`${name('D')} attacks the new side`,disc:'C',reset:'B',next:'D',focusPlayers:['C','D'],discPos:Ccatch,p:{...base,A:Amid,B:Bdump,C:Ccatch,D:Dcut},d:dmap({...mark,A:[54,68],B:[48,70],C:[32,62],D:[56,40]}),routes:[route('move',dAttack),route('defense',[[58,46],[57,43],[56,40]])],body:`${name('D')} cuts after the swing. ${name('E')}, ${name('F')}, and ${name('G')} hold so the lane stays clean.`,whole:'Cut after the swing, not before.',why:'Cutters who go early clog the handler space and bring extra defenders.'},
+  {title:'Hit the open cutter',disc:'D',reset:'C',next:'E',focusPlayers:['C','D'],discPos:Dcut,p:{...base,A:Amid,B:Bdump,C:Ccatch,D:Dcut},d:dmap({...mark,A:[54,68],B:[48,70],C:[32,62],D:[56,40]}),routes:[route('disc',contThrow)],body:`${name('C')} throws to ${name('D')} in the open lane. The offense moved the disc and still gained yards.`,whole:'Take the clean throw when the lane is there.',why:'This is the payoff: reset and swing created a real attacking look.'},
+  {title:'Reset, swing, attack',disc:'D',reset:'C',next:'B',focusPlayers:['A','B','C'],discPos:Dcut,p:{...base,A:Amid,B:Bdump,C:Ccatch,D:Dcut},d:dmap({...mark,A:[54,68],B:[48,70],C:[32,62],D:[56,40]}),routes:[],body:`The offense escaped pressure and opened the field. Covered look, easy reset, quick swing, then attack.`,whole:'Reset keeps the disc alive. Swing opens the field. Cutters go when the lane is real.',why:'This is the handler pattern beginners can use in every point.'}
  ];
 }
 
@@ -695,6 +712,7 @@ function pullHoldJob(step,id){return jobText(pullHoldJobs[step]?.[id])}
 function pullActiveJob(step,id){return jobText(pullActiveJobs[step]?.[id])}
 function cupJob(step,id){return jobText(cupJobs[step]?.[id])}
 function hoJob(step,id){return jobText(hoJobs[step]?.[id])}
+function dumpJob(step,id){return jobText(dumpJobs[step]?.[id])}
 
 const pullActiveJobs={
  4:{B:"feel the force. The flick side is the open side."},
@@ -963,6 +981,117 @@ const pullHoldJobs={
   D:"reset far-side spacing for the next read.",
   E:"be ready as the next lane once the disc comes back.",
   G:"reset deep spacing if the score throw is not there."
+ }
+};
+
+const dumpJobs={
+ 0:{
+  A:"you have the disc. Know where your reset and swing are before the stall climbs.",
+  B:"set up behind and wide. Give an easy angle, not a crowd around the thrower.",
+  C:"hold width on the far side. Be ready before the reset catches.",
+  D:"hold your cutter lane downfield. Do not drift into handler space.",
+  E:"stay central and keep the lane clear for the handlers.",
+  F:"hold the far-side cutter space and wait.",
+  G:"stay deep enough to threaten, but do not clog the reset lane."
+ },
+ 1:{
+  A:"look downfield first. If it is covered, turn to your reset early.",
+  B:"show hands and stay available. The reset is smart, not panic.",
+  C:"hold your swing width. The disc may come your way soon.",
+  D:"hold your spot. You are covered for now.",
+  E:"stay patient and keep the middle lane clear.",
+  F:"hold width and do not pinch into the handler triangle.",
+  G:"stay deep and out of the reset lane."
+ },
+ 2:{
+  A:()=>`watch ${name("B")} set the reset angle. Be ready to pivot.`,
+  B:"step out, then come back behind and wide with hands ready.",
+  C:"stay wide on the far side and keep the swing lane open.",
+  D:"hold downfield and do not start early.",
+  E:"keep the middle clear so handlers have space.",
+  F:"hold your lane and watch the reset shape.",
+  G:"stay deep and patient."
+ },
+ 3:{
+  A:()=>`pivot toward ${name("B")}. The downfield throw is shut down.`,
+  B:"stay open as the reset. Give a short, easy target.",
+  C:"hold width so the swing is ready after the reset.",
+  D:"keep holding. The handlers are resetting.",
+  E:"do not crowd the handler space.",
+  F:"hold your cutter lane and wait.",
+  G:"stay out of the reset lane."
+ },
+ 4:{
+  A:()=>`throw the easy reset to ${name("B")}. Do not force the covered cutter.`,
+  B:"catch in balance and turn quickly toward the swing.",
+  C:"be ready on the far side before the catch is done.",
+  D:"hold your lane while the reset happens.",
+  E:"stay clear of the handler triangle.",
+  F:"hold width and wait for the swing.",
+  G:"stay deep and do not drift in."
+ },
+ 5:{
+  A:"clear after the throw so the swing lane stays open.",
+  B:"catch, turn, and look for the swing right away.",
+  C:"hold width and show hands on the far side.",
+  D:"keep holding downfield until the swing finishes.",
+  E:"stay central and keep space open.",
+  F:"do not clog the swing lane.",
+  G:"hold deep spacing."
+ },
+ 6:{
+  A:"stay out of the swing lane after you clear.",
+  B:()=>`read ${name("C")} wide and throw the swing early.`,
+  C:"widen on the far side and be ready before the throw.",
+  D:"hold your cutter spot. Your turn comes after the swing.",
+  E:"keep the middle clear.",
+  F:"hold width and wait.",
+  G:"stay deep and patient."
+ },
+ 7:{
+  A:"trail behind the play as handler support.",
+  B:"stay available if the swing needs a short outlet.",
+  C:"get ready to catch the swing in space.",
+  D:"hold your lane until the disc crosses the field.",
+  E:"do not cut before the swing lands.",
+  F:"hold your spot and keep the lane clean.",
+  G:"stay deep and watch the swing."
+ },
+ 8:{
+  A:"stay wide as support after the swing.",
+  B:"reset behind the play if the swing side closes.",
+  C:"catch on the new side and face the open field.",
+  D:"get ready to attack once the swing opens your lane.",
+  E:"hold so you do not bring a defender into the throw.",
+  F:"stay wide and wait for the cue.",
+  G:"hold deep spacing on the far side."
+ },
+ 9:{
+  A:"stay in handler support and do not clog the cut.",
+  B:"hold reset shape behind the new thrower.",
+  C:()=>`read ${name("D")}'s cut and throw if the lane is clean.`,
+  D:"attack the new open side after the swing.",
+  E:"hold and leave the lane to D.",
+  F:"stay wide and do not follow into the same lane.",
+  G:"hold deep and stay out of the active lane."
+ },
+ 10:{
+  A:"stay in support after the continuation.",
+  B:"hold reset width in case the look is off.",
+  C:()=>`throw to ${name("D")} if the lane is still clean.`,
+  D:"catch moving and keep the offense going.",
+  E:"clear if you are not the target.",
+  F:"hold your lane and do not crowd the catch.",
+  G:"stay deep as the backup option."
+ },
+ 11:{
+  A:"remember the pattern: look, reset, swing, attack.",
+  B:"stay ready as the reset on the next rep.",
+  C:"stay wide as the swing handler next time.",
+  D:"you finished the attack. Clear on the next rep.",
+  E:"hold spacing for the next point.",
+  F:"keep width for the next swing.",
+  G:"stay deep and ready for the next look."
  }
 };
 
@@ -1289,6 +1418,10 @@ function playerBody(s){
   const j=cupJob(step,player);
   return j?roleNote(p,j):roleNote(p,"hold your space and watch the play develop.");
  }
+ if(sequence==="dump"){
+  const j=dumpJob(step,player);
+  return j?roleNote(p,j):roleNote(p,"hold your space and give the handlers room.");
+ }
  if(sequence==="pull"){
   if(step<4){
    const early=pullEarlyBody(step,p);
@@ -1331,6 +1464,7 @@ function callout(s){
  }
  if(sequence==='ho'){const j=hoJob(step,player);return ['Your job',j?j.charAt(0).toUpperCase()+j.slice(1):'Hold width and watch the disc for the next lane.']}
  if(sequence==='cup'){const j=cupJob(step,player);return ['Your job',j?j.charAt(0).toUpperCase()+j.slice(1):'Hold your space and watch the play develop.']}
+ if(sequence==='dump'){const j=dumpJob(step,player);return ['Your job',j?j.charAt(0).toUpperCase()+j.slice(1):'Hold your space and give the handlers room.']}
  if(sequence==='pull'&&step<4){const jobs={0:{A:'Read the pull and get to the disc early.',B:`Track the pull and peel wide as outlet for ${name('A')}.`,C:`Climb into stack order. You cut after ${name('A')} and ${name('B')} settle the disc.`,D:'Hold the front-middle lane. Don’t start early.',E:'Hold the middle lane and get organized.',F:'Get to the back-left of the stack and keep the lane open.',G:'Get to the back-right of the stack and keep the lane open.'},1:{A:'Read the pull and get under it early.',B:`Peel wide and be ready for ${name('A')}'s first pass.`,C:`Keep climbing into stack order. Wait for ${name('A')} and ${name('B')}.`,D:'Hold the front-middle lane. Don’t start early.',E:'Hold the middle lane and watch the handlers settle.',F:'Hold the back-left space.',G:'Hold the back-right space.'},2:{A:`Look to ${name('B')} first and make the easy throw.`,B:`Stay wide and ready while ${name('A')} settles the disc.`,C:`Hold the front. You'll cut after ${name('A')} and ${name('B')} settle the disc.`,D:'Hold the front-middle lane. Don’t start early.',E:'Hold the middle lane and watch the first pass.',F:'Hold the back-left space.',G:'Hold the back-right space.'},3:{A:`Hold your spot while ${name('B')} has the disc.`,B:'Read the stack and be ready for the first cut.',C:`Wait at the front for ${name('B')} to read the force.`,D:'Hold the front-middle lane. Don’t start early.',E:'Hold the middle lane and watch the first cut develop.',F:'Hold the back-left space.',G:'Hold the back-right space.'}};return ['Your job',jobs[step]?.[player]||'Move into shape and keep the first lane clear.']}
  if(sequence==='pull'&&player==='F'&&step>=8){const fJob=pullFJobs(step);if(fJob)return ['Your job',fJob.charAt(0).toUpperCase()+fJob.slice(1)]}
  if(sequence==='pull'){const active=pullActiveJob(step,player),hold=pullHoldJob(step,player),job=active||hold;if(job)return ['Your job',job.charAt(0).toUpperCase()+job.slice(1)]}
@@ -1514,8 +1648,8 @@ if(sequence==='triangle'){
   roleValues.disc=name('A'); roleValues.reset=name('C'); roleValues.next=s.focus||'Triangle';
 }
 if(sequence==='dump'){
-  roleLabels.disc='Thrower'; roleLabels.reset='Reset'; roleLabels.next='Focus';
-  roleValues.disc=hasPossession?name(s.disc):(s.discLabel||'In air'); roleValues.reset=name(s.reset); roleValues.next=s.focus||'Reset';
+  roleLabels.disc='Thrower'; roleLabels.reset='Reset'; roleLabels.next='Swing';
+  roleValues.disc=hasPossession?name(s.disc):(s.discLabel||'In air'); roleValues.reset=name(s.reset); roleValues.next=name(s.next);
 }
 discChipLabel.textContent=roleLabels.disc;
 resetChipLabel.textContent=roleLabels.reset;
